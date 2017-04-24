@@ -3,6 +3,14 @@
   <h1 class="lead alert alert-danger" role="alert" ng-if="message != ''">{{message}}</h2>
   <form ng-submit="registerUser()">
     <div>
+        <label for="name">Full Name:</label>
+        <input type="text" ng-model="user.name" />
+    </div>
+    <div>
+        <label for="name">Email:</label>
+        <input type="text" ng-model="user.email" />
+    </div>
+    <div>
         <label for="username">Username:</label>
         <input type="text" ng-model="user.username" />
     </div>
