@@ -17,7 +17,7 @@ myApp.controller('LoginController', ['$scope', '$http', '$location', 'UserServic
             $location.path('/user');
           } else {
             console.log('failure: ', response);
-            $scope.message = "Wrong!!";
+            $scope.message = "Invalid combination of username and password.";
           }
         });
       }

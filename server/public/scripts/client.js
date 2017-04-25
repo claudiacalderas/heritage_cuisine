@@ -65,7 +65,7 @@ myApp.controller('LoginController', ['$scope', '$http', '$location', 'UserServic
             $location.path('/user');
           } else {
             console.log('failure: ', response);
-            $scope.message = "Wrong!!";
+            $scope.message = "Invalid combination of username and password.";
           }
         });
       }
@@ -86,6 +86,15 @@ myApp.controller('LoginController', ['$scope', '$http', '$location', 'UserServic
         });
       }
     }
+}]);
+
+myApp.controller('navBarController', ['UserService', function(UserService) {
+    var originatorEv;
+
+    this.openMenu = function($mdMenu, ev) {
+      originatorEv = ev;
+      $mdMenu.open(ev);
+    };
 }]);
 
 myApp.controller('UserController', ['$scope', '$http', '$location', 'UserService', function($scope, $http, $location, UserService) {
