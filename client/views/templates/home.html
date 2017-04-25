@@ -1,31 +1,31 @@
 <div layout="row">
-<div layout-md="column" flex="33"></div>
-<div layout="column" flex="33">
-  <h2>Connect with friends and start sharing recipes using Heritage Cuisine.</h>
+  <div layout-md="column" flex="33"></div>
+  <div layout="column" flex="33">
+    <h2>Connect with friends and start sharing recipes using Heritage Cuisine.</h>
     <h1 class="lead alert alert-danger" role="alert" ng-if="message != ''">{{message}}</h2>
     <form name="loginView" ng-submit="login()">
       <md-input-container layout="column">
         <div>
-            <label for="username">Username:</label>
-            <input type="text" ng-model="user.username" required/>
-            <div ng-messages="loginView.user.username.$error">
-              <div ng-message="required">A username is required!</div>
-            </div>
+          <label for="username">Username:</label>
+          <input type="text" ng-model="user.username" required/>
+          <div ng-messages="loginView.user.username.$error">
+            <div ng-message="required">A username is required!</div>
+          </div>
         </div>
       </md-input-container>
       <md-input-container layout="column">
         <div>
-            <label for="password">Password:</label>
-            <input type="password" ng-model="user.password" required/>
-            <div ng-messages="loginView.user.password.$error">
-              <div ng-message="required">A password is required!</div>
-            </div>
+          <label for="password">Password:</label>
+          <input type="password" ng-model="user.password" required/>
+          <div ng-messages="loginView.user.password.$error">
+            <div ng-message="required">A password is required!</div>
+          </div>
         </div>
       </md-input-container>
       <md-input-container layout="column" layout-align="center center">
         <div>
-            <!-- <input class="md-input" type="submit" name="submit" aria-label="Log In" value="Log In" /> -->
-            <md-button class="md-raised" type="submit" name="submit" aria-label="Log In" value="Log In">Log In</md-button>
+          <!-- <input class="md-input" type="submit" name="submit" aria-label="Log In" value="Log In" /> -->
+          <md-button class="md-raised" type="submit" name="submit" aria-label="Log In" value="Log In">Log In</md-button>
         </div>
       </md-input-container>
       <md-input-container layout="row" layout-align="center center">
@@ -34,6 +34,5 @@
         </div>
       </md-input-container>
     </form>
-</div>
-
+  </div>
 </div>
