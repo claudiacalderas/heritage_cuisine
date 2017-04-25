@@ -28,6 +28,24 @@ myApp.config(['$routeProvider', '$locationProvider',
         }]
       }
     })
+    .when('/addrecipe', {
+      templateUrl: '/views/templates/addRecipe.html',
+      controller: 'addRecipeController',
+      resolve: {
+        getuser : ['UserService', function(UserService){
+          return UserService.getuser();
+        }]
+      }
+    })
+    .when('/grouplist', {
+      templateUrl: '/views/templates/groupList.html',
+      controller: 'groupListController',
+      resolve: {
+        getuser : ['UserService', function(UserService){
+          return UserService.getuser();
+        }]
+      }
+    })
     .when('/info', {
       templateUrl: '/views/templates/info.html',
       controller: 'InfoController',
@@ -40,6 +58,18 @@ myApp.config(['$routeProvider', '$locationProvider',
     .otherwise({
       redirectTo: 'home'
     });
+}]);
+
+myApp.controller('addRecipeController', ['$scope','UserService', function($scope,UserService) {
+  $scope.userObject = UserService.userObject;
+  $scope.logout = UserService.logout;
+
+}]);
+
+myApp.controller('groupListController', ['$scope', 'UserService', function($scope, UserService) {
+  $scope.userObject = UserService.userObject;
+  $scope.logout = UserService.logout;
+
 }]);
 
 myApp.controller('InfoController', ['$scope', '$http', '$location', 'UserService', function($scope, $http, $location, UserService) {
@@ -88,13 +118,19 @@ myApp.controller('LoginController', ['$scope', '$http', '$location', 'UserServic
     }
 }]);
 
-myApp.controller('navBarController', ['UserService', function(UserService) {
+myApp.controller('navBarController', ['$scope', '$location','UserService', function($scope, $location, UserService) {
     var originatorEv;
 
-    this.openMenu = function($mdMenu, ev) {
+    $scope.openMenu = function($mdMenu, ev) {
       originatorEv = ev;
       $mdMenu.open(ev);
     };
+
+    $scope.redirect = function(page){
+      console.log('nav clicked', page);
+      $location.url(page);
+    }
+
 }]);
 
 myApp.controller('UserController', ['$scope', '$http', '$location', 'UserService', function($scope, $http, $location, UserService) {

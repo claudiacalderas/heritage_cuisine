@@ -28,6 +28,24 @@ myApp.config(['$routeProvider', '$locationProvider',
         }]
       }
     })
+    .when('/addrecipe', {
+      templateUrl: '/views/templates/addRecipe.html',
+      controller: 'addRecipeController',
+      resolve: {
+        getuser : ['UserService', function(UserService){
+          return UserService.getuser();
+        }]
+      }
+    })
+    .when('/grouplist', {
+      templateUrl: '/views/templates/groupList.html',
+      controller: 'groupListController',
+      resolve: {
+        getuser : ['UserService', function(UserService){
+          return UserService.getuser();
+        }]
+      }
+    })
     .when('/info', {
       templateUrl: '/views/templates/info.html',
       controller: 'InfoController',
