@@ -39,3 +39,17 @@
 .btn-danger{
     margin-left: 10px;
 }
+
+h2 {
+  font-weight: 300;
+  font-size: 20px;
+}
+
+span {
+  font-weight: 300;
+  font-size: 16px;
+}
+
+a {
+  color: brown;
+}
