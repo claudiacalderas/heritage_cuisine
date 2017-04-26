@@ -1,2 +1,48 @@
 <div ng-include="'views/partials/nav.html'"></div>
-<p>Add Recipe</p>
+
+<div layout="row">
+  <div layout-md="column" flex="10"></div>
+  <div layout="column" flex="33">
+    <form name="addRecipeForm" ng-submit="addRecipe(recipe)">
+      <md-input-container layout="column">
+        <div>
+          <label for="title">Recipe name:</label>
+          <input type="text" ng-model="recipe.title" required/>
+          <div ng-messages="addRecipeForm.recipe.title.$error">
+            <div ng-message="required">A recipe name is required!</div>
+          </div>
+        </div>
+      </md-input-container>
+      <md-input-container layout="row">
+        <div>
+          <span>INGREDIENTS </span>
+          <md-button class="md-icon-button addNewBtn" aria-label="Add Ingredient" ng-click="addNewIngredient()">+</md-button>
+        </div>
+      </md-input-container>
+      <div  data-ng-repeat="ingredient in ingredientsArray" layout="row">
+        <md-input-container layout="row">
+          <input type="text" ng-model="ingredient.name" aria-label="Ingredient">
+          <md-button class="md-icon-button" ng-click="removeIngredient(ingredient)">-</md-button>
+        </md-input-container>
+      </div>
+      <md-input-container layout="row">
+        <div>
+          <span>PREPARATION </span>
+          <md-button class="md-icon-button addNewBtn" aria-label="Add Preparation Step" ng-click="addNewStep()">+</md-button>
+        </div>
+      </md-input-container>
+      <div  data-ng-repeat="step in stepsArray" layout="row">
+        <md-input-container layout="row">
+          <textarea type="text" name="step" ng-model="step.name" aria-label="Step" md-maxlength="150"></textarea>
+          <md-button class="md-icon-button" ng-click="removeStep(step)">-</md-button>
+        </md-input-container>
+      </div>
+      <md-input-container layout="column">
+        <div>
+          <!-- <md-button class="md-raised" aria-label="Cancel" value="Cancel" ng-click="">Cancel</md-button> -->
+          <md-button class="md-raised" type="submit" name="submit" aria-label="Add Recipe" value="Add Recipe">Add Recipe</md-button>
+        </div>
+      </md-input-container>
+    </form>
+  </div>
+</div>

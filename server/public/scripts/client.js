@@ -60,9 +60,50 @@ myApp.config(['$routeProvider', '$locationProvider',
     });
 }]);
 
-myApp.controller('addRecipeController', ['$scope','UserService', function($scope,UserService) {
+myApp.controller('addRecipeController', ['$scope','UserService', function($scope, UserService) {
   $scope.userObject = UserService.userObject;
   $scope.logout = UserService.logout;
+
+  $scope.ingredientsArray = [];
+  $scope.stepsArray = [];
+
+  $scope.recipe = {
+    title: '',
+    ingredients : [''],
+    steps : [],
+    image_url: '',
+    username: ''
+  };
+
+  $scope.addNewIngredient = function() {
+      var newIngredientNo = $scope.ingredientsArray.length+1;
+      console.log('Adding new ingredient');
+      $scope.ingredientsArray.push({'id':'I' + newIngredientNo});
+      console.log('array is now:', $scope.ingredientsArray);
+  };
+
+  $scope.removeIngredient = function(ingredient) {
+      console.log('Removing ingredient');
+      var ingredientIndex = $scope.ingredientsArray.indexOf(ingredient);
+      $scope.ingredientsArray.splice(ingredientIndex,1);
+  };
+
+  $scope.addNewStep = function() {
+      var newStepNo = $scope.stepsArray.length+1;
+      console.log('Adding new step');
+      $scope.stepsArray.push({'id':'I' + newStepNo});
+      console.log('array is now:', $scope.stepsArray);
+  };
+
+  $scope.removeStep = function(step) {
+      console.log('Removing step');
+      var stepIndex = $scope.stepsArray.indexOf(step);
+      $scope.stepsArray.splice(stepIndex,1);
+  };
+
+  $scope.addRecipe = function() {
+    console.log('Adding a recipe', $scope.recipe.title);
+  }
 
 }]);
 
@@ -136,6 +177,30 @@ myApp.controller('navBarController', ['$scope', '$location','UserService', funct
 myApp.controller('UserController', ['$scope', '$http', '$location', 'UserService', function($scope, $http, $location, UserService) {
   $scope.userObject = UserService.userObject;
   $scope.logout = UserService.logout;
+}]);
+
+myApp.factory('RecipeDataService', ['$http', '$location', function($http, $location){
+
+  console.log('Recipe Data Service Loaded');
+
+  getRecipes = function(){
+    // $http.get('/recipe').then(function(response) {
+    //
+    // });
+  };
+
+  postRecipe = function(recipe) {
+    var recipeToPost = angular.copy(recipe);
+    console.log('Posting recipe: ', recipeToPost);
+    $http.post('/recipe/add', recipeToPost).then(function(response) {
+      console.log(response);
+    });
+  };
+
+  return {
+    postRecipe : postRecipe,
+  };
+
 }]);
 
 myApp.factory('UserService', ['$http', '$location', function($http, $location){
