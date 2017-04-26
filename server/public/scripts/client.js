@@ -208,19 +208,36 @@ myApp.controller('navBarController', ['$scope', '$location','UserService', funct
 
 }]);
 
-myApp.controller('UserController', ['$scope', '$http', '$location', 'UserService', function($scope, $http, $location, UserService) {
+myApp.controller('UserController', ['$scope', '$http', '$location', 'UserService', 'RecipeDataService',
+                                    function($scope, $http, $location, UserService, RecipeDataService) {
   $scope.userObject = UserService.userObject;
   $scope.logout = UserService.logout;
+  $scope.recipesObject = RecipeDataService.recipesObject;
+
+  RecipeDataService.getRecipes();
+
+  $scope.viewRecipe = function() {
+    console.log('view recipe clicked');
+  }
+
+
 }]);
 
 myApp.factory('RecipeDataService', ['$http', '$location', function($http, $location){
 
   console.log('Recipe Data Service Loaded');
 
+  var recipesObject = {
+    allRecipes: []
+  };
+
   getRecipes = function(){
-    // $http.get('/recipe').then(function(response) {
-    //
-    // });
+    console.log('in getRecipes');
+    $http.get('/recipe').then(function(response) {
+      console.log('Back from the server with:', response);
+      recipesObject.allRecipes = response.data;
+      console.log('Updated recipesObject:', recipesObject.allRecipes);
+    });
   };
 
   postRecipe = function(recipe) {
@@ -232,7 +249,9 @@ myApp.factory('RecipeDataService', ['$http', '$location', function($http, $locat
   };
 
   return {
-    postRecipe : postRecipe,
+    recipesObject : recipesObject,
+    getRecipes : getRecipes,
+    postRecipe : postRecipe
   };
 
 }]);

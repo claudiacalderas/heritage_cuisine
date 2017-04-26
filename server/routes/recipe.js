@@ -14,6 +14,18 @@ var FamilyRecipeSchema = mongoose.Schema({
 
 var Recipe = mongoose.model('recipe', FamilyRecipeSchema, 'recipes');
 
+// gets all recipes from the database
+router.get('/', function(req,res){
+  console.log("/recipe get route hit");
+  Recipe.find({},function(err,allRecipes) {
+    if(err) {
+      console.log('Mongo error: ',err);
+    }
+    res.send(allRecipes);
+  });
+});
+
+
 // saves a recipe into the database
 router.post('/add', function(req,res) {
   console.log("/add post route hit");

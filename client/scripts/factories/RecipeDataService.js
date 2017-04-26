@@ -2,10 +2,17 @@ myApp.factory('RecipeDataService', ['$http', '$location', function($http, $locat
 
   console.log('Recipe Data Service Loaded');
 
+  var recipesObject = {
+    allRecipes: []
+  };
+
   getRecipes = function(){
-    // $http.get('/recipe').then(function(response) {
-    //
-    // });
+    console.log('in getRecipes');
+    $http.get('/recipe').then(function(response) {
+      console.log('Back from the server with:', response);
+      recipesObject.allRecipes = response.data;
+      console.log('Updated recipesObject:', recipesObject.allRecipes);
+    });
   };
 
   postRecipe = function(recipe) {
@@ -17,7 +24,9 @@ myApp.factory('RecipeDataService', ['$http', '$location', function($http, $locat
   };
 
   return {
-    postRecipe : postRecipe,
+    recipesObject : recipesObject,
+    getRecipes : getRecipes,
+    postRecipe : postRecipe
   };
 
 }]);
