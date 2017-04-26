@@ -1,13 +1,13 @@
-myApp.controller('addRecipeController', ['$scope','UserService', function($scope, UserService) {
+myApp.controller('addRecipeController', ['$scope', '$location','UserService', 'RecipeDataService',
+                                        function($scope, $location, UserService, RecipeDataService) {
   $scope.userObject = UserService.userObject;
   $scope.logout = UserService.logout;
-
   $scope.ingredientsArray = [];
   $scope.stepsArray = [];
-
   $scope.recipe = {
     title: '',
-    ingredients : [''],
+    categories : [],
+    ingredients : [],
     steps : [],
     image_url: '',
     username: ''
@@ -17,7 +17,7 @@ myApp.controller('addRecipeController', ['$scope','UserService', function($scope
       var newIngredientNo = $scope.ingredientsArray.length+1;
       console.log('Adding new ingredient');
       $scope.ingredientsArray.push({'id':'I' + newIngredientNo});
-      console.log('array is now:', $scope.ingredientsArray);
+      console.log('Ingredients Array is now:', $scope.ingredientsArray);
   };
 
   $scope.removeIngredient = function(ingredient) {
@@ -30,7 +30,7 @@ myApp.controller('addRecipeController', ['$scope','UserService', function($scope
       var newStepNo = $scope.stepsArray.length+1;
       console.log('Adding new step');
       $scope.stepsArray.push({'id':'I' + newStepNo});
-      console.log('array is now:', $scope.stepsArray);
+      console.log('Steps Array is now:', $scope.stepsArray);
   };
 
   $scope.removeStep = function(step) {
@@ -40,7 +40,36 @@ myApp.controller('addRecipeController', ['$scope','UserService', function($scope
   };
 
   $scope.addRecipe = function() {
-    console.log('Adding a recipe', $scope.recipe.title);
+
+    // initializes arrays in recipe object
+    $scope.recipe.ingredients = [];
+    $scope.recipe.steps = [];
+
+    // temporary category until chips are implemented
+    $scope.recipe.categories = ['dessert'];
+
+    // formats array of ingredients into db schema format
+    for (var i = 0; i < $scope.ingredientsArray.length; i++) {
+      $scope.recipe.ingredients.push($scope.ingredientsArray[i].name);
+    }
+    // formats array of steps into db schema format
+    for (var j = 0; j < $scope.stepsArray.length; j++) {
+      $scope.recipe.steps.push($scope.stepsArray[j].name);
+    }
+
+    // temporary image_url until add photo is implemented
+    $scope.recipe.image_url = '';
+
+    $scope.recipe.username = $scope.userObject.userName;
+
+    console.log('Adding a recipe', $scope.recipe);
+    RecipeDataService.postRecipe($scope.recipe);
+
+  }
+
+  $scope.redirect = function(page){
+    console.log('nav clicked', page);
+    $location.url(page);
   }
 
 }]);
