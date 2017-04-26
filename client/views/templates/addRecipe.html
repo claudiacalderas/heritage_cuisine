@@ -2,17 +2,21 @@
 
 <div layout="row">
   <div layout-md="column" flex="10"></div>
-  <div layout="column" flex="33">
+  <div layout="column" flex="50">
     <form name="addRecipeForm" ng-submit="addRecipe(recipe)">
+
+      <!-- RECIPE NAME -->
       <md-input-container layout="column">
         <div>
           <label for="title">Recipe name:</label>
-          <input type="text" ng-model="recipe.title" required/>
-          <div ng-messages="addRecipeForm.recipe.title.$error">
+          <input type="text" ng-model="title" required/>
+          <div ng-messages="addRecipeForm.title.$error">
             <div ng-message="required">A recipe name is required!</div>
           </div>
         </div>
       </md-input-container>
+
+      <!-- INGREDIENTS LIST -->
       <md-input-container layout="row">
         <div>
           <span>INGREDIENTS </span>
@@ -25,6 +29,8 @@
           <md-button class="md-icon-button" ng-click="removeIngredient(ingredient)">-</md-button>
         </md-input-container>
       </div>
+
+      <!-- PREPARATION STEPS -->
       <md-input-container layout="row">
         <div>
           <span>PREPARATION </span>
@@ -37,6 +43,13 @@
           <md-button class="md-icon-button" ng-click="removeStep(step)">-</md-button>
         </md-input-container>
       </div>
+
+      <!-- CATEGORIES -->
+
+      <span>CATEGORIES </span>
+      <md-chips ng-model="categoryOptions" readonly="ctrl.readonly" md-removable="ctrl.removable"></md-chips>
+
+      <!-- SUBMIT AND CANCEL BUTTONS -->
       <md-input-container layout="column">
         <div>
           <md-button class="md-raised" aria-label="Cancel" value="Cancel" ng-click="redirect('/user')">Cancel</md-button>

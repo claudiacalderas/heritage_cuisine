@@ -2,6 +2,7 @@ myApp.controller('addRecipeController', ['$scope', '$location','UserService', 'R
                                         function($scope, $location, UserService, RecipeDataService) {
   $scope.userObject = UserService.userObject;
   $scope.logout = UserService.logout;
+  $scope.title = '';
   $scope.ingredientsArray = [];
   $scope.stepsArray = [];
   $scope.recipe = {
@@ -12,6 +13,8 @@ myApp.controller('addRecipeController', ['$scope', '$location','UserService', 'R
     image_url: '',
     username: ''
   };
+  $scope.categoryOptions = ['Dessert', 'Appetizer', 'Dinner'];
+
 
   $scope.addNewIngredient = function() {
       var newIngredientNo = $scope.ingredientsArray.length+1;
@@ -40,13 +43,12 @@ myApp.controller('addRecipeController', ['$scope', '$location','UserService', 'R
   };
 
   $scope.addRecipe = function() {
-
     // initializes arrays in recipe object
     $scope.recipe.ingredients = [];
     $scope.recipe.steps = [];
-
-    // temporary category until chips are implemented
-    $scope.recipe.categories = ['dessert'];
+    $scope.recipe.title = $scope.title;
+    $scope.recipe.categories = $scope.categoryOptions;
+    $scope.recipe.username = $scope.userObject.userName;
 
     // formats array of ingredients into db schema format
     for (var i = 0; i < $scope.ingredientsArray.length; i++) {
@@ -60,12 +62,15 @@ myApp.controller('addRecipeController', ['$scope', '$location','UserService', 'R
     // temporary image_url until add photo is implemented
     $scope.recipe.image_url = '';
 
-    $scope.recipe.username = $scope.userObject.userName;
-
     console.log('Adding a recipe', $scope.recipe);
     RecipeDataService.postRecipe($scope.recipe);
 
-  }
+    // clear input fields
+    $scope.title = ' ';
+    $scope.ingredientsArray = [];
+    $scope.stepsArray = [];
+    $scope.categoryOptions = [];
+  } // end of addRecipe function
 
   $scope.redirect = function(page){
     console.log('nav clicked', page);
