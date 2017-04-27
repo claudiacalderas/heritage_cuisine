@@ -17,6 +17,11 @@ span:focus {
     border: 0;
  }
 
+ h1 {
+   font-weight: 300;
+   font-size: 25px;
+ }
+
 h2 {
   font-weight: 300;
   font-size: 20px;

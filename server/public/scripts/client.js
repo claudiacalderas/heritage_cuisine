@@ -37,6 +37,15 @@ myApp.config(['$routeProvider', '$locationProvider',
         }]
       }
     })
+    .when('/recipe', {
+      templateUrl: '/views/templates/recipe.html',
+      controller: 'recipeController',
+      resolve: {
+        getuser : ['UserService', function(UserService){
+          return UserService.getuser();
+        }]
+      }
+    })
     .when('/grouplist', {
       templateUrl: '/views/templates/groupList.html',
       controller: 'groupListController',
@@ -64,6 +73,7 @@ myApp.controller('addRecipeController', ['$scope', '$location','UserService', 'R
                                         function($scope, $location, UserService, RecipeDataService) {
   $scope.userObject = UserService.userObject;
   $scope.logout = UserService.logout;
+  $scope.redirect = UserService.redirect;
   $scope.title = '';
   $scope.ingredientsArray = [];
   $scope.stepsArray = [];
@@ -134,10 +144,10 @@ myApp.controller('addRecipeController', ['$scope', '$location','UserService', 'R
     $scope.categoryOptions = [];
   } // end of addRecipe function
 
-  $scope.redirect = function(page){
-    console.log('nav clicked', page);
-    $location.url(page);
-  }
+  // $scope.redirect = function(page){
+  //   console.log('nav clicked', page);
+  //   $location.url(page);
+  // }
 
 }]);
 
@@ -196,16 +206,26 @@ myApp.controller('LoginController', ['$scope', '$http', '$location', 'UserServic
 
 myApp.controller('navBarController', ['$scope', '$location','UserService', function($scope, $location, UserService) {
     var originatorEv;
+    $scope.redirect = UserService.redirect;
+
 
     $scope.openMenu = function($mdMenu, ev) {
       originatorEv = ev;
       $mdMenu.open(ev);
     };
 
-    $scope.redirect = function(page){
-      console.log('nav clicked', page);
-      $location.url(page);
-    }
+}]);
+
+myApp.controller('recipeController', ['$scope', '$location','UserService', 'RecipeDataService',
+                                        function($scope, $location, UserService, RecipeDataService) {
+  $scope.userObject = UserService.userObject;
+  $scope.logout = UserService.logout;
+  $scope.recipe = UserService.userObject.currentRecipe;
+
+  console.log('recipeController loaded');
+  console.log('current recipe is:', $scope.recipe);
+  console.log('current user is:', UserService.userObject.userName);
+
 
 }]);
 
@@ -214,25 +234,20 @@ myApp.controller('UserController', ['$scope', '$http', '$location', '$mdDialog',
   $scope.userObject = UserService.userObject;
   $scope.logout = UserService.logout;
   $scope.recipesObject = RecipeDataService.recipesObject;
+  $scope.redirect = UserService.redirect;
 
-  // console.log('in usercontroller',$scope.userObject);
-  // var myNameHere = $scope.userObject;
-  // console.log(myNameHere.userName);
   console.log('STEP 2: retrieve username');
   console.log($scope.userObject);
   RecipeDataService.getRecipes($scope.userObject.userName);
 
   $scope.viewRecipe = function(recipe) {
     console.log('view recipe clicked',recipe);
+    $scope.userObject.currentRecipe = recipe;
+    UserService.redirect('/recipe');
   }
 
-  $scope.delete = function(recipe) {
-    console.log('delete recipe clicked',recipe);
-    RecipeDataService.deleteRecipe(recipe);
-  }
-
+  // modal window that confirms recipe deletion
   $scope.showConfirm = function(ev,recipe) {
-    // Appending dialog to document.body to cover sidenav in docs app
     var confirm = $mdDialog.confirm()
           .title('Would you like to delete this recipe?')
           .textContent('')
@@ -240,17 +255,12 @@ myApp.controller('UserController', ['$scope', '$http', '$location', '$mdDialog',
           .targetEvent(ev)
           .ok('Delete')
           .cancel('Cancel');
-
     $mdDialog.show(confirm).then(function() {
       RecipeDataService.deleteRecipe(recipe);
       }, function() {
       console.log('Deletion cancelled');
     });
-
-};
-
-
-
+  };
 
 }]);
 
@@ -303,8 +313,14 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
 
   var userObject = {};
 
+  var redirect = function(page){
+    console.log('nav clicked', page);
+    $location.url(page);
+  }
+
   return {
     userObject : userObject,
+    redirect: redirect,
 
     getuser : function(){
       $http.get('/user').then(function(response) {

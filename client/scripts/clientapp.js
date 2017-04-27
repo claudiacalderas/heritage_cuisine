@@ -37,6 +37,15 @@ myApp.config(['$routeProvider', '$locationProvider',
         }]
       }
     })
+    .when('/recipe', {
+      templateUrl: '/views/templates/recipe.html',
+      controller: 'recipeController',
+      resolve: {
+        getuser : ['UserService', function(UserService){
+          return UserService.getuser();
+        }]
+      }
+    })
     .when('/grouplist', {
       templateUrl: '/views/templates/groupList.html',
       controller: 'groupListController',

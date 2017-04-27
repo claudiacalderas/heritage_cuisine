@@ -2,6 +2,7 @@ myApp.controller('addRecipeController', ['$scope', '$location','UserService', 'R
                                         function($scope, $location, UserService, RecipeDataService) {
   $scope.userObject = UserService.userObject;
   $scope.logout = UserService.logout;
+  $scope.redirect = UserService.redirect;
   $scope.title = '';
   $scope.ingredientsArray = [];
   $scope.stepsArray = [];
@@ -72,9 +73,9 @@ myApp.controller('addRecipeController', ['$scope', '$location','UserService', 'R
     $scope.categoryOptions = [];
   } // end of addRecipe function
 
-  $scope.redirect = function(page){
-    console.log('nav clicked', page);
-    $location.url(page);
-  }
+  // $scope.redirect = function(page){
+  //   console.log('nav clicked', page);
+  //   $location.url(page);
+  // }
 
 }]);

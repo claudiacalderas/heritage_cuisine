@@ -3,8 +3,14 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
 
   var userObject = {};
 
+  var redirect = function(page){
+    console.log('nav clicked', page);
+    $location.url(page);
+  }
+
   return {
     userObject : userObject,
+    redirect: redirect,
 
     getuser : function(){
       $http.get('/user').then(function(response) {

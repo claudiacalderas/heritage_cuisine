@@ -1,0 +1,45 @@
+<div ng-include="'views/partials/nav.html'"></div>
+
+<div layout="row">
+  <div layout-md="column" flex="10"></div>
+  <div layout="column" flex="80">
+
+      <!-- RECIPE NAME -->
+      <h1>{{userObject.currentRecipe.title}} </h1>
+
+      <!-- INGREDIENTS LIST -->
+      <span>INGREDIENTS </span>
+
+      <md-list>
+        <md-list-item class="md-2-line" ng-repeat="ingredient in recipe.ingredients">
+          <div class="md-list-item-text">
+            <p>{{ingredient}}</p>
+          </div>
+        </md-list-item>
+      </md-list>
+
+      <!-- PREPARATION STEPS -->
+      <span>PREPARATION </span>
+
+      <md-list>
+        <md-list-item class="md-2-line" ng-repeat="step in recipe.steps">
+          <div class="md-list-item-text">
+            <p>{{step}}</p>
+          </div>
+        </md-list-item>
+      </md-list>
+
+      <!-- CATEGORIES -->
+
+      <span>CATEGORIES </span>
+      <!-- <md-chips ng-model="categoryOptions" readonly="ctrl.readonly" md-removable="ctrl.removable"></md-chips> -->
+
+      <!-- SUBMIT AND CANCEL BUTTONS -->
+      <!-- <md-input-container layout="column">
+        <div>
+          <md-button class="md-raised" aria-label="Cancel" value="Cancel" ng-click="redirect('/user')">Cancel</md-button>
+          <md-button class="md-raised" type="submit" name="submit" aria-label="Add Recipe" value="Add Recipe">Add Recipe</md-button>
+        </div>
+      </md-input-container> -->
+  </div>
+</div>
