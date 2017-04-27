@@ -6,9 +6,11 @@ myApp.factory('RecipeDataService', ['$http', '$location', function($http, $locat
     allRecipes: []
   };
 
-  getRecipes = function(){
-    console.log('in getRecipes');
-    $http.get('/recipe').then(function(response) {
+  getRecipes = function(user){
+    var username = angular.copy(user);
+    console.log('in getRecipes with user', username);
+
+    $http.get('/recipe/' + username).then(function(response) {
       console.log('Back from the server with:', response);
       recipesObject.allRecipes = response.data;
       console.log('Updated recipesObject:', recipesObject.allRecipes);
@@ -23,10 +25,19 @@ myApp.factory('RecipeDataService', ['$http', '$location', function($http, $locat
     });
   };
 
+  deleteRecipe = function(recipe) {
+    console.log('Deleting recipe: ',recipe);
+    var username = recipe.username;
+    $http.delete('/recipe/delete/' + recipe._id).then(function(response) {
+      getRecipes(username);
+    });
+  }
+
   return {
     recipesObject : recipesObject,
     getRecipes : getRecipes,
-    postRecipe : postRecipe
+    postRecipe : postRecipe,
+    deleteRecipe : deleteRecipe
   };
 
 }]);

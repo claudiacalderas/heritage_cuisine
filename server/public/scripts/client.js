@@ -165,6 +165,7 @@ myApp.controller('LoginController', ['$scope', '$http', '$location', 'UserServic
         console.log('sending to server...', $scope.user);
         $http.post('/', $scope.user).then(function(response) {
           if(response.data.username) {
+            UserService.userObject.userName = response.data.username;
             console.log('success: ', response.data);
             // location works with SPA (ng-route)
             $location.path('/user');
@@ -208,17 +209,47 @@ myApp.controller('navBarController', ['$scope', '$location','UserService', funct
 
 }]);
 
-myApp.controller('UserController', ['$scope', '$http', '$location', 'UserService', 'RecipeDataService',
-                                    function($scope, $http, $location, UserService, RecipeDataService) {
+myApp.controller('UserController', ['$scope', '$http', '$location', '$mdDialog', 'UserService', 'RecipeDataService',
+                                    function($scope, $http, $location, $mdDialog, UserService, RecipeDataService) {
   $scope.userObject = UserService.userObject;
   $scope.logout = UserService.logout;
   $scope.recipesObject = RecipeDataService.recipesObject;
 
-  RecipeDataService.getRecipes();
+  // console.log('in usercontroller',$scope.userObject);
+  // var myNameHere = $scope.userObject;
+  // console.log(myNameHere.userName);
+  console.log('STEP 2: retrieve username');
+  console.log($scope.userObject);
+  RecipeDataService.getRecipes($scope.userObject.userName);
 
-  $scope.viewRecipe = function() {
-    console.log('view recipe clicked');
+  $scope.viewRecipe = function(recipe) {
+    console.log('view recipe clicked',recipe);
   }
+
+  $scope.delete = function(recipe) {
+    console.log('delete recipe clicked',recipe);
+    RecipeDataService.deleteRecipe(recipe);
+  }
+
+  $scope.showConfirm = function(ev,recipe) {
+    // Appending dialog to document.body to cover sidenav in docs app
+    var confirm = $mdDialog.confirm()
+          .title('Would you like to delete this recipe?')
+          .textContent('')
+          .ariaLabel('Delete recipe')
+          .targetEvent(ev)
+          .ok('Delete')
+          .cancel('Cancel');
+
+    $mdDialog.show(confirm).then(function() {
+      RecipeDataService.deleteRecipe(recipe);
+      }, function() {
+      console.log('Deletion cancelled');
+    });
+
+};
+
+
 
 
 }]);
@@ -231,9 +262,11 @@ myApp.factory('RecipeDataService', ['$http', '$location', function($http, $locat
     allRecipes: []
   };
 
-  getRecipes = function(){
-    console.log('in getRecipes');
-    $http.get('/recipe').then(function(response) {
+  getRecipes = function(user){
+    var username = angular.copy(user);
+    console.log('in getRecipes with user', username);
+
+    $http.get('/recipe/' + username).then(function(response) {
       console.log('Back from the server with:', response);
       recipesObject.allRecipes = response.data;
       console.log('Updated recipesObject:', recipesObject.allRecipes);
@@ -248,10 +281,19 @@ myApp.factory('RecipeDataService', ['$http', '$location', function($http, $locat
     });
   };
 
+  deleteRecipe = function(recipe) {
+    console.log('Deleting recipe: ',recipe);
+    var username = recipe.username;
+    $http.delete('/recipe/delete/' + recipe._id).then(function(response) {
+      getRecipes(username);
+    });
+  }
+
   return {
     recipesObject : recipesObject,
     getRecipes : getRecipes,
-    postRecipe : postRecipe
+    postRecipe : postRecipe,
+    deleteRecipe : deleteRecipe
   };
 
 }]);
@@ -266,6 +308,7 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
 
     getuser : function(){
       $http.get('/user').then(function(response) {
+        console.log('STEP 1: assign username');
           if(response.data.username) {
               // user has a curret session on the server
               userObject.userName = response.data.username;

@@ -15,9 +15,11 @@ var FamilyRecipeSchema = mongoose.Schema({
 var Recipe = mongoose.model('recipe', FamilyRecipeSchema, 'recipes');
 
 // gets all recipes from the database
-router.get('/', function(req,res){
+router.get('/:user', function(req,res){
   console.log("/recipe get route hit");
-  Recipe.find({},function(err,allRecipes) {
+  var searchUsername = req.params.user;
+  console.log('username is: ', searchUsername);
+  Recipe.find({username: searchUsername},function(err,allRecipes) {
     if(err) {
       console.log('Mongo error: ',err);
     }
@@ -45,6 +47,19 @@ router.post('/add', function(req,res) {
   }
   res.send(savedRecipe);
   });
+});
+
+// deletes a recipe from the database
+router.delete('/delete/:id', function(req,res) {
+  console.log("/delete route hit");
+  var id = req.params.id;
+  Recipe.findByIdAndRemove(id, function(err, deletedRecipe){
+    if(err){
+      console.log('Delete error', err);
+      res.sendStatus(500);
+    }
+      res.send(deletedRecipe);
+    });
 });
 
 

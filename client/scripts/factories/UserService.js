@@ -8,6 +8,7 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
 
     getuser : function(){
       $http.get('/user').then(function(response) {
+        console.log('STEP 1: assign username');
           if(response.data.username) {
               // user has a curret session on the server
               userObject.userName = response.data.username;

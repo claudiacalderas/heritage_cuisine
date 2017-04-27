@@ -5,16 +5,16 @@
        <img ng-src="{{recipe.image_url}}" class="md-card-image" alt="">
        <md-card-title>
          <md-card-title-text>
-           <span class="md-headline" ng-click="viewRecipe()">{{recipe.title}}</span>
+           <span class="md-headline" ng-click="viewRecipe(recipe)">{{recipe.title}}</span>
          </md-card-title-text>
        </md-card-title>
        <md-card-actions layout="row" layout-align="start center">
          <md-card-icon-actions>
-           <md-button class="md-icon-button material-icons" aria-label="Favorite">favorite</md-button>
-           <md-button class="md-icon-button material-icons" aria-label="Share">share-arrow</md-button>
+           <md-button class="md-icon-button material-icons md-18" aria-label="Favorite">favorite</md-button>
+           <md-button class="md-icon-button material-icons md-18" aria-label="Share">share-arrow</md-button>
          </md-card-icon-actions>
-         <md-button>Delete</md-button>
-         <md-button>View</md-button>
+         <md-button aria-label="Delete" ng-click="showConfirm($event,recipe)">Delete</md-button>
+         <md-button aria-label="View" ng-click="viewRecipe(recipe)">View</md-button>
        </md-card-actions>
        <!-- <md-card-content>
        </md-card-content> -->
