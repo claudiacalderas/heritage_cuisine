@@ -41,10 +41,10 @@ a {
   font-weight: 300;
 }
 
-.isFavorite {
-  color: brown;
-}
-
 .notFavorite {
   color: lightgray;
+}
+
+.notFavorite.isFavorite {
+  color: brown;
 }

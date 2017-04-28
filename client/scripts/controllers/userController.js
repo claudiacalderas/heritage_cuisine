@@ -13,7 +13,7 @@ myApp.controller('UserController', ['$scope', '$http', '$location', '$mdDialog',
     console.log('view recipe clicked',recipe);
     $scope.userObject.currentRecipe = recipe;
     UserService.redirect('/recipe');
-  }
+  };
 
   // modal window that confirms recipe deletion
   $scope.showConfirm = function(ev,recipe) {
@@ -31,8 +31,24 @@ myApp.controller('UserController', ['$scope', '$http', '$location', '$mdDialog',
     });
   };
 
-  $scope.toggleFavorite() {
+  $scope.toggleFavorite = function(recipe) {
+    console.log('toggleFavorite clicked',recipe);
 
-  }
+    this.myVar = 'isFavorite';
+    currentElement = this;
+    console.log('currentElement', currentElement);
+    //
+    // console.log('myVar:',currentElement.myVar);
+    // if (currentElement.myVar='isFavorite'){
+    //   currentElement.myVar='';
+    //   console.log('myVar (if):',currentElement.myVar);
+    //
+    // } else {
+    //   currentElement.myVar='isFavorite';
+    //   console.log('myVar: (else)',currentElement.myVar);
+    //
+    // };
+
+  };
 
 }]);

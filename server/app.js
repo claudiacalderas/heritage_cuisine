@@ -12,6 +12,8 @@ var index = require('./routes/index');
 var user = require('./routes/user');
 var register = require('./routes/register');
 var recipe = require('./routes/recipe');
+var group = require('./routes/group');
+
 
 // Body parser middleware
 app.use(bodyParser.json());
@@ -37,6 +39,7 @@ app.use(passport.session());
 app.use('/register', register);
 app.use('/user', user);
 app.use('/recipe', recipe);
+app.use('/group', group);
 app.use('/', index);
 
 
