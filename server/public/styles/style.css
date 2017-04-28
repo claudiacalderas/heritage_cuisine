@@ -12,6 +12,11 @@
   font-size: 12px;
 }
 
+.groupBox {
+  width: 600px;
+  font-size: 12px;
+}
+
 span:focus {
     outline: none;
     border: 0;

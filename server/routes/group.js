@@ -3,10 +3,9 @@ var router = express.Router();
 var mongoose = require('mongoose');
 
 var GroupSchema = mongoose.Schema({
-  group_id : String,
   group_name : String,
-  username : String,
-  is_admin : Boolean,
+  user_admin : String,
+  users : [],
 });
 
 var Group = mongoose.model('group', GroupSchema, 'groups');
@@ -16,7 +15,7 @@ router.get('/:user', function(req, res){
   console.log("/group get route hit");
   var searchUsername = req.params.user;
   console.log('username is: ', searchUsername);
-  Group.find({username: searchUsername},function(err, allGroups) {
+  Group.find({users: {$in: [searchUsername]}},function(err, allGroups) {
     if(err) {
       console.log('Mongo error: ', err);
     }
@@ -28,13 +27,9 @@ router.get('/:user', function(req, res){
 router.post('/add', function(req, res) {
   console.log("/add group post route hit");
   var group = new Group();
-
-  // call a function that will generate a group_id if new group
-  group.group_id = '';
   group.group_name = req.body.group_name;
-  group.username = req.body.username;
-  group.is_admin = req.body.is_admin;
-
+  group.user_admin = req.body.user_admin;
+  group.users = req.body.users;
   group.save(function(err, savedGroup){
   if(err){
     console.log("Mongo error:", err);

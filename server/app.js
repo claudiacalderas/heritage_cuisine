@@ -42,7 +42,6 @@ app.use('/recipe', recipe);
 app.use('/group', group);
 app.use('/', index);
 
-
 // Mongo Connection //
 var mongoURI = '';
 // process.env.MONGODB_URI will only be defined if you

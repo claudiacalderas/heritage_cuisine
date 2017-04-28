@@ -27,7 +27,6 @@ router.get('/:user', function(req,res){
   });
 });
 
-
 // saves a recipe into the database
 router.post('/add', function(req,res) {
   console.log("/add post route hit");
@@ -39,7 +38,6 @@ router.post('/add', function(req,res) {
   recipe.steps = req.body.steps;
   recipe.image_url = '';
   recipe.username = req.body.username;
-
   recipe.save(function(err, savedRecipe){
   if(err){
     console.log("Mongo error:", err);
@@ -53,28 +51,22 @@ router.post('/add', function(req,res) {
 router.put("/update", function(req,res){
   var recipe = req.body;
   Recipe.findById(recipe._id, function(err, foundRecipe){
+    if(err){
+      console.log(err);
+      res.sendStatus(500);
+    }
+    foundRecipe.title = req.body.title;
+    foundRecipe.categories = req.body.categories;
+    foundRecipe.ingredients = req.body.ingredients;
+    foundRecipe.steps = req.body.steps;
+    foundRecipe.image_url = req.body.image_url;
+    foundRecipe.save(function(err, savedRecipe){
       if(err){
         console.log(err);
         res.sendStatus(500);
       }
-
-      console.log('Inside put route foundRecipe is', foundRecipe);
-      console.log('req.body is', req.body);
-
-      foundRecipe.title = req.body.title;
-      foundRecipe.categories = req.body.categories;
-      foundRecipe.ingredients = req.body.ingredients;
-      foundRecipe.steps = req.body.steps;
-      foundRecipe.image_url = req.body.image_url;
-
-      foundRecipe.save(function(err, savedRecipe){
-        if(err){
-          console.log(err);
-          res.sendStatus(500);
-        }
-
-        res.send(savedRecipe);
-      });
+      res.send(savedRecipe);
+    });
   });
 });
 

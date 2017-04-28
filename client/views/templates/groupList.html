@@ -1,4 +1,21 @@
 <div ng-include="'views/partials/nav.html'"></div>
-<p>My Groups</p>
 
 <md-button class="md-raised" aria-label="New Group" value="New Group" ng-click="showPrompt()">Add New Group</md-button>
+
+<div layout="row">
+  <div class='md-padding' layout="column">
+    <md-card class="groupBox" ng-repeat="group in groupsObject.allGroups" layout="row">
+       <md-card-title>
+         <md-card-title-text >
+           <span class="md-headline cardTitle" ng-click="">{{group.group_name}}</span>
+         </md-card-title-text>
+       </md-card-title>
+       <md-card-actions layout="row">
+         <md-button aria-label="Delete" ng-click="">Delete</md-button>
+         <md-button aria-label="View" ng-click="">View</md-button>
+       </md-card-actions>
+       <!-- <md-card-content>
+       </md-card-content> -->
+     </md-card>
+   </div>
+</div>
