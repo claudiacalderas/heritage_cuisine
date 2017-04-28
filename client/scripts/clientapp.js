@@ -37,6 +37,15 @@ myApp.config(['$routeProvider', '$locationProvider',
         }]
       }
     })
+    .when('/editrecipe', {
+      templateUrl: '/views/templates/editRecipe.html',
+      controller: 'editRecipeController',
+      resolve: {
+        getuser : ['UserService', function(UserService){
+          return UserService.getuser();
+        }]
+      }
+    })
     .when('/recipe', {
       templateUrl: '/views/templates/recipe.html',
       controller: 'recipeController',

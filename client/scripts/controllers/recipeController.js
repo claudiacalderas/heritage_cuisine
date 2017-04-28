@@ -4,9 +4,16 @@ myApp.controller('recipeController', ['$scope', '$location','UserService', 'Reci
   $scope.logout = UserService.logout;
   $scope.recipe = UserService.userObject.currentRecipe;
 
+
   console.log('recipeController loaded');
   console.log('current recipe is:', $scope.recipe);
   console.log('current user is:', UserService.userObject.userName);
 
+
+  $scope.editRecipe = function(recipe) {
+    console.log('edit recipe clicked',recipe);
+    UserService.userObject.currentRecipe = recipe;
+    UserService.redirect('/editrecipe');
+  }
 
 }]);

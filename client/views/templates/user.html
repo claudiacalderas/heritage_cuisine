@@ -4,13 +4,13 @@
     <md-card class="recipeBox" ng-repeat="recipe in recipesObject.allRecipes">
        <img ng-src="{{recipe.image_url}}" class="md-card-image" alt="">
        <md-card-title>
-         <md-card-title-text>
-           <span class="md-headline" ng-click="viewRecipe(recipe)">{{recipe.title}}</span>
+         <md-card-title-text >
+           <span class="md-headline cardTitle" ng-click="viewRecipe(recipe)">{{recipe.title}}</span>
          </md-card-title-text>
        </md-card-title>
        <md-card-actions layout="row" layout-align="start center">
          <md-card-icon-actions>
-           <md-button class="md-icon-button material-icons md-18" aria-label="Favorite">favorite</md-button>
+           <md-button class="md-icon-button material-icons md-18 notFavorite" ng-click="toggleFavorite()" aria-label="Favorite">favorite</md-button>
            <md-button class="md-icon-button material-icons md-18" aria-label="Share">share-arrow</md-button>
          </md-card-icon-actions>
          <md-button aria-label="Delete" ng-click="showConfirm($event,recipe)">Delete</md-button>

@@ -1,4 +1,4 @@
-myApp.controller('addRecipeController', ['$scope', '$location','UserService', 'RecipeDataService',
+myApp.controller('editRecipeController', ['$scope', '$location','UserService', 'RecipeDataService',
                                         function($scope, $location, UserService, RecipeDataService) {
   $scope.userObject = UserService.userObject;
   $scope.logout = UserService.logout;
@@ -15,7 +15,34 @@ myApp.controller('addRecipeController', ['$scope', '$location','UserService', 'R
     image_url: '',
     username: ''
   };
-  $scope.categoryOptions = ['Dessert', 'Appetizer', 'Dinner'];
+  $scope.categoryOptions = [];
+
+  $scope.populate = function() {
+    console.log('in editRecipe populate current recipe is:', UserService.userObject.currentRecipe);
+
+    if (UserService.userObject.currentRecipe != undefined) {
+      console.log('im in');
+      $scope.title = UserService.userObject.currentRecipe.title;
+
+      // formats array of ingredients into view format
+      for (var i = 0; i < UserService.userObject.currentRecipe.ingredients.length; i++) {
+        var ingredient = {};
+        ingredient.id = "I" + (i+1);
+        ingredient.name = UserService.userObject.currentRecipe.ingredients[i];
+        $scope.ingredientsArray.push(ingredient);
+      }
+      // formats array of steps into view format
+      for (var j = 0; j < UserService.userObject.currentRecipe.steps.length; j++) {
+        var step = {};
+        step.id = "I" + (j+1);
+        step.name = UserService.userObject.currentRecipe.steps[j];
+        $scope.stepsArray.push(step);
+      }
+      $scope.categoryOptions = UserService.userObject.currentRecipe.categories;
+    }
+  }
+
+  $scope.populate();
 
   $scope.addNewIngredient = function() {
       var newIngredientNo = $scope.ingredientsArray.length+1;
@@ -43,13 +70,14 @@ myApp.controller('addRecipeController', ['$scope', '$location','UserService', 'R
       $scope.stepsArray.splice(stepIndex,1);
   };
 
-  $scope.addRecipe = function() {
+  $scope.editRecipe = function() {
     // initializes arrays in recipe object
     $scope.recipe.ingredients = [];
     $scope.recipe.steps = [];
     $scope.recipe.title = $scope.title;
     $scope.recipe.categories = $scope.categoryOptions;
     $scope.recipe.username = $scope.userObject.userName;
+    $scope.recipe._id = UserService.userObject.currentRecipe._id;
 
     // formats array of ingredients into db schema format
     for (var i = 0; i < $scope.ingredientsArray.length; i++) {
@@ -63,11 +91,12 @@ myApp.controller('addRecipeController', ['$scope', '$location','UserService', 'R
     // temporary image_url until add photo is implemented
     $scope.recipe.image_url = '';
 
-    console.log('Adding a recipe', $scope.recipe);
-    RecipeDataService.postRecipe($scope.recipe);
+    console.log('Saving recipe', $scope.recipe);
+    RecipeDataService.updateRecipe($scope.recipe);
 
     UserService.redirect('/user');
-    
+
   } // end of addRecipe function
+
 
 }]);

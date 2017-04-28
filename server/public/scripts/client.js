@@ -37,6 +37,15 @@ myApp.config(['$routeProvider', '$locationProvider',
         }]
       }
     })
+    .when('/editrecipe', {
+      templateUrl: '/views/templates/editRecipe.html',
+      controller: 'editRecipeController',
+      resolve: {
+        getuser : ['UserService', function(UserService){
+          return UserService.getuser();
+        }]
+      }
+    })
     .when('/recipe', {
       templateUrl: '/views/templates/recipe.html',
       controller: 'recipeController',
@@ -74,6 +83,7 @@ myApp.controller('addRecipeController', ['$scope', '$location','UserService', 'R
   $scope.userObject = UserService.userObject;
   $scope.logout = UserService.logout;
   $scope.redirect = UserService.redirect;
+  $scope.recipe = UserService.userObject.currentRecipe;
   $scope.title = '';
   $scope.ingredientsArray = [];
   $scope.stepsArray = [];
@@ -86,7 +96,6 @@ myApp.controller('addRecipeController', ['$scope', '$location','UserService', 'R
     username: ''
   };
   $scope.categoryOptions = ['Dessert', 'Appetizer', 'Dinner'];
-
 
   $scope.addNewIngredient = function() {
       var newIngredientNo = $scope.ingredientsArray.length+1;
@@ -137,17 +146,112 @@ myApp.controller('addRecipeController', ['$scope', '$location','UserService', 'R
     console.log('Adding a recipe', $scope.recipe);
     RecipeDataService.postRecipe($scope.recipe);
 
-    // clear input fields
-    $scope.title = ' ';
-    $scope.ingredientsArray = [];
-    $scope.stepsArray = [];
-    $scope.categoryOptions = [];
+    UserService.redirect('/user');
+    
   } // end of addRecipe function
 
-  // $scope.redirect = function(page){
-  //   console.log('nav clicked', page);
-  //   $location.url(page);
-  // }
+}]);
+
+myApp.controller('editRecipeController', ['$scope', '$location','UserService', 'RecipeDataService',
+                                        function($scope, $location, UserService, RecipeDataService) {
+  $scope.userObject = UserService.userObject;
+  $scope.logout = UserService.logout;
+  $scope.redirect = UserService.redirect;
+  $scope.recipe = UserService.userObject.currentRecipe;
+  $scope.title = '';
+  $scope.ingredientsArray = [];
+  $scope.stepsArray = [];
+  $scope.recipe = {
+    title: '',
+    categories : [],
+    ingredients : [],
+    steps : [],
+    image_url: '',
+    username: ''
+  };
+  $scope.categoryOptions = [];
+
+  $scope.populate = function() {
+    console.log('in editRecipe populate current recipe is:', UserService.userObject.currentRecipe);
+
+    if (UserService.userObject.currentRecipe != undefined) {
+      console.log('im in');
+      $scope.title = UserService.userObject.currentRecipe.title;
+
+      // formats array of ingredients into view format
+      for (var i = 0; i < UserService.userObject.currentRecipe.ingredients.length; i++) {
+        var ingredient = {};
+        ingredient.id = "I" + (i+1);
+        ingredient.name = UserService.userObject.currentRecipe.ingredients[i];
+        $scope.ingredientsArray.push(ingredient);
+      }
+      // formats array of steps into view format
+      for (var j = 0; j < UserService.userObject.currentRecipe.steps.length; j++) {
+        var step = {};
+        step.id = "I" + (j+1);
+        step.name = UserService.userObject.currentRecipe.steps[j];
+        $scope.stepsArray.push(step);
+      }
+      $scope.categoryOptions = UserService.userObject.currentRecipe.categories;
+    }
+  }
+
+  $scope.populate();
+
+  $scope.addNewIngredient = function() {
+      var newIngredientNo = $scope.ingredientsArray.length+1;
+      console.log('Adding new ingredient');
+      $scope.ingredientsArray.push({'id':'I' + newIngredientNo});
+      console.log('Ingredients Array is now:', $scope.ingredientsArray);
+  };
+
+  $scope.removeIngredient = function(ingredient) {
+      console.log('Removing ingredient');
+      var ingredientIndex = $scope.ingredientsArray.indexOf(ingredient);
+      $scope.ingredientsArray.splice(ingredientIndex,1);
+  };
+
+  $scope.addNewStep = function() {
+      var newStepNo = $scope.stepsArray.length+1;
+      console.log('Adding new step');
+      $scope.stepsArray.push({'id':'I' + newStepNo});
+      console.log('Steps Array is now:', $scope.stepsArray);
+  };
+
+  $scope.removeStep = function(step) {
+      console.log('Removing step');
+      var stepIndex = $scope.stepsArray.indexOf(step);
+      $scope.stepsArray.splice(stepIndex,1);
+  };
+
+  $scope.editRecipe = function() {
+    // initializes arrays in recipe object
+    $scope.recipe.ingredients = [];
+    $scope.recipe.steps = [];
+    $scope.recipe.title = $scope.title;
+    $scope.recipe.categories = $scope.categoryOptions;
+    $scope.recipe.username = $scope.userObject.userName;
+    $scope.recipe._id = UserService.userObject.currentRecipe._id;
+
+    // formats array of ingredients into db schema format
+    for (var i = 0; i < $scope.ingredientsArray.length; i++) {
+      $scope.recipe.ingredients.push($scope.ingredientsArray[i].name);
+    }
+    // formats array of steps into db schema format
+    for (var j = 0; j < $scope.stepsArray.length; j++) {
+      $scope.recipe.steps.push($scope.stepsArray[j].name);
+    }
+
+    // temporary image_url until add photo is implemented
+    $scope.recipe.image_url = '';
+
+    console.log('Saving recipe', $scope.recipe);
+    RecipeDataService.updateRecipe($scope.recipe);
+
+    UserService.redirect('/user');
+
+  } // end of addRecipe function
+
 
 }]);
 
@@ -222,10 +326,17 @@ myApp.controller('recipeController', ['$scope', '$location','UserService', 'Reci
   $scope.logout = UserService.logout;
   $scope.recipe = UserService.userObject.currentRecipe;
 
+
   console.log('recipeController loaded');
   console.log('current recipe is:', $scope.recipe);
   console.log('current user is:', UserService.userObject.userName);
 
+
+  $scope.editRecipe = function(recipe) {
+    console.log('edit recipe clicked',recipe);
+    UserService.userObject.currentRecipe = recipe;
+    UserService.redirect('/editrecipe');
+  }
 
 }]);
 
@@ -262,6 +373,10 @@ myApp.controller('UserController', ['$scope', '$http', '$location', '$mdDialog',
     });
   };
 
+  $scope.toggleFavorite() {
+
+  }
+
 }]);
 
 myApp.factory('RecipeDataService', ['$http', '$location', function($http, $location){
@@ -285,9 +400,19 @@ myApp.factory('RecipeDataService', ['$http', '$location', function($http, $locat
 
   postRecipe = function(recipe) {
     var recipeToPost = angular.copy(recipe);
+    var username = recipeToPost.username;
     console.log('Posting recipe: ', recipeToPost);
     $http.post('/recipe/add', recipeToPost).then(function(response) {
-      console.log(response);
+      getRecipes(username);
+    });
+  };
+
+  updateRecipe = function(recipe) {
+    var recipeToUpdate = angular.copy(recipe);
+    var username = recipeToUpdate.username;
+    console.log('Updating recipe: ', recipeToUpdate);
+    $http.put('/recipe/update', recipeToUpdate).then(function(response) {
+      getRecipes(username);
     });
   };
 
@@ -303,6 +428,7 @@ myApp.factory('RecipeDataService', ['$http', '$location', function($http, $locat
     recipesObject : recipesObject,
     getRecipes : getRecipes,
     postRecipe : postRecipe,
+    updateRecipe : updateRecipe,
     deleteRecipe : deleteRecipe
   };
 
@@ -314,13 +440,13 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
   var userObject = {};
 
   var redirect = function(page){
-    console.log('nav clicked', page);
+    console.log('inpage navigation', page);
     $location.url(page);
   }
 
   return {
     userObject : userObject,
-    redirect: redirect,
+    redirect : redirect,
 
     getuser : function(){
       $http.get('/user').then(function(response) {

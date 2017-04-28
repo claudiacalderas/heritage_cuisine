@@ -49,6 +49,35 @@ router.post('/add', function(req,res) {
   });
 });
 
+// updates recipe information
+router.put("/update", function(req,res){
+  var recipe = req.body;
+  Recipe.findById(recipe._id, function(err, foundRecipe){
+      if(err){
+        console.log(err);
+        res.sendStatus(500);
+      }
+
+      console.log('Inside put route foundRecipe is', foundRecipe);
+      console.log('req.body is', req.body);
+
+      foundRecipe.title = req.body.title;
+      foundRecipe.categories = req.body.categories;
+      foundRecipe.ingredients = req.body.ingredients;
+      foundRecipe.steps = req.body.steps;
+      foundRecipe.image_url = req.body.image_url;
+
+      foundRecipe.save(function(err, savedRecipe){
+        if(err){
+          console.log(err);
+          res.sendStatus(500);
+        }
+
+        res.send(savedRecipe);
+      });
+  });
+});
+
 // deletes a recipe from the database
 router.delete('/delete/:id', function(req,res) {
   console.log("/delete route hit");

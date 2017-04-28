@@ -35,3 +35,16 @@ span {
 a {
   color: brown;
 }
+
+.cardTitle {
+  font-size: 20px;
+  font-weight: 300;
+}
+
+.isFavorite {
+  color: brown;
+}
+
+.notFavorite {
+  color: lightgray;
+}

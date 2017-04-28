@@ -19,9 +19,19 @@ myApp.factory('RecipeDataService', ['$http', '$location', function($http, $locat
 
   postRecipe = function(recipe) {
     var recipeToPost = angular.copy(recipe);
+    var username = recipeToPost.username;
     console.log('Posting recipe: ', recipeToPost);
     $http.post('/recipe/add', recipeToPost).then(function(response) {
-      console.log(response);
+      getRecipes(username);
+    });
+  };
+
+  updateRecipe = function(recipe) {
+    var recipeToUpdate = angular.copy(recipe);
+    var username = recipeToUpdate.username;
+    console.log('Updating recipe: ', recipeToUpdate);
+    $http.put('/recipe/update', recipeToUpdate).then(function(response) {
+      getRecipes(username);
     });
   };
 
@@ -37,6 +47,7 @@ myApp.factory('RecipeDataService', ['$http', '$location', function($http, $locat
     recipesObject : recipesObject,
     getRecipes : getRecipes,
     postRecipe : postRecipe,
+    updateRecipe : updateRecipe,
     deleteRecipe : deleteRecipe
   };
 

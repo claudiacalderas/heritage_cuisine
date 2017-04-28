@@ -31,4 +31,8 @@ myApp.controller('UserController', ['$scope', '$http', '$location', '$mdDialog',
     });
   };
 
+  $scope.toggleFavorite() {
+
+  }
+
 }]);

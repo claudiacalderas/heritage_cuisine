@@ -3,14 +3,14 @@
 <div layout="row">
   <div layout-md="column" flex="10"></div>
   <div layout="column" flex="50">
-    <form name="addRecipeForm">
+    <form name="editRecipeForm">
 
       <!-- RECIPE NAME -->
       <md-input-container layout="column">
         <div>
           <label for="title">Recipe name:</label>
           <input type="text" ng-model="title" required/>
-          <div ng-messages="addRecipeForm.title.$error">
+          <div ng-messages="editRecipeForm.title.$error">
             <div ng-message="required">A recipe name is required!</div>
           </div>
         </div>
@@ -53,7 +53,7 @@
       <md-input-container layout="column">
         <div>
           <md-button class="md-raised" aria-label="Cancel" value="Cancel" ng-click="redirect('/user')">Cancel</md-button>
-          <md-button class="md-raised" aria-label="Add Recipe" value="Add Recipe" ng-click="addRecipe(recipe)">Add Recipe</md-button>
+          <md-button class="md-raised" aria-label="Edit Recipe" value="Edit Recipe" ng-click="editRecipe(recipe)">Save Recipe</md-button>
         </div>
       </md-input-container>
     </form>
