@@ -1,6 +1,14 @@
 <div ng-include="'views/partials/nav.html'"></div>
 
-<md-button class="md-raised" aria-label="New Group" value="New Group" ng-click="showPrompt()">Add New Group</md-button>
+<!-- MENU OPTION FOR THIS VIEW IS ADD NEW GROUP -->
+<div>
+  <md-menu-bar>
+    <md-content>
+      <button class="md-raised" aria-label="New Group" value="New Group" ng-click="showPrompt()">Add New Group</button>
+    </md-content>
+  </md-menu-bar>
+</div>
+
 
 <div layout="row">
   <div class='md-padding' layout="column">

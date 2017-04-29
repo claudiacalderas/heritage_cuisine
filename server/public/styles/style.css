@@ -3,10 +3,6 @@
   font-weight: lighter;
 }
 
-.addNewBtn {
-  /*float: left;*/
-}
-
 .recipeBox {
   width: 300px;
   font-size: 12px;
@@ -18,14 +14,19 @@
 }
 
 span:focus {
-    outline: none;
-    border: 0;
+  outline: none;
+  border: 0;
  }
 
- h1 {
-   font-weight: 300;
-   font-size: 25px;
- }
+button:focus {
+  outline: none;
+  border: 0;
+}
+
+h1 {
+  font-weight: 300;
+  font-size: 25px;
+}
 
 h2 {
   font-weight: 300;

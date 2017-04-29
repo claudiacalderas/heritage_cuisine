@@ -1,59 +1,60 @@
 <div ng-include="'views/partials/nav.html'"></div>
 
+<!-- MENU OPTION FOR THIS VIEW IS ADD USERS TO GROUP -->
+<div>
+  <md-menu-bar>
+    <md-content>
+      <button class="md-raised" aria-label="Add Users" value="Add Users" ng-click="makeAddUsersVisible()">Add Users</button>
+    </md-content>
+  </md-menu-bar>
+</div>
+
 <div layout="row">
   <div layout-md="column" flex="10"></div>
   <div layout="column" flex="80">
-
-    <md-button class="md-raised" aria-label="Add Users" value="Add Users" ng-click="makeAddUsersVisible()">Add Users</md-button>
-
-
-      <!-- GROUP NAME -->
-      <h1>{{group.group_name}} </h1>
-
-      <div layout="row" flex="80">
-
-
+    <div layout="row">
       <md-content class="searchAutocomplete" ng-show="visible" layout-padding layout="column">
-          <form ng-submit="$event.preventDefault()">
-            <md-autocomplete
-                ng-disabled="false"
-                md-no-cache="noCache"
-                md-selected-item="selectedItem"
-                md-search-text-change="searchTextChange(searchText)"
-                md-search-text="searchText"
-                md-selected-item-change="selectedItemChange(item)"
-                md-items="item in userSearch(searchText)"
-                md-item-text="item.name"
-                md-min-length="0"
-                placeholder="Select a user"
-                md-menu-class="autocomplete-custom-template">
-              <md-item-template>
-                <span class="item-title">
-                  <span><strong>{{item.username}}</strong></span>
-                </span>
-                <span>
-                  <span>{{item.name}}  </span>
-                  <span>{{item.email}}</span>
-                </span>
-              </md-item-template>
-            </md-autocomplete>
-          </form>
-        </md-content>
+        <form ng-submit="$event.preventDefault()">
+          <md-autocomplete
+              ng-disabled="false"
+              md-no-cache="noCache"
+              md-selected-item="selectedItem"
+              md-search-text-change="searchTextChange(searchText)"
+              md-search-text="searchText"
+              md-selected-item-change="selectedItemChange(item)"
+              md-items="item in userSearch(searchText)"
+              md-item-text="item.name"
+              md-min-length="0"
+              placeholder="Select a user"
+              md-menu-class="autocomplete-custom-template">
+            <md-item-template>
+              <span class="item-title">
+                <span><strong>{{item.username}}</strong></span>
+              </span>
+              <span>
+                <span>{{item.name}}  </span>
+                <span>{{item.email}}</span>
+              </span>
+            </md-item-template>
+          </md-autocomplete>
+        </form>
+      </md-content>
+      <md-button class="md-icon" ng-show="addVisible" aria-label="Add" value="Add" ng-click="">+</md-button>
+    </div>
 
-        <md-button class="md-icon" ng-show="addVisible" aria-label="Add" value="Add" ng-click="">+</md-button>
+  <!-- GROUP NAME -->
+  <h1>{{group.group_name}} </h1>
+
+  <!-- USERS LIST -->
+  <span>USERS </span>
+
+  <!-- LIST OF USERS IN THE GROUP -->
+  <md-list>
+    <md-list-item class="md-2-line" ng-repeat="user in group.users">
+      <div class="md-list-item-text">
+        <p>{{user}}</p>
       </div>
-
-
-      <!-- USERS LIST -->
-      <span>USERS </span>
-
-      <md-list>
-        <md-list-item class="md-2-line" ng-repeat="user in group.users">
-          <div class="md-list-item-text">
-            <p>{{user}}</p>
-          </div>
-        </md-list-item>
-      </md-list>
-
+    </md-list-item>
+  </md-list>
   </div>
 </div>

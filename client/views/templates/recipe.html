@@ -1,16 +1,21 @@
 <div ng-include="'views/partials/nav.html'"></div>
 
+<!-- MENU OPTION FOR THIS VIEW IS EDIT RECIPE -->
+<div>
+  <md-menu-bar>
+    <md-content>
+      <button class="md-raised" aria-label="Edit Recipe" value="Edit Recipe" ng-click="editRecipe(recipe)">Edit Recipe</button>
+    </md-content>
+  </md-menu-bar>
+</div>
+
 <div layout="row">
   <div layout-md="column" flex="10"></div>
   <div layout="column" flex="80">
 
       <!-- RECIPE NAME -->
       <h1>{{recipe.title}} </h1>
-      <md-input-container layout="row">
-        <md-button class="md-raised" aria-label="Edit Recipe" value="Edit Recipe" ng-click="editRecipe(recipe)">Edit Recipe</md-button>
-      </md-input-container>
-
-
+      
       <!-- INGREDIENTS LIST -->
       <span>INGREDIENTS </span>
 
