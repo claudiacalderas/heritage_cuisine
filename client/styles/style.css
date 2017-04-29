@@ -1,31 +1,7 @@
-.navBar {
-  background-color: whitesmoke;
-  font-weight: lighter;
+h1 {
+  font-weight: 300;
+  font-size: 25px;
 }
-
-.addNewBtn {
-  /*float: left;*/
-}
-
-.recipeBox {
-  width: 300px;
-  font-size: 12px;
-}
-
-.groupBox {
-  width: 600px;
-  font-size: 12px;
-}
-
-span:focus {
-    outline: none;
-    border: 0;
- }
-
- h1 {
-   font-weight: 300;
-   font-size: 25px;
- }
 
 h2 {
   font-weight: 300;
@@ -38,7 +14,58 @@ span {
 }
 
 a {
-  color: brown;
+  color: olive;
+}
+
+span:focus {
+    outline: none;
+    border: 0;
+}
+
+button:focus {
+    outline: none;
+    border: 0;
+ }
+
+.mainImage {
+  height: 220px;
+  display:flex;
+  justify-content:center;
+  align-items:flex-end;
+}
+
+.imgMain {
+  width: auto;
+  max-width: 220px;
+  height: auto;
+  max-height: 170px;
+}
+
+.imgNav {
+  width: auto;
+  max-width: 75px;
+  height: auto;
+  max-height: 57px;
+}
+
+.navBar {
+  background-color: whitesmoke;
+  font-weight: lighter;
+}
+
+.navTitle {
+  padding-left: 10px;
+  font-weight: bold;
+}
+
+.recipeBox {
+  width: 300px;
+  font-size: 12px;
+}
+
+.groupBox {
+  width: 600px;
+  font-size: 12px;
 }
 
 .cardTitle {

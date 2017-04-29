@@ -2,7 +2,8 @@ var myApp = angular.module('myApp', ['ngRoute','ngMaterial']);
 
 // Angular Material Theme Configuration
 myApp.config(['$mdThemingProvider', function($mdThemingProvider) {
-   $mdThemingProvider.theme('altTheme').primaryPalette('grey');
+   $mdThemingProvider.theme('altTheme').primaryPalette('grey').accentPalette('green');
+  // $mdThemingProvider.disableTheming();
  }]);
 
 /// Routes ///
