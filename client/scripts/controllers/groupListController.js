@@ -5,7 +5,15 @@ myApp.controller('groupListController', ['$scope', '$mdDialog', 'UserService', '
   $scope.redirect = UserService.redirect;
 
   // calls factory function to get groups for current user
+  console.log('user in grouplist scope: ', $scope.userObject.userName);
   GroupDataService.getGroups($scope.userObject.userName);
+
+  $scope.viewGroup = function(group) {
+    console.log('view group clicked',group);
+    UserService.userObject.currentGroup = group;
+    // GroupDataService.getUsers($scope.userObject.userName);
+    UserService.redirect('/updategroup');
+  };
 
   // modal window that prompts for the new group name
   $scope.showPrompt = function(ev) {

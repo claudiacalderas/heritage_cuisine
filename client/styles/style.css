@@ -53,3 +53,7 @@ a {
 .notFavorite.isFavorite {
   color: brown;
 }
+
+.searchAutocomplete {
+  width: 500px;
+}

@@ -11,7 +11,7 @@ myApp.controller('UserController', ['$scope', '$http', '$location', '$mdDialog',
 
   $scope.viewRecipe = function(recipe) {
     console.log('view recipe clicked',recipe);
-    $scope.userObject.currentRecipe = recipe;
+    UserService.userObject.currentRecipe = recipe;
     UserService.redirect('/recipe');
   };
 

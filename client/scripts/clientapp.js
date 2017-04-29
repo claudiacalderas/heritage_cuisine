@@ -64,6 +64,15 @@ myApp.config(['$routeProvider', '$locationProvider',
         }]
       }
     })
+    .when('/updategroup', {
+      templateUrl: '/views/templates/updateGroup.html',
+      controller: 'updateGroupController',
+      resolve: {
+        getuser : ['UserService', function(UserService){
+          return UserService.getuser();
+        }]
+      }
+    })
     .when('/info', {
       templateUrl: '/views/templates/info.html',
       controller: 'InfoController',

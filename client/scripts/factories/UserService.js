@@ -2,7 +2,7 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
   console.log('User Service Loaded');
 
   var userObject = {};
-
+  
   var redirect = function(page){
     console.log('inpage navigation', page);
     $location.url(page);
@@ -15,14 +15,14 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
     getuser : function(){
       $http.get('/user').then(function(response) {
         console.log('STEP 1: assign username');
-          if(response.data.username) {
-              // user has a curret session on the server
-              userObject.userName = response.data.username;
-              console.log('User Data: ', userObject.userName);
-          } else {
-              // user has no session, bounce them back to the login page
-              $location.path("/home");
-          }
+        if(response.data.username) {
+            // user has a curret session on the server
+            userObject.userName = response.data.username;
+            console.log('User Data: ', userObject.userName);
+        } else {
+            // user has no session, bounce them back to the login page
+            $location.path("/home");
+        }
       });
     },
 

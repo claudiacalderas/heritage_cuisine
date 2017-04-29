@@ -64,6 +64,15 @@ myApp.config(['$routeProvider', '$locationProvider',
         }]
       }
     })
+    .when('/updategroup', {
+      templateUrl: '/views/templates/updateGroup.html',
+      controller: 'updateGroupController',
+      resolve: {
+        getuser : ['UserService', function(UserService){
+          return UserService.getuser();
+        }]
+      }
+    })
     .when('/info', {
       templateUrl: '/views/templates/info.html',
       controller: 'InfoController',
@@ -262,7 +271,15 @@ myApp.controller('groupListController', ['$scope', '$mdDialog', 'UserService', '
   $scope.redirect = UserService.redirect;
 
   // calls factory function to get groups for current user
+  console.log('user in grouplist scope: ', $scope.userObject.userName);
   GroupDataService.getGroups($scope.userObject.userName);
+
+  $scope.viewGroup = function(group) {
+    console.log('view group clicked',group);
+    UserService.userObject.currentGroup = group;
+    // GroupDataService.getUsers($scope.userObject.userName);
+    UserService.redirect('/updategroup');
+  };
 
   // modal window that prompts for the new group name
   $scope.showPrompt = function(ev) {
@@ -364,6 +381,80 @@ myApp.controller('recipeController', ['$scope', '$location','UserService', 'Reci
 
 }]);
 
+myApp.controller('updateGroupController', ['$scope', '$log', '$http', 'UserService', 'GroupDataService', function($scope, $log, $http, UserService, GroupDataService) {
+  $scope.userObject = UserService.userObject;
+  $scope.logout = UserService.logout;
+  $scope.groupsObject = GroupDataService.groupsObject;
+  $scope.redirect = UserService.redirect;
+  $scope.group = UserService.userObject.currentGroup;
+  $scope.visible = false;
+  $scope.addVisible = false;
+  $scope.repos;
+  $scope.simulateQuery = false;
+  $scope.isDisabled = false;
+  $scope.userSearch;
+  $scope.selectedItemChange;
+  $scope.searchTextChange;
+  $scope.arrayOfUsers;
+
+  console.log('updateGroupController loaded');
+  console.log('current group is:', $scope.group);
+  console.log('current user is:', UserService.userObject.userName);
+
+  // loads autocomplete element to search for users
+  $scope.makeAddUsersVisible = function() {
+    // directly getting info from the controller to avoid problems getting data due
+    // to asynchronous execution of functions
+    $http.get('/group/users/' + UserService.userObject.userName).then(function(response) {
+      console.log('Back from the server with:', response);
+      $scope.arrayOfUsers = response.data;
+      $scope.repos = loadAll();
+      $scope.simulateQuery = false;
+      $scope.isDisabled    = false;
+      $scope.userSearch = userSearch;
+      $scope.selectedItemChange = selectedItemChange;
+      $scope.searchTextChange = searchTextChange;
+      $scope.visible = true;
+    });
+  }
+
+  // function used by autocomplete element to serch within users
+  function userSearch (query) {
+    var results = query ? $scope.repos.filter( createFilterFor(query) ) : $scope.repos, deferred;
+    return results;
+  }
+
+  // logs user data entry
+  function searchTextChange(text) {
+    $scope.addVisible = false;
+    $log.info('Text changed to ' + text);
+  }
+
+  function selectedItemChange(item) {
+    $log.info('Item changed to ' + JSON.stringify(item));
+    $scope.addVisible = true;
+  }
+
+  // load results of query in autocomplete element
+  function loadAll() {
+    var repos = $scope.arrayOfUsers;
+    console.log('in loadAll allUsers',$scope.arrayOfUsers);
+    console.log('in loadAll repos',repos);
+    return repos.map( function (repo) {
+      repo.value = repo.name.toLowerCase();
+      return repo;
+    });
+  }
+
+  // Create filter function for a query string
+  function createFilterFor(query) {
+    var lowercaseQuery = angular.lowercase(query);
+    return function filterFn(item) {
+      return (item.value.indexOf(lowercaseQuery) === 0);
+    };
+  }
+}]);
+
 myApp.controller('UserController', ['$scope', '$http', '$location', '$mdDialog', 'UserService', 'RecipeDataService',
                                     function($scope, $http, $location, $mdDialog, UserService, RecipeDataService) {
   $scope.userObject = UserService.userObject;
@@ -377,7 +468,7 @@ myApp.controller('UserController', ['$scope', '$http', '$location', '$mdDialog',
 
   $scope.viewRecipe = function(recipe) {
     console.log('view recipe clicked',recipe);
-    $scope.userObject.currentRecipe = recipe;
+    UserService.userObject.currentRecipe = recipe;
     UserService.redirect('/recipe');
   };
 
@@ -538,7 +629,7 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
   console.log('User Service Loaded');
 
   var userObject = {};
-
+  
   var redirect = function(page){
     console.log('inpage navigation', page);
     $location.url(page);
@@ -551,14 +642,14 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
     getuser : function(){
       $http.get('/user').then(function(response) {
         console.log('STEP 1: assign username');
-          if(response.data.username) {
-              // user has a curret session on the server
-              userObject.userName = response.data.username;
-              console.log('User Data: ', userObject.userName);
-          } else {
-              // user has no session, bounce them back to the login page
-              $location.path("/home");
-          }
+        if(response.data.username) {
+            // user has a curret session on the server
+            userObject.userName = response.data.username;
+            console.log('User Data: ', userObject.userName);
+        } else {
+            // user has no session, bounce them back to the login page
+            $location.path("/home");
+        }
       });
     },
 

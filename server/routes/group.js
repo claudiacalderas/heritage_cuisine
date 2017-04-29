@@ -8,7 +8,15 @@ var GroupSchema = mongoose.Schema({
   users : [],
 });
 
+var AllUserSchema = mongoose.Schema({
+  username : String,
+  name : String,
+  email : String
+});
+
 var Group = mongoose.model('group', GroupSchema, 'groups');
+var AllUsers = mongoose.model('allUsers', AllUserSchema, 'users');
+
 
 // gets all groups from the database for a specific user
 router.get('/:user', function(req, res){
@@ -20,6 +28,19 @@ router.get('/:user', function(req, res){
       console.log('Mongo error: ', err);
     }
     res.send(allGroups);
+  });
+});
+
+// gets all users from the database except the parameter user
+router.get('/users/:user', function(req, res){
+  console.log("/group/users get route hit");
+  var searchUsername = req.params.user;
+  console.log('username is: ', searchUsername);
+  AllUsers.find({username: {$ne: searchUsername}},function(err, allUsers) {
+    if(err) {
+      console.log('Mongo error: ', err);
+    }
+    res.send(allUsers);
   });
 });
 

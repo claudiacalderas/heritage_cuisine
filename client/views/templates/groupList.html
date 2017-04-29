@@ -7,12 +7,14 @@
     <md-card class="groupBox" ng-repeat="group in groupsObject.allGroups" layout="row">
        <md-card-title>
          <md-card-title-text >
-           <span class="md-headline cardTitle" ng-click="">{{group.group_name}}</span>
+           <span class="md-headline cardTitle" ng-click="viewGroup(group)">{{group.group_name}}</span>
+           <span class="md-subhead">Group administered by: {{group.user_admin}}</span>
+
          </md-card-title-text>
        </md-card-title>
        <md-card-actions layout="row">
          <md-button aria-label="Delete" ng-click="">Delete</md-button>
-         <md-button aria-label="View" ng-click="">View</md-button>
+         <md-button aria-label="View" ng-click="viewGroup(group)">View</md-button>
        </md-card-actions>
        <!-- <md-card-content>
        </md-card-content> -->
