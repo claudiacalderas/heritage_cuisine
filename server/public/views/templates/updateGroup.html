@@ -39,7 +39,7 @@
           </md-autocomplete>
         </form>
       </md-content>
-      <md-button class="md-icon" ng-show="addVisible" aria-label="Add" value="Add" ng-click="">+</md-button>
+      <md-button class="md-icon" ng-show="addVisible" aria-label="Add" value="Add" ng-click="addUserToGroup()">+</md-button>
     </div>
 
   <!-- GROUP NAME -->
@@ -49,12 +49,26 @@
   <span>USERS </span>
 
   <!-- LIST OF USERS IN THE GROUP -->
-  <md-list>
+  <!-- <md-list>
     <md-list-item class="md-2-line" ng-repeat="user in group.users">
       <div class="md-list-item-text">
         <p>{{user}}</p>
       </div>
     </md-list-item>
-  </md-list>
+  </md-list> -->
+
+  <md-chips ng-model="group.users" readonly="true" md-removable="true"></md-chips>
+
+  <!-- SUBMIT AND CANCEL BUTTONS -->
+  <md-input-container layout="column">
+    <div>
+      <md-button class="md-raised" aria-label="Cancel" value="Cancel" ng-click="redirect('/grouplist')">Cancel</md-button>
+      <md-button class="md-raised" aria-label="Save Group" value="Save Group" ng-click="update()">Save Group</md-button>
+    </div>
+  </md-input-container>
+
+
+
+
   </div>
 </div>

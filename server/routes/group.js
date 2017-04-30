@@ -17,7 +17,6 @@ var AllUserSchema = mongoose.Schema({
 var Group = mongoose.model('group', GroupSchema, 'groups');
 var AllUsers = mongoose.model('allUsers', AllUserSchema, 'users');
 
-
 // gets all groups from the database for a specific user
 router.get('/:user', function(req, res){
   console.log("/group get route hit");
@@ -57,6 +56,25 @@ router.post('/add', function(req, res) {
     res.sendStatus(500);
   }
   res.send(savedGroup);
+  });
+});
+
+// updates recipe information
+router.put("/update", function(req,res){
+  var group = req.body;
+  Group.findById(group._id, function(err, foundGroup){
+    if(err){
+      console.log(err);
+      res.sendStatus(500);
+    }
+    foundGroup.users = req.body.users;
+    foundGroup.save(function(err, savedGroup){
+      if(err){
+        console.log(err);
+        res.sendStatus(500);
+      }
+      res.send(savedGroup);
+    });
   });
 });
 

@@ -31,15 +31,14 @@ myApp.factory('GroupDataService', ['$http', '$location', function($http, $locati
     });
   };
 
-  // updateRecipe = function(recipe) {
-  //   var recipeToUpdate = angular.copy(recipe);
-  //   var username = recipeToUpdate.username;
-  //   console.log('Updating recipe: ', recipeToUpdate);
-  //   $http.put('/recipe/update', recipeToUpdate).then(function(response) {
-  //     getRecipes(username);
-  //   });
-  // };
-  //
+  updateGroup = function(group) {
+    var groupToUpdate = angular.copy(group);
+    console.log('Updating group:', group);
+    $http.put('/group/update', group).then(function(response) {
+      // get(username);
+    });
+  };
+
   // deleteRecipe = function(recipe) {
   //   console.log('Deleting recipe: ',recipe);
   //   var username = recipe.username;
@@ -51,8 +50,8 @@ myApp.factory('GroupDataService', ['$http', '$location', function($http, $locati
   return {
     groupsObject : groupsObject,
     newGroup : newGroup,
-    getGroups : getGroups
-    // updateRecipe : updateRecipe,
+    getGroups : getGroups,
+    updateGroup : updateGroup
     // deleteRecipe : deleteRecipe
   };
 

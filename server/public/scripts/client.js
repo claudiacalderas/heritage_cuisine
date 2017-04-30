@@ -397,6 +397,7 @@ myApp.controller('updateGroupController', ['$scope', '$log', '$http', 'UserServi
   $scope.selectedItemChange;
   $scope.searchTextChange;
   $scope.arrayOfUsers;
+  $scope.userToAdd;
 
   console.log('updateGroupController loaded');
   console.log('current group is:', $scope.group);
@@ -433,6 +434,7 @@ myApp.controller('updateGroupController', ['$scope', '$log', '$http', 'UserServi
 
   function selectedItemChange(item) {
     $log.info('Item changed to ' + JSON.stringify(item));
+    $scope.userToAdd = item;
     $scope.addVisible = true;
   }
 
@@ -454,6 +456,19 @@ myApp.controller('updateGroupController', ['$scope', '$log', '$http', 'UserServi
       return (item.value.indexOf(lowercaseQuery) === 0);
     };
   }
+
+  $scope.addUserToGroup = function() {
+    console.log('addUserToGroup button clicked user is:', $scope.userToAdd.username);
+    $scope.group.users.push($scope.userToAdd.username);
+  }
+
+  $scope.update = function() {
+    console.log('updateGroup button clicked',$scope.group);
+    // calls factory function to update group in the database
+    GroupDataService.updateGroup($scope.group);
+    UserService.redirect('/grouplist');
+  }
+
 }]);
 
 myApp.controller('UserController', ['$scope', '$http', '$location', '$mdDialog', 'UserService', 'RecipeDataService',
@@ -544,15 +559,14 @@ myApp.factory('GroupDataService', ['$http', '$location', function($http, $locati
     });
   };
 
-  // updateRecipe = function(recipe) {
-  //   var recipeToUpdate = angular.copy(recipe);
-  //   var username = recipeToUpdate.username;
-  //   console.log('Updating recipe: ', recipeToUpdate);
-  //   $http.put('/recipe/update', recipeToUpdate).then(function(response) {
-  //     getRecipes(username);
-  //   });
-  // };
-  //
+  updateGroup = function(group) {
+    var groupToUpdate = angular.copy(group);
+    console.log('Updating group:', group);
+    $http.put('/group/update', group).then(function(response) {
+      // get(username);
+    });
+  };
+
   // deleteRecipe = function(recipe) {
   //   console.log('Deleting recipe: ',recipe);
   //   var username = recipe.username;
@@ -564,8 +578,8 @@ myApp.factory('GroupDataService', ['$http', '$location', function($http, $locati
   return {
     groupsObject : groupsObject,
     newGroup : newGroup,
-    getGroups : getGroups
-    // updateRecipe : updateRecipe,
+    getGroups : getGroups,
+    updateGroup : updateGroup
     // deleteRecipe : deleteRecipe
   };
 
