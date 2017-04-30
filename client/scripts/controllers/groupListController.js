@@ -8,10 +8,9 @@ myApp.controller('groupListController', ['$scope', '$mdDialog', 'UserService', '
   console.log('user in grouplist scope: ', $scope.userObject.userName);
   GroupDataService.getGroups($scope.userObject.userName);
 
+  // changes to view that shows group detailed information
   $scope.viewGroup = function(group) {
-    console.log('view group clicked',group);
     UserService.userObject.currentGroup = group;
-    // GroupDataService.getUsers($scope.userObject.userName);
     UserService.redirect('/updategroup');
   };
 
@@ -34,11 +33,18 @@ myApp.controller('groupListController', ['$scope', '$mdDialog', 'UserService', '
     });
   };
 
-  $scope.leave = function() {
+  // removes user from selected group
+  $scope.leave = function(group) {
     console.log('leave group button clicked');
+    console.log('group is', group);
+    console.log('username is',UserService.userObject.userName);
+    var index = group.users.indexOf(UserService.userObject.userName);
+    group.users.splice(index);
+    console.log('new group is', group);
+    GroupDataService.updateGroup(group,UserService.userObject.userName);
   };
 
-  // modal window that confirms recipe deletion
+  // modal window that confirms group deletion
   $scope.showConfirm = function(ev,group) {
     var confirm = $mdDialog.confirm()
           .title('Would you like to delete this group?')
@@ -53,6 +59,5 @@ myApp.controller('groupListController', ['$scope', '$mdDialog', 'UserService', '
       console.log('Deletion cancelled');
     });
   };
-
 
 }]);

@@ -16,8 +16,8 @@ myApp.factory('GroupDataService', ['$http', '$location', function($http, $locati
     });
   };
 
-  newGroup = function(groupName, user) {
-    var name = angular.copy(groupName);
+  newGroup = function(group, user) {
+    var name = angular.copy(group);
     var username = angular.copy(user);
     var groupToPost = {};
     groupToPost.group_name = name;
@@ -31,11 +31,13 @@ myApp.factory('GroupDataService', ['$http', '$location', function($http, $locati
     });
   };
 
-  updateGroup = function(group) {
+  updateGroup = function(group, user) {
     var groupToUpdate = angular.copy(group);
+    var username = angular.copy(user);
     console.log('Updating group:', group);
     $http.put('/group/update', group).then(function(response) {
       console.log('Group updated succesfully');
+      getGroups(username)
     });
   };
 

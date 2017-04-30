@@ -81,7 +81,7 @@ myApp.controller('updateGroupController', ['$scope', '$log', '$http', 'UserServi
   $scope.update = function() {
     console.log('updateGroup button clicked',$scope.group);
     // calls factory function to update group in the database
-    GroupDataService.updateGroup($scope.group);
+    GroupDataService.updateGroup($scope.group,UserService.userObject.userName);
     UserService.redirect('/grouplist');
   }
 

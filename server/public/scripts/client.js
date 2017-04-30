@@ -275,10 +275,9 @@ myApp.controller('groupListController', ['$scope', '$mdDialog', 'UserService', '
   console.log('user in grouplist scope: ', $scope.userObject.userName);
   GroupDataService.getGroups($scope.userObject.userName);
 
+  // changes to view that shows group detailed information
   $scope.viewGroup = function(group) {
-    console.log('view group clicked',group);
     UserService.userObject.currentGroup = group;
-    // GroupDataService.getUsers($scope.userObject.userName);
     UserService.redirect('/updategroup');
   };
 
@@ -301,11 +300,18 @@ myApp.controller('groupListController', ['$scope', '$mdDialog', 'UserService', '
     });
   };
 
-  $scope.leave = function() {
+  // removes user from selected group
+  $scope.leave = function(group) {
     console.log('leave group button clicked');
+    console.log('group is', group);
+    console.log('username is',UserService.userObject.userName);
+    var index = group.users.indexOf(UserService.userObject.userName);
+    group.users.splice(index);
+    console.log('new group is', group);
+    GroupDataService.updateGroup(group,UserService.userObject.userName);
   };
 
-  // modal window that confirms recipe deletion
+  // modal window that confirms group deletion
   $scope.showConfirm = function(ev,group) {
     var confirm = $mdDialog.confirm()
           .title('Would you like to delete this group?')
@@ -320,7 +326,6 @@ myApp.controller('groupListController', ['$scope', '$mdDialog', 'UserService', '
       console.log('Deletion cancelled');
     });
   };
-
 
 }]);
 
@@ -486,7 +491,7 @@ myApp.controller('updateGroupController', ['$scope', '$log', '$http', 'UserServi
   $scope.update = function() {
     console.log('updateGroup button clicked',$scope.group);
     // calls factory function to update group in the database
-    GroupDataService.updateGroup($scope.group);
+    GroupDataService.updateGroup($scope.group,UserService.userObject.userName);
     UserService.redirect('/grouplist');
   }
 
@@ -565,8 +570,8 @@ myApp.factory('GroupDataService', ['$http', '$location', function($http, $locati
     });
   };
 
-  newGroup = function(groupName, user) {
-    var name = angular.copy(groupName);
+  newGroup = function(group, user) {
+    var name = angular.copy(group);
     var username = angular.copy(user);
     var groupToPost = {};
     groupToPost.group_name = name;
@@ -580,11 +585,13 @@ myApp.factory('GroupDataService', ['$http', '$location', function($http, $locati
     });
   };
 
-  updateGroup = function(group) {
+  updateGroup = function(group, user) {
     var groupToUpdate = angular.copy(group);
+    var username = angular.copy(user);
     console.log('Updating group:', group);
     $http.put('/group/update', group).then(function(response) {
       console.log('Group updated succesfully');
+      getGroups(username)
     });
   };
 
