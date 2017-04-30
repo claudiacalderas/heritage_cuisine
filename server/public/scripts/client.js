@@ -301,6 +301,27 @@ myApp.controller('groupListController', ['$scope', '$mdDialog', 'UserService', '
     });
   };
 
+  $scope.leave = function() {
+    console.log('leave group button clicked');
+  };
+
+  // modal window that confirms recipe deletion
+  $scope.showConfirm = function(ev,group) {
+    var confirm = $mdDialog.confirm()
+          .title('Would you like to delete this group?')
+          .textContent('')
+          .ariaLabel('Delete group')
+          .targetEvent(ev)
+          .ok('Delete')
+          .cancel('Cancel');
+    $mdDialog.show(confirm).then(function() {
+      GroupDataService.deleteGroup(group);
+      }, function() {
+      console.log('Deletion cancelled');
+    });
+  };
+
+
 }]);
 
 myApp.controller('InfoController', ['$scope', '$http', '$location', 'UserService', function($scope, $http, $location, UserService) {
@@ -563,24 +584,24 @@ myApp.factory('GroupDataService', ['$http', '$location', function($http, $locati
     var groupToUpdate = angular.copy(group);
     console.log('Updating group:', group);
     $http.put('/group/update', group).then(function(response) {
-      // get(username);
+      console.log('Group updated succesfully');
     });
   };
 
-  // deleteRecipe = function(recipe) {
-  //   console.log('Deleting recipe: ',recipe);
-  //   var username = recipe.username;
-  //   $http.delete('/recipe/delete/' + recipe._id).then(function(response) {
-  //     getRecipes(username);
-  //   });
-  // }
+  deleteGroup = function(group) {
+    console.log('Deleting group: ',group);
+    var username = group.user_admin;
+    $http.delete('/group/delete/' + group._id).then(function(response) {
+      getGroups(username);
+    });
+  }
 
   return {
     groupsObject : groupsObject,
     newGroup : newGroup,
     getGroups : getGroups,
-    updateGroup : updateGroup
-    // deleteRecipe : deleteRecipe
+    updateGroup : updateGroup,
+    deleteGroup : deleteGroup
   };
 
 }]);

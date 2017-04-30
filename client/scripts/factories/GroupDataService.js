@@ -35,24 +35,24 @@ myApp.factory('GroupDataService', ['$http', '$location', function($http, $locati
     var groupToUpdate = angular.copy(group);
     console.log('Updating group:', group);
     $http.put('/group/update', group).then(function(response) {
-      // get(username);
+      console.log('Group updated succesfully');
     });
   };
 
-  // deleteRecipe = function(recipe) {
-  //   console.log('Deleting recipe: ',recipe);
-  //   var username = recipe.username;
-  //   $http.delete('/recipe/delete/' + recipe._id).then(function(response) {
-  //     getRecipes(username);
-  //   });
-  // }
+  deleteGroup = function(group) {
+    console.log('Deleting group: ',group);
+    var username = group.user_admin;
+    $http.delete('/group/delete/' + group._id).then(function(response) {
+      getGroups(username);
+    });
+  }
 
   return {
     groupsObject : groupsObject,
     newGroup : newGroup,
     getGroups : getGroups,
-    updateGroup : updateGroup
-    // deleteRecipe : deleteRecipe
+    updateGroup : updateGroup,
+    deleteGroup : deleteGroup
   };
 
 }]);

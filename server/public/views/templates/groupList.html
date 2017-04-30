@@ -21,7 +21,8 @@
          </md-card-title-text>
        </md-card-title>
        <md-card-actions layout="row">
-         <md-button aria-label="Delete" ng-click="">Delete</md-button>
+         <md-button aria-label="Leave group" ng-show="(group.user_admin != userObject.userName)" ng-click="leave()">Leave Group</md-button>
+         <md-button aria-label="Delete" ng-show="(group.user_admin === userObject.userName)" ng-click="showConfirm($event,group)">Delete</md-button>
          <md-button aria-label="View" ng-click="viewGroup(group)">View</md-button>
        </md-card-actions>
        <!-- <md-card-content>

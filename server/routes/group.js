@@ -59,7 +59,7 @@ router.post('/add', function(req, res) {
   });
 });
 
-// updates recipe information
+// updates group users information
 router.put("/update", function(req,res){
   var group = req.body;
   Group.findById(group._id, function(err, foundGroup){
@@ -82,7 +82,6 @@ router.put("/update", function(req,res){
 router.delete('/delete/:id', function(req,res) {
   console.log("/delete group route hit");
   var id = req.params.id;
-
   Group.findByIdAndRemove(id, function(err, deletedGroup){
     if(err){
       console.log('Delete error', err);
@@ -91,6 +90,5 @@ router.delete('/delete/:id', function(req,res) {
       res.send(deletedGroup);
     });
 });
-
 
 module.exports = router;

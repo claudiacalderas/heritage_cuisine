@@ -34,4 +34,25 @@ myApp.controller('groupListController', ['$scope', '$mdDialog', 'UserService', '
     });
   };
 
+  $scope.leave = function() {
+    console.log('leave group button clicked');
+  };
+
+  // modal window that confirms recipe deletion
+  $scope.showConfirm = function(ev,group) {
+    var confirm = $mdDialog.confirm()
+          .title('Would you like to delete this group?')
+          .textContent('')
+          .ariaLabel('Delete group')
+          .targetEvent(ev)
+          .ok('Delete')
+          .cancel('Cancel');
+    $mdDialog.show(confirm).then(function() {
+      GroupDataService.deleteGroup(group);
+      }, function() {
+      console.log('Deletion cancelled');
+    });
+  };
+
+
 }]);
