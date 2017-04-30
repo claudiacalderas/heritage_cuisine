@@ -9,7 +9,7 @@
   </md-menu-bar>
 </div>
 
-
+<!-- GROUPS ARE PRESENTED IN CARDS EACH OF THEM WITH LEAVE/DELETE GROUP BUTTON AND VIEW BUTTON -->
 <div layout="row">
   <div class='md-padding' layout="column">
     <md-card class="groupBox" ng-repeat="group in groupsObject.allGroups" layout="row">
@@ -17,7 +17,6 @@
          <md-card-title-text >
            <span class="md-headline cardTitle" ng-click="viewGroup(group)">{{group.group_name}}</span>
            <span class="md-subhead">Group administered by: {{group.user_admin}}</span>
-
          </md-card-title-text>
        </md-card-title>
        <md-card-actions layout="row">
@@ -25,8 +24,6 @@
          <md-button aria-label="Delete" ng-show="(group.user_admin === userObject.userName)" ng-click="showConfirm($event,group)">Delete</md-button>
          <md-button aria-label="View" ng-click="viewGroup(group)">View</md-button>
        </md-card-actions>
-       <!-- <md-card-content>
-       </md-card-content> -->
      </md-card>
    </div>
 </div>

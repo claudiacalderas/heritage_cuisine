@@ -43,11 +43,13 @@
     </div>
 
     <!-- GROUP NAME -->
-    <h1>{{group.group_name}} </h1>
+    <p> </p>
+    <span>GROUP NAME</span><h1>{{group.group_name}} </h1>
+    <p> </p>
 
     <!-- USERS LIST -->
-    <span>USERS </span>
-
+    <span>USERS IN THIS GROUP</span>
+    <p> </p>
     <md-chips ng-model="group.users" readonly="true" md-removable="(group.user_admin === userObject.userName)"></md-chips>
 
     <!-- SUBMIT AND CANCEL BUTTONS -->

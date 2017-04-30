@@ -84,3 +84,31 @@ button:focus {
 .searchAutocomplete {
   width: 500px;
 }
+
+.recipeSharing {
+  margin: 16px;
+}
+
+.recipeSharing #vertical-container {
+  height: 292px;
+  width: 280px;
+}
+
+.recipeSharing .repeated-item {
+  border-bottom: 1px solid #ddd;
+  box-sizing: border-box;
+  padding-top: 10px;
+}
+
+.recipeSharing md-virtual-repeat-container {
+  /*border: solid 1px grey;*/
+}
+
+.recipeSharing .md-virtual-repeat-container .md-virtual-repeat-offsetter {
+  padding-left: 16px;
+}
+
+.md-title {
+  color: black;
+  text-align: center;
+}
