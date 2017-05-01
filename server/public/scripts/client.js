@@ -447,7 +447,6 @@ myApp.controller('recipeController', ['$scope', '$location','$mdDialog','$http',
         fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
       })
       .then(function(response) {
-        // $scope.selectedValue = JSON.stringify(response);
         $scope.selectedValue = response;
         $scope.modalSelection = angular.copy($scope.selectedValue);
         var formattedArray = formatShareArray($scope.modalSelection.selectedItems, UserService.userObject.currentRecipe)
@@ -462,6 +461,7 @@ myApp.controller('recipeController', ['$scope', '$location','$mdDialog','$http',
       });
     };
 
+    // creates an array in the format expected by the database with the recipe/user information
     function formatShareArray(groupsSelected,recipe) {
       var arrayToPost = [];
       console.log('groupsSelected', groupsSelected);
@@ -610,22 +610,10 @@ myApp.controller('UserController', ['$scope', '$http', '$location', '$mdDialog',
 
   $scope.toggleFavorite = function(recipe) {
     console.log('toggleFavorite clicked',recipe);
-
-    this.myVar = 'isFavorite';
-    currentElement = this;
-    console.log('currentElement', currentElement);
-    //
-    // console.log('myVar:',currentElement.myVar);
-    // if (currentElement.myVar='isFavorite'){
-    //   currentElement.myVar='';
-    //   console.log('myVar (if):',currentElement.myVar);
-    //
-    // } else {
-    //   currentElement.myVar='isFavorite';
-    //   console.log('myVar: (else)',currentElement.myVar);
-    //
-    // };
-
+    // changes recipe's favorite field
+    recipe.favorite = !recipe.favorite;
+    // updates recipe
+    RecipeDataService.updateRecipe(recipe);
   };
 
 }]);

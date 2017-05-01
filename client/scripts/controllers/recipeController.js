@@ -57,7 +57,6 @@ myApp.controller('recipeController', ['$scope', '$location','$mdDialog','$http',
         fullscreen: $scope.customFullscreen // Only for -xs, -sm breakpoints.
       })
       .then(function(response) {
-        // $scope.selectedValue = JSON.stringify(response);
         $scope.selectedValue = response;
         $scope.modalSelection = angular.copy($scope.selectedValue);
         var formattedArray = formatShareArray($scope.modalSelection.selectedItems, UserService.userObject.currentRecipe)
@@ -72,6 +71,7 @@ myApp.controller('recipeController', ['$scope', '$location','$mdDialog','$http',
       });
     };
 
+    // creates an array in the format expected by the database with the recipe/user information
     function formatShareArray(groupsSelected,recipe) {
       var arrayToPost = [];
       console.log('groupsSelected', groupsSelected);

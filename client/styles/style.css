@@ -77,8 +77,8 @@ button:focus {
   color: lightgray;
 }
 
-.notFavorite.isFavorite {
-  color: brown;
+.isFavorite {
+  color: #a0541e;
 }
 
 .searchAutocomplete {

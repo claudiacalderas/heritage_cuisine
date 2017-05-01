@@ -21,7 +21,7 @@
        </md-card-title>
        <md-card-actions layout="row" layout-align="start center">
          <md-card-icon-actions>
-           <md-button id="Favorite" class="md-icon-button material-icons md-18 notFavorite" ng-class="myVar" ng-click="toggleFavorite(recipe)" aria-label="Favorite">favorite</md-button>
+           <md-button id="Favorite" class="md-icon-button material-icons md-18" ng-class="{notFavorite: (recipe.favorite === false), isFavorite: (recipe.favorite === true)}" ng-click="toggleFavorite(recipe)" aria-label="Favorite">star</md-button>
            <!-- <md-button class="md-icon-button material-icons md-18" aria-label="Share">share-arrow</md-button> -->
          </md-card-icon-actions>
          <md-button aria-label="Delete" ng-click="showConfirm($event,recipe)">Delete</md-button>

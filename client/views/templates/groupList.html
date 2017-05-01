@@ -1,7 +1,7 @@
 <div ng-include="'views/partials/nav.html'"></div>
 
 <!-- MENU OPTION FOR THIS VIEW IS ADD NEW GROUP -->
-<div>
+<div md-theme="gray">
   <md-menu-bar>
     <md-content>
       <button class="md-raised" aria-label="New Group" value="New Group" ng-click="showPrompt()">Add New Group</button>
@@ -10,7 +10,7 @@
 </div>
 
 <!-- GROUPS ARE PRESENTED IN CARDS EACH OF THEM WITH LEAVE/DELETE GROUP BUTTON AND VIEW BUTTON -->
-<div layout="row">
+<div layout="row" md-theme="gray">
   <div class='md-padding' layout="column">
     <md-card class="groupBox" ng-repeat="group in groupsObject.allGroups" layout="row">
        <md-card-title>

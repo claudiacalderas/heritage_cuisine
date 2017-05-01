@@ -8,7 +8,8 @@ var FamilyRecipeSchema = mongoose.Schema({
   ingredients : [],
   steps : [],
   image_url: String,
-  username: String
+  username: String,
+  favorite: Boolean
 });
 
 var Recipe = mongoose.model('recipe', FamilyRecipeSchema, 'recipes');
@@ -23,7 +24,7 @@ router.get('/:user', function(req,res){
       console.log('Mongo error: ',err);
     }
     res.send(allRecipes);
-  });
+  }).sort( { favorite: -1 } );
 });
 
 // saves a recipe into the database
@@ -36,6 +37,7 @@ router.post('/add', function(req,res) {
   recipe.steps = req.body.steps;
   recipe.image_url = '';
   recipe.username = req.body.username;
+  recipe.favorite = false;
   recipe.save(function(err, savedRecipe){
   if(err){
     console.log("Mongo error:", err);
@@ -58,6 +60,7 @@ router.put("/update", function(req,res){
     foundRecipe.ingredients = req.body.ingredients;
     foundRecipe.steps = req.body.steps;
     foundRecipe.image_url = req.body.image_url;
+    foundRecipe.favorite = req.body.favorite;
     foundRecipe.save(function(err, savedRecipe){
       if(err){
         console.log(err);
