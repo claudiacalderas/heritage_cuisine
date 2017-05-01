@@ -7,17 +7,19 @@ module.exports = function(grunt){
     //     dest: 'server/public/scripts/client.min.js'
     //   }
     // },
-    copy: {
+    concat: {
       scripts: {
-        expand: true,
-        cwd: 'client/scripts',
-        src: ['client.js'],
-        dest: 'server/public/scripts/'
+        src: ['client/scripts/*.js',
+              'client/scripts/**/*.js'],
+        dest: 'server/public/scripts/client.js'
       },
+    },
+    copy: {
       html: {
         expand: true,
         cwd: 'client/views',
-        src: ['index.html'],
+        src: ['**/*.*',
+          'index.html'],
         dest: 'server/public/views/'
       },
       css: {
@@ -40,6 +42,14 @@ module.exports = function(grunt){
               'angular.min.js',
               'angular.min.js.map'],
         dest: 'server/public/vendors/angular/'
+      },
+      angularRoute: {
+        expand: true,
+        cwd: 'node_modules/angular-route/',
+        src: ['angular-route.js',
+              'angular-route.min.js',
+              'angular-route.min.js.map'],
+        dest: 'server/public/vendors/angular-route/'
       },
       angularmaterial: {
         expand: true,
@@ -79,12 +89,13 @@ module.exports = function(grunt){
       files: [
         'client/**/*.*'
       ],
-      tasks: ['copy']
+      tasks: ['concat','copy']
     }
   });
 
+  grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-watch');
 
-  grunt.registerTask('default', ['copy', 'watch']);
+  grunt.registerTask('default', ['concat','copy', 'watch']);
 };

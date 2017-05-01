@@ -1,0 +1,19 @@
+<md-toolbar md-scroll-shrink ng-controller="navBarController">
+    <div class="md-toolbar-tools navBar">
+      <md-menu>
+        <md-button class="md-icon-button md-button md-ink-ripple material-icons" type="button" aria-label="Open Options Menu" ng-click="openMenu($mdMenu, $event)">list</md-button>
+        <md-menu-content width="4">
+          <md-menu-item>
+            <md-button ng-click="redirect('/user')">My recipes</md-button>
+          </md-menu-item>
+          <md-menu-divider></md-menu-divider>
+          <md-menu-item>
+            <md-button ng-click="redirect('/grouplist')">My groups</md-button>
+          </md-menu-item>
+        </md-menu-content>
+      </md-menu>
+      <img class="imgNav" src="views/images/olive.png" alt="olive">
+      <h2 flex md-truncate class="md-truncate flex navTitle">Heritage Cuisine</h2>
+      <md-button ng-click="logout()">Log Out</button>
+    </div>
+</md-toolbar>

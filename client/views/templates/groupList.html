@@ -1,0 +1,29 @@
+<div ng-include="'views/partials/nav.html'"></div>
+
+<!-- MENU OPTION FOR THIS VIEW IS ADD NEW GROUP -->
+<div md-theme="gray">
+  <md-menu-bar>
+    <md-content>
+      <button class="md-raised" aria-label="New Group" value="New Group" ng-click="showPrompt()">Add New Group</button>
+    </md-content>
+  </md-menu-bar>
+</div>
+
+<!-- GROUPS ARE PRESENTED IN CARDS EACH OF THEM WITH LEAVE/DELETE GROUP BUTTON AND VIEW BUTTON -->
+<div layout="row" md-theme="gray">
+  <div class='md-padding' layout="column">
+    <md-card class="groupBox" ng-repeat="group in groupsObject.allGroups" layout="row">
+       <md-card-title>
+         <md-card-title-text >
+           <span class="md-headline cardTitle" ng-click="viewGroup(group)">{{group.group_name}}</span>
+           <span class="md-subhead">Group administered by: {{group.user_admin}}</span>
+         </md-card-title-text>
+       </md-card-title>
+       <md-card-actions layout="row">
+         <md-button aria-label="Leave group" ng-show="(group.user_admin != userObject.userName)" ng-click="leave(group)">Leave Group</md-button>
+         <md-button aria-label="Delete" ng-show="(group.user_admin === userObject.userName)" ng-click="showConfirm($event,group)">Delete</md-button>
+         <md-button aria-label="View" ng-click="viewGroup(group)">View</md-button>
+       </md-card-actions>
+     </md-card>
+   </div>
+</div>

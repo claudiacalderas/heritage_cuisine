@@ -1,0 +1,30 @@
+<md-dialog aria-label="Share Recipe">
+  <md-toolbar class="md-primary md-hue-1">
+    <h2 class="md-toolbar-tools">
+      <span flex>Select Groups</span>
+    </h2>
+  </md-toolbar>
+
+  <md-dialog-content layout="column">
+    <div class="recipeSharing">
+      <md-virtual-repeat-container id="vertical-container">
+        <div md-virtual-repeat="item in dialogCtrl.items" class="repeated-item" flex>
+          <div flex layout="row" layout-align="space-between center">
+            <span> {{ item.group_name }} </span>
+            <md-checkbox class="md-primary" ng-model="item.selected" aria-label="select item"></md-checkbox>
+          </div>
+        </div>
+      </md-virtual-repeat-container>
+    </div>
+  </md-dialog-content>
+
+  <md-dialog-actions layout="row">
+    <span flex></span>
+    <md-button ng-click="dialogCtrl.cancel()">
+     Cancel
+    </md-button>
+    <md-button ng-click="dialogCtrl.saveAndClose()">
+      Share
+    </md-button>
+  </md-dialog-actions>
+</md-dialog>

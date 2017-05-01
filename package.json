@@ -15,13 +15,20 @@
     "angular-aria": "^1.6.4",
     "angular-material": "^1.1.4",
     "angular-messages": "^1.6.4",
+    "angular-route": "^1.6.4",
+    "bcrypt": "^1.0.2",
     "body-parser": "^1.17.1",
     "bootstrap": "^3.3.7",
     "express": "^4.15.2",
+    "express-session": "^1.15.2",
     "grunt": "^1.0.1",
+    "grunt-contrib-concat": "^1.0.1",
     "grunt-contrib-copy": "^1.0.0",
     "grunt-contrib-uglify": "^2.3.0",
     "grunt-contrib-watch": "^1.0.0",
-    "mongoose": "^4.9.3"
+    "mongoose": "^4.9.3",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0",
+    "path": "^0.12.7"
   }
 }

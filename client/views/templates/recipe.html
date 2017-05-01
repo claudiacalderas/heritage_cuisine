@@ -1,0 +1,45 @@
+<div ng-include="'views/partials/nav.html'"></div>
+
+<!-- MENU OPTION FOR THIS VIEW IS EDIT RECIPE -->
+<div>
+  <md-menu-bar>
+    <md-content>
+      <button class="md-raised" aria-label="Edit Recipe" value="Edit Recipe" ng-click="editRecipe(recipe)">Edit Recipe</button>
+      <button class="md-raised" aria-label="Share Recipe" value="Share Recipe" ng-click="shareRecipe($event,recipe)">Share Recipe</button>
+    </md-content>
+  </md-menu-bar>
+</div>
+
+<!-- EDIT RECIPE SECTION -->
+<div layout="row">
+  <div layout-md="column" flex="10"></div>
+  <div layout="column" flex="80">
+      <!-- RECIPE NAME -->
+      <h1>{{recipe.title}} </h1>
+
+      <!-- INGREDIENTS LIST -->
+      <span>INGREDIENTS </span>
+      <md-list>
+        <md-list-item class="md-2-line" ng-repeat="ingredient in recipe.ingredients track by $index">
+          <div class="md-list-item-text">
+            <p>{{ingredient}}</p>
+          </div>
+        </md-list-item>
+      </md-list>
+
+      <!-- PREPARATION STEPS -->
+      <span>PREPARATION </span>
+      <md-list>
+        <md-list-item class="md-2-line" ng-repeat="step in recipe.steps track by $index">
+          <div class="md-list-item-text">
+            <p>{{step}}</p>
+          </div>
+        </md-list-item>
+      </md-list>
+
+      <!-- CATEGORIES -->
+      <span>CATEGORIES </span>
+      <p> </p>
+      <md-chips ng-model="recipe.categories" readonly="true" md-removable="false"></md-chips>
+  </div>
+</div>

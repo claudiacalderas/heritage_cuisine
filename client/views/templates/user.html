@@ -1,0 +1,32 @@
+<div ng-include="'views/partials/nav.html'"></div>
+
+<!-- MENU OPTION FOR THIS VIEW IS ADD NEW RECIPE -->
+<div>
+  <md-menu-bar>
+    <md-content>
+      <button class="md-raised" aria-label="New Recipe" value="New Recipe" ng-click="redirect('/addrecipe')">Add New Recipe</button>
+    </md-content>
+  </md-menu-bar>
+</div>
+
+<!-- RECIPES ARE PRESENTED IN CARDS EACH OF THEM WITH DELETE RECIPE BUTTON AND VIEW BUTTON -->
+<div layout="row">
+  <div class='md-padding' layout="row" layout-wrap>
+    <md-card class="recipeBox" ng-repeat="recipe in recipesObject.allRecipes">
+       <img ng-src="{{recipe.image_url}}" class="md-card-image" alt="">
+       <md-card-title>
+         <md-card-title-text >
+           <span class="md-headline cardTitle" ng-click="viewRecipe(recipe)">{{recipe.title}}</span>
+         </md-card-title-text>
+       </md-card-title>
+       <md-card-actions layout="row" layout-align="start center">
+         <md-card-icon-actions>
+           <md-button id="Favorite" class="md-icon-button material-icons md-18" ng-class="{notFavorite: (recipe.favorite === false), isFavorite: (recipe.favorite === true)}" ng-click="toggleFavorite(recipe)" aria-label="Favorite">star</md-button>
+           <!-- <md-button class="md-icon-button material-icons md-18" aria-label="Share">share-arrow</md-button> -->
+         </md-card-icon-actions>
+         <md-button aria-label="Delete" ng-click="showConfirm($event,recipe)">Delete</md-button>
+         <md-button aria-label="View" ng-click="viewRecipe(recipe)">View</md-button>
+       </md-card-actions>
+     </md-card>
+   </div>
+</div>
