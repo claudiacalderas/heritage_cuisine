@@ -3,7 +3,6 @@ var router = express.Router();
 var mongoose = require('mongoose');
 
 var FamilyRecipeSchema = mongoose.Schema({
-  recipe_id : String,
   title : String,
   categories : [],
   ingredients : [],
@@ -31,7 +30,6 @@ router.get('/:user', function(req,res){
 router.post('/add', function(req,res) {
   console.log("/add post route hit");
   var recipe = new Recipe();
-  recipe.recipe_id = '';
   recipe.title = req.body.title;
   recipe.categories = req.body.categories;
   recipe.ingredients = req.body.ingredients;
