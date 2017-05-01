@@ -83,5 +83,17 @@ router.delete('/delete/:id', function(req,res) {
     });
 });
 
+// saves many recipes into the database (sharing functionality)
+router.post('/share', function(req,res) {
+  console.log("/share post route hit");
+  var arrayOfRecipes = req.body;
+  Recipe.insertMany(arrayOfRecipes, function(err, savedRecipes){
+  if(err){
+    console.log("Mongo error:", err);
+    res.sendStatus(500);
+  }
+  res.send(savedRecipes);
+  });
+});
 
 module.exports = router;

@@ -47,7 +47,7 @@ myApp.factory('GroupDataService', ['$http', '$location', function($http, $locati
     $http.delete('/group/delete/' + group._id).then(function(response) {
       getGroups(username);
     });
-  }
+  };
 
   return {
     groupsObject : groupsObject,

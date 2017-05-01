@@ -41,14 +41,22 @@ myApp.factory('RecipeDataService', ['$http', '$location', function($http, $locat
     $http.delete('/recipe/delete/' + recipe._id).then(function(response) {
       getRecipes(username);
     });
-  }
+  };
+
+  shareRecipeWithGroups = function(arrayToPost, user) {
+    console.log('Sharing recipes: ', arrayToPost);
+    $http.post('/recipe/share', arrayToPost).then(function(response) {
+      console.log('In shareRecipeWithGroups back from the server',response);
+    });
+  };
 
   return {
     recipesObject : recipesObject,
     getRecipes : getRecipes,
     postRecipe : postRecipe,
     updateRecipe : updateRecipe,
-    deleteRecipe : deleteRecipe
+    deleteRecipe : deleteRecipe,
+    shareRecipeWithGroups : shareRecipeWithGroups
   };
 
 }]);
