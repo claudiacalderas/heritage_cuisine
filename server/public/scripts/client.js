@@ -581,10 +581,18 @@ myApp.controller('UserController', ['$scope', '$http', '$location', '$mdDialog',
   $scope.logout = UserService.logout;
   $scope.recipesObject = RecipeDataService.recipesObject;
   $scope.redirect = UserService.redirect;
+  $scope.searchString = "";
 
   console.log('STEP 2: retrieve username');
   console.log($scope.userObject);
   RecipeDataService.getRecipes($scope.userObject.userName);
+
+  $scope.search = function() {
+    console.log('search button clicked',$scope.searchString);
+    if ($scope.searchString != "") {
+      searchRecipes($scope.userObject.userName,$scope.searchString);
+    }
+  };
 
   $scope.viewRecipe = function(recipe) {
     console.log('view recipe clicked',recipe);
@@ -692,6 +700,17 @@ myApp.factory('RecipeDataService', ['$http', '$location', function($http, $locat
     console.log('in getRecipes with user', username);
 
     $http.get('/recipe/' + username).then(function(response) {
+      console.log('Back from the server with:', response);
+      recipesObject.allRecipes = response.data;
+      console.log('Updated recipesObject:', recipesObject.allRecipes);
+    });
+  };
+
+  searchRecipes = function(user,searchString){
+    var username = angular.copy(user);
+    console.log('in searchRecipes with user', username);
+    console.log('in searchRecipes searchString is', searchString);
+    $http.get('/recipe/search/' + username + '/' + searchString).then(function(response) {
       console.log('Back from the server with:', response);
       recipesObject.allRecipes = response.data;
       console.log('Updated recipesObject:', recipesObject.allRecipes);

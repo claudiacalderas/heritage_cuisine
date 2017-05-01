@@ -17,6 +17,17 @@ myApp.factory('RecipeDataService', ['$http', '$location', function($http, $locat
     });
   };
 
+  searchRecipes = function(user,searchString){
+    var username = angular.copy(user);
+    console.log('in searchRecipes with user', username);
+    console.log('in searchRecipes searchString is', searchString);
+    $http.get('/recipe/search/' + username + '/' + searchString).then(function(response) {
+      console.log('Back from the server with:', response);
+      recipesObject.allRecipes = response.data;
+      console.log('Updated recipesObject:', recipesObject.allRecipes);
+    });
+  };
+
   postRecipe = function(recipe) {
     var recipeToPost = angular.copy(recipe);
     var username = recipeToPost.username;

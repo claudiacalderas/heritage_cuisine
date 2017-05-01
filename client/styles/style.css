@@ -53,6 +53,15 @@ button:focus {
   font-weight: lighter;
 }
 
+.categoriesDisplay {
+  float: left;
+}
+
+.instantSearchInput {
+  width: 500px;
+  padding-left: 30px;
+}
+
 .navTitle {
   padding-left: 10px;
   font-weight: bold;
