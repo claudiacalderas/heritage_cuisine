@@ -67,7 +67,8 @@ myApp.factory('RecipeDataService', ['$http', '$location', function($http, $locat
     postRecipe : postRecipe,
     updateRecipe : updateRecipe,
     deleteRecipe : deleteRecipe,
-    shareRecipeWithGroups : shareRecipeWithGroups
+    shareRecipeWithGroups : shareRecipeWithGroups,
+    searchRecipes : searchRecipes
   };
 
 }]);

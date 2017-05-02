@@ -13,7 +13,9 @@ myApp.controller('UserController', ['$scope', '$http', '$location', '$mdDialog',
   $scope.search = function() {
     console.log('search button clicked',$scope.searchString);
     if ($scope.searchString != "") {
-      searchRecipes($scope.userObject.userName,$scope.searchString);
+      RecipeDataService.searchRecipes($scope.userObject.userName,$scope.searchString);
+    } else {
+      RecipeDataService.getRecipes($scope.userObject.userName);
     }
   };
 
