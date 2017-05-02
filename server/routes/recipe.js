@@ -27,6 +27,21 @@ router.get('/:user', function(req,res){
   }).sort( { favorite: -1 } );
 });
 
+// searchs recipe by name
+router.get('/search/:user/:searchString', function(req,res){
+  console.log("/search get route hit");
+  var searchUsername = req.params.user;
+  var searchString = req.params.searchString;
+  console.log('username is: ', searchUsername);
+  console.log('searchString is: ', searchString);
+  Recipe.find({ $and: [{username: searchUsername}, {title: {$regex:searchString, $options: 'i' }}]},function(err,allRecipes) {
+    if(err) {
+      console.log('Mongo error: ',err);
+    }
+    res.send(allRecipes);
+  }).sort( { favorite: -1 } );
+});
+
 // saves a recipe into the database
 router.post('/add', function(req,res) {
   console.log("/add post route hit");

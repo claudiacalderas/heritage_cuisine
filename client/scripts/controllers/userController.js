@@ -4,10 +4,20 @@ myApp.controller('UserController', ['$scope', '$http', '$location', '$mdDialog',
   $scope.logout = UserService.logout;
   $scope.recipesObject = RecipeDataService.recipesObject;
   $scope.redirect = UserService.redirect;
+  $scope.searchString = "";
 
   console.log('STEP 2: retrieve username');
   console.log($scope.userObject);
   RecipeDataService.getRecipes($scope.userObject.userName);
+
+  $scope.search = function() {
+    console.log('search button clicked',$scope.searchString);
+    if ($scope.searchString != "") {
+      RecipeDataService.searchRecipes($scope.userObject.userName,$scope.searchString);
+    } else {
+      RecipeDataService.getRecipes($scope.userObject.userName);
+    }
+  };
 
   $scope.viewRecipe = function(recipe) {
     console.log('view recipe clicked',recipe);
