@@ -1,4 +1,4 @@
-var myApp = angular.module('myApp', ['ngRoute','ngMaterial']);
+var myApp = angular.module('myApp', ['ngRoute','ngMaterial','ngFileUpload']);
 
 // Angular Material Theme Configuration
 myApp.config(['$mdThemingProvider', function($mdThemingProvider) {
@@ -77,6 +77,15 @@ myApp.config(['$routeProvider', '$locationProvider',
     .when('/info', {
       templateUrl: '/views/templates/info.html',
       controller: 'InfoController',
+      resolve: {
+        getuser : ['UserService', function(UserService){
+          return UserService.getuser();
+        }]
+      }
+    })
+    .when('/fileupload', {
+      templateUrl: '/views/templates/fileUpload.html',
+      controller: 'FileUploadController',
       resolve: {
         getuser : ['UserService', function(UserService){
           return UserService.getuser();

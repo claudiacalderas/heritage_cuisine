@@ -45,9 +45,27 @@
       </div>
 
       <!-- CATEGORIES -->
-
       <span>CATEGORIES </span>
       <md-chips ng-model="categoryOptions" readonly="ctrl.readonly" md-removable="ctrl.removable"></md-chips>
+
+      <!-- PICTURE UPLOAD FORM-->
+      <br>
+      <br>
+      <div>
+        <input type="file" ngf-select ng-model="picFile" name="file"
+               accept="image/*" ngf-max-size="2MB"
+               ngf-model-invalid="errorFile" aria-label="File Upload">
+         <i ng-show="addRecipeForm.file.$error.required">*required</i><br>
+         <i ng-show="addRecipeForm.file.$error.maxSize">File too large {{errorFile.size / 1000000|number:1}}MB: max 2M</i>
+      </div>
+      <img ng-show="file.$valid" ngf-thumbnail="picFile" class="thumb">
+      <md-button ng-click="picFile = null" ng-show="picFile">Remove</md-button>
+      <md-button ng-show="picFile" ng-click="uploadPic(picFile)">Upload</md-button>
+
+      <span ng-show="picFile.result">Upload Successful</span>
+      <span class="err" ng-show="errorMsg">{{errorMsg}}</span>
+      <br>
+
 
       <!-- SUBMIT AND CANCEL BUTTONS -->
       <md-input-container layout="column">

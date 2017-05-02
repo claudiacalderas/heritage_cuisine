@@ -1,18 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
+var Recipe = require('../models/recipeModel');
 
-var FamilyRecipeSchema = mongoose.Schema({
-  title : String,
-  categories : [],
-  ingredients : [],
-  steps : [],
-  image_url: String,
-  username: String,
-  favorite: Boolean
-});
-
-var Recipe = mongoose.model('recipe', FamilyRecipeSchema, 'recipes');
 
 // gets all recipes from the database
 router.get('/:user', function(req,res){
@@ -50,7 +40,7 @@ router.post('/add', function(req,res) {
   recipe.categories = req.body.categories;
   recipe.ingredients = req.body.ingredients;
   recipe.steps = req.body.steps;
-  recipe.image_url = '';
+  recipe.image_url = req.body.image_url;
   recipe.username = req.body.username;
   recipe.favorite = false;
   recipe.save(function(err, savedRecipe){

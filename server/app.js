@@ -1,6 +1,7 @@
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
+var logger = require('morgan');
 var mongoose = require('mongoose');
 var path = require('path');
 
@@ -9,6 +10,7 @@ var session = require('express-session');
 
 // Route includes
 var index = require('./routes/index');
+var uploads = require('./routes/uploads');
 var user = require('./routes/user');
 var register = require('./routes/register');
 var recipe = require('./routes/recipe');
@@ -16,6 +18,7 @@ var group = require('./routes/group');
 
 
 // Body parser middleware
+app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
@@ -40,6 +43,7 @@ app.use('/register', register);
 app.use('/user', user);
 app.use('/recipe', recipe);
 app.use('/group', group);
+app.use('/uploads', uploads);
 app.use('/', index);
 
 // Mongo Connection //

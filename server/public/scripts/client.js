@@ -1,4 +1,4 @@
-var myApp = angular.module('myApp', ['ngRoute','ngMaterial']);
+var myApp = angular.module('myApp', ['ngRoute','ngMaterial','ngFileUpload']);
 
 // Angular Material Theme Configuration
 myApp.config(['$mdThemingProvider', function($mdThemingProvider) {
@@ -83,13 +83,22 @@ myApp.config(['$routeProvider', '$locationProvider',
         }]
       }
     })
+    .when('/fileupload', {
+      templateUrl: '/views/templates/fileUpload.html',
+      controller: 'FileUploadController',
+      resolve: {
+        getuser : ['UserService', function(UserService){
+          return UserService.getuser();
+        }]
+      }
+    })
     .otherwise({
       redirectTo: 'home'
     });
 }]);
 
-myApp.controller('addRecipeController', ['$scope', '$location','UserService', 'RecipeDataService',
-                                        function($scope, $location, UserService, RecipeDataService) {
+myApp.controller('addRecipeController', ['$scope', '$location','Upload','$timeout','UserService', 'RecipeDataService',
+                                        function($scope, $location, Upload, $timeout, UserService, RecipeDataService) {
   $scope.userObject = UserService.userObject;
   $scope.logout = UserService.logout;
   $scope.redirect = UserService.redirect;
@@ -106,6 +115,7 @@ myApp.controller('addRecipeController', ['$scope', '$location','UserService', 'R
     username: ''
   };
   $scope.categoryOptions = ['Dessert', 'Appetizer', 'Dinner'];
+  var filename;
 
   $scope.addNewIngredient = function() {
       var newIngredientNo = $scope.ingredientsArray.length+1;
@@ -151,14 +161,44 @@ myApp.controller('addRecipeController', ['$scope', '$location','UserService', 'R
     }
 
     // temporary image_url until add photo is implemented
-    $scope.recipe.image_url = '';
+    $scope.recipe.image_url = filename;
 
     console.log('Adding a recipe', $scope.recipe);
     RecipeDataService.postRecipe($scope.recipe);
 
     UserService.redirect('/user');
-    
   } // end of addRecipe function
+
+  // Upload file Section
+  $scope.uploadPic = function(file) {
+  file.upload = Upload.upload({
+    url: '/uploads',
+    data: {name: UserService.userObject.userName, file: file},
+  });
+
+  file.upload.then(function (response) {
+    console.log('0 Back from upload with data:',response.data);
+    // saves filename to use when saving recipe
+    filename = response.data.file.path + "/" + response.data.file.originalname;
+
+    $timeout(function () {
+      file.result = response.data;
+      console.log('1 Back from upload with data:',response.data);
+      filename = response.data.file.path + "/" + response.data.file.originalname;
+      console.log('URL is:',filename);
+
+    });
+    }, function (response) {
+      if (response.status > 0)
+        $scope.errorMsg = response.status + ': ' + response.data;
+        console.log('2 Back from upload with data:',response.data);
+        console.log('URL is:',filename);
+
+    }, function (evt) {
+      // Math.min is to fix IE which reports 200% sometimes
+      file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
+    });
+  }
 
 }]);
 
@@ -261,6 +301,48 @@ myApp.controller('editRecipeController', ['$scope', '$location','UserService', '
     UserService.redirect('/user');
 
   } // end of addRecipe function
+
+
+}]);
+
+myApp.controller('FileUploadController', ['$scope', '$location','$mdDialog','$http','Upload','$timeout','UserService','GroupDataService','RecipeDataService',
+                                        function($scope, $location, $mdDialog, $http, Upload, $timeout, UserService, GroupDataService, RecipeDataService) {
+  $scope.userObject = UserService.userObject;
+  $scope.logout = UserService.logout;
+  $scope.recipe = UserService.userObject.currentRecipe;
+  $scope.groups = {};
+  $scope.uploads = [];
+
+  console.log('FileUploadController loaded');
+  console.log('current recipe is:', $scope.recipe);
+  console.log('current user is:', UserService.userObject.userName);
+
+
+  $scope.uploadPic = function(file) {
+  file.upload = Upload.upload({
+    url: '/uploads',
+    data: {name: UserService.userObject.userName, file: file},
+  });
+
+  file.upload.then(function (response) {
+    $timeout(function () {
+      file.result = response.data;
+    });
+    }, function (response) {
+      if (response.status > 0)
+        $scope.errorMsg = response.status + ': ' + response.data;
+    }, function (evt) {
+      // Math.min is to fix IE which reports 200% sometimes
+      file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
+    });
+  }
+
+
+  $http.get('/uploads').then(function(response){
+    console.log(response.data);
+    $scope.uploads = response.data;
+  });
+
 
 
 }]);
