@@ -160,7 +160,7 @@ myApp.controller('addRecipeController', ['$scope', '$location','Upload','$timeou
       $scope.recipe.steps.push($scope.stepsArray[j].name);
     }
 
-    // temporary image_url until add photo is implemented
+    // assign image_url (from uploaded img insert into the db)
     $scope.recipe.image_url = filename;
 
     console.log('Adding a recipe', $scope.recipe);
@@ -171,39 +171,39 @@ myApp.controller('addRecipeController', ['$scope', '$location','Upload','$timeou
 
   // Upload file Section
   $scope.uploadPic = function(file) {
-  file.upload = Upload.upload({
-    url: '/uploads',
-    data: {name: UserService.userObject.userName, file: file},
-  });
-
-  file.upload.then(function (response) {
-    console.log('0 Back from upload with data:',response.data);
-    // saves filename to use when saving recipe
-    filename = response.data.file.path + "/" + response.data.file.originalname;
-
-    $timeout(function () {
-      file.result = response.data;
-      console.log('1 Back from upload with data:',response.data);
-      filename = response.data.file.path + "/" + response.data.file.originalname;
-      console.log('URL is:',filename);
-
+    file.upload = Upload.upload({
+      url: '/uploads',
+      data: {name: UserService.userObject.userName, file: file},
     });
-    }, function (response) {
-      if (response.status > 0)
-        $scope.errorMsg = response.status + ': ' + response.data;
-        console.log('2 Back from upload with data:',response.data);
+
+    file.upload.then(function (response) {
+      console.log('0 Back from upload with data:',response.data);
+      // saves filename to use when saving recipe
+      filename = response.data.file.path + "/" + response.data.file.originalname;
+
+      $timeout(function () {
+        file.result = response.data;
+        console.log('1 Back from upload with data:',response.data);
+        filename = response.data.file.path + "/" + response.data.file.originalname;
         console.log('URL is:',filename);
 
-    }, function (evt) {
-      // Math.min is to fix IE which reports 200% sometimes
-      file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
-    });
-  }
+      });
+      }, function (response) {
+        if (response.status > 0)
+          $scope.errorMsg = response.status + ': ' + response.data;
+          console.log('2 Back from upload with data:',response.data);
+          console.log('URL is:',filename);
+
+      }, function (evt) {
+        // Math.min is to fix IE which reports 200% sometimes
+        file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
+      });
+    }
 
 }]);
 
-myApp.controller('editRecipeController', ['$scope', '$location','UserService', 'RecipeDataService',
-                                        function($scope, $location, UserService, RecipeDataService) {
+myApp.controller('editRecipeController', ['$scope','$location','Upload','$timeout','UserService','RecipeDataService',
+                                        function($scope,$location,Upload,$timeout,UserService,RecipeDataService) {
   $scope.userObject = UserService.userObject;
   $scope.logout = UserService.logout;
   $scope.redirect = UserService.redirect;
@@ -220,6 +220,8 @@ myApp.controller('editRecipeController', ['$scope', '$location','UserService', '
     username: ''
   };
   $scope.categoryOptions = [];
+  var filename;
+
 
   $scope.populate = function() {
     console.log('in editRecipe populate current recipe is:', UserService.userObject.currentRecipe);
@@ -279,6 +281,7 @@ myApp.controller('editRecipeController', ['$scope', '$location','UserService', '
     $scope.recipe.ingredients = [];
     $scope.recipe.steps = [];
     $scope.recipe.title = $scope.title;
+    $scope.recipe.favorite = UserService.userObject.currentRecipe.favorite;
     $scope.recipe.categories = $scope.categoryOptions;
     $scope.recipe.username = $scope.userObject.userName;
     $scope.recipe._id = UserService.userObject.currentRecipe._id;
@@ -292,8 +295,8 @@ myApp.controller('editRecipeController', ['$scope', '$location','UserService', '
       $scope.recipe.steps.push($scope.stepsArray[j].name);
     }
 
-    // temporary image_url until add photo is implemented
-    $scope.recipe.image_url = '';
+    // assign image_url (from uploaded img insert into the db)
+    $scope.recipe.image_url = filename;
 
     console.log('Saving recipe', $scope.recipe);
     RecipeDataService.updateRecipe($scope.recipe);
@@ -302,6 +305,36 @@ myApp.controller('editRecipeController', ['$scope', '$location','UserService', '
 
   } // end of addRecipe function
 
+  // Upload file Section
+  $scope.uploadPic = function(file) {
+    file.upload = Upload.upload({
+      url: '/uploads',
+      data: {name: UserService.userObject.userName, file: file},
+    });
+
+    file.upload.then(function (response) {
+      console.log('0 Back from upload with data:',response.data);
+      // saves filename to use when saving recipe
+      filename = response.data.file.path + "/" + response.data.file.originalname;
+
+      $timeout(function () {
+        file.result = response.data;
+        console.log('1 Back from upload with data:',response.data);
+        filename = response.data.file.path + "/" + response.data.file.originalname;
+        console.log('URL is:',filename);
+
+      });
+      }, function (response) {
+        if (response.status > 0)
+          $scope.errorMsg = response.status + ': ' + response.data;
+          console.log('2 Back from upload with data:',response.data);
+          console.log('URL is:',filename);
+
+      }, function (evt) {
+        // Math.min is to fix IE which reports 200% sometimes
+        file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
+      });
+    }
 
 }]);
 

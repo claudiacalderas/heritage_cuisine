@@ -61,7 +61,7 @@ myApp.controller('addRecipeController', ['$scope', '$location','Upload','$timeou
       $scope.recipe.steps.push($scope.stepsArray[j].name);
     }
 
-    // temporary image_url until add photo is implemented
+    // assign image_url (from uploaded img insert into the db)
     $scope.recipe.image_url = filename;
 
     console.log('Adding a recipe', $scope.recipe);
@@ -72,33 +72,33 @@ myApp.controller('addRecipeController', ['$scope', '$location','Upload','$timeou
 
   // Upload file Section
   $scope.uploadPic = function(file) {
-  file.upload = Upload.upload({
-    url: '/uploads',
-    data: {name: UserService.userObject.userName, file: file},
-  });
-
-  file.upload.then(function (response) {
-    console.log('0 Back from upload with data:',response.data);
-    // saves filename to use when saving recipe
-    filename = response.data.file.path + "/" + response.data.file.originalname;
-
-    $timeout(function () {
-      file.result = response.data;
-      console.log('1 Back from upload with data:',response.data);
-      filename = response.data.file.path + "/" + response.data.file.originalname;
-      console.log('URL is:',filename);
-
+    file.upload = Upload.upload({
+      url: '/uploads',
+      data: {name: UserService.userObject.userName, file: file},
     });
-    }, function (response) {
-      if (response.status > 0)
-        $scope.errorMsg = response.status + ': ' + response.data;
-        console.log('2 Back from upload with data:',response.data);
+
+    file.upload.then(function (response) {
+      console.log('0 Back from upload with data:',response.data);
+      // saves filename to use when saving recipe
+      filename = response.data.file.path + "/" + response.data.file.originalname;
+
+      $timeout(function () {
+        file.result = response.data;
+        console.log('1 Back from upload with data:',response.data);
+        filename = response.data.file.path + "/" + response.data.file.originalname;
         console.log('URL is:',filename);
 
-    }, function (evt) {
-      // Math.min is to fix IE which reports 200% sometimes
-      file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
-    });
-  }
+      });
+      }, function (response) {
+        if (response.status > 0)
+          $scope.errorMsg = response.status + ': ' + response.data;
+          console.log('2 Back from upload with data:',response.data);
+          console.log('URL is:',filename);
+
+      }, function (evt) {
+        // Math.min is to fix IE which reports 200% sometimes
+        file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
+      });
+    }
 
 }]);
