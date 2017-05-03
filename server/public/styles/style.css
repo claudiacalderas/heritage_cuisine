@@ -55,6 +55,8 @@ button:focus {
 
 .categoriesDisplay {
   float: left;
+  font-weight:300;
+  font-size: larger;
 }
 
 .instantSearchInput {
@@ -73,7 +75,7 @@ button:focus {
 }
 
 .groupBox {
-  width: 600px;
+  width: 100%;
   font-size: 12px;
 }
 
@@ -91,7 +93,7 @@ button:focus {
 }
 
 .searchAutocomplete {
-  width: 500px;
+  width: 80%;
 }
 
 .recipeSharing {
@@ -120,4 +122,17 @@ button:focus {
 .md-title {
   color: black;
   text-align: center;
+}
+
+.prep-input {
+  width: 100%;
+}
+
+.ingredient-input {
+  width: 100%;
+}
+
+.imageDiv {
+  padding-top: 30px;
+  text-align:center;
 }

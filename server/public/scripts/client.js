@@ -543,6 +543,17 @@ myApp.controller('recipeController', ['$scope', '$location','$mdDialog','$http',
     };
   };
 
+  // alert showing that user is already in group. Called from addUserToGroup
+  $scope.showAlert = function() {
+    $mdDialog.show(
+      $mdDialog.alert()
+        .clickOutsideToClose(true)
+        .title('This recipe has been shared with the group(s)')
+        .ariaLabel('Alert: Recipe has been shared with the group')
+        .ok('Ok')
+    );
+  };
+
   // shows modal window for group selecting (share recipe)
   $scope.shareRecipe = function(ev,recipe) {
       console.log('IN SHARE RECIPE');
@@ -568,6 +579,8 @@ myApp.controller('recipeController', ['$scope', '$location','$mdDialog','$http',
         console.log('FORMATTEDARRAY:', formattedArray);
         // Calls function that shares current recipe with the groups selected
         RecipeDataService.shareRecipeWithGroups(formattedArray, $scope.userObject.userName);
+        // Informs user that recipe has been shared
+        $scope.showAlert();
         // Cleans selection
         $scope.selectedValue = [];
       }, function() {
@@ -601,7 +614,7 @@ myApp.controller('recipeController', ['$scope', '$location','$mdDialog','$http',
 
 }]);
 
-myApp.controller('updateGroupController', ['$scope', '$log', '$http', 'UserService', 'GroupDataService', function($scope, $log, $http, UserService, GroupDataService) {
+myApp.controller('updateGroupController', ['$scope', '$log', '$http', '$mdDialog', 'UserService', 'GroupDataService', function($scope, $log, $http, $mdDialog, UserService, GroupDataService) {
   $scope.userObject = UserService.userObject;
   $scope.logout = UserService.logout;
   $scope.groupsObject = GroupDataService.groupsObject;
@@ -676,9 +689,32 @@ myApp.controller('updateGroupController', ['$scope', '$log', '$http', 'UserServi
     };
   }
 
+  // alert showing that user is already in group. Called from addUserToGroup
+  $scope.showAlert = function() {
+    $mdDialog.show(
+      $mdDialog.alert()
+        .clickOutsideToClose(true)
+        .title('This user is already in the group')
+        .ariaLabel('Alert User already in Group')
+        .ok('Ok')
+    );
+  };
+
   $scope.addUserToGroup = function() {
     console.log('addUserToGroup button clicked user is:', $scope.userToAdd.username);
-    $scope.group.users.push($scope.userToAdd.username);
+    var inGroup = false;
+    for (var i = 0; i < $scope.group.users.length; i++) {
+      if ($scope.userToAdd.username === $scope.group.users[i]) {
+        inGroup = true;
+      }
+    };
+    if (!inGroup) {
+      $scope.group.users.push($scope.userToAdd.username);
+    } else {
+      // show alert message - user already in group
+      $scope.showAlert();
+      inGroup = false;
+    }
   }
 
   $scope.update = function() {
@@ -686,6 +722,10 @@ myApp.controller('updateGroupController', ['$scope', '$log', '$http', 'UserServi
     // calls factory function to update group in the database
     GroupDataService.updateGroup($scope.group,UserService.userObject.userName);
     UserService.redirect('/grouplist');
+  }
+
+  $scope.error = function() {
+    console.log("error");
   }
 
 }]);

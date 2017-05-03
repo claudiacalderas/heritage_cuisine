@@ -10,9 +10,12 @@
 </div>
 
 <!-- GROUPS ARE PRESENTED IN CARDS EACH OF THEM WITH LEAVE/DELETE GROUP BUTTON AND VIEW BUTTON -->
+
 <div layout="row">
-  <div class='md-padding' layout="column">
-    <md-card class="groupBox" ng-repeat="group in groupsObject.allGroups" layout="row">
+  <div layout-md="column" flex="20"></div>
+  <div layout="column" flex="60">
+    <div class='md-padding' layout="column">
+      <md-card class="groupBox" ng-repeat="group in groupsObject.allGroups" layout="row">
        <md-card-title>
          <md-card-title-text >
            <span class="md-headline cardTitle" ng-click="viewGroup(group)">{{group.group_name}}</span>
@@ -26,4 +29,5 @@
        </md-card-actions>
      </md-card>
    </div>
+</div>
 </div>

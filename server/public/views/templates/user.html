@@ -37,11 +37,12 @@
          <md-card-title-text>
            <span class="md-headline cardTitle" ng-click="viewRecipe(recipe)">{{recipe.title}}</span>
          </md-card-title-text>
-         <md-card-title-text ng-repeat="category in recipe.categories" layout="row">
-           {{category}}
-           <!-- <span class="categoriesDisplay">{{category}}</span> -->
-         </md-card-title-text>
        </md-card-title>
+       <md-card-content>
+         <div class="categoriesDisplay" ng-repeat="category in recipe.categories" >
+           {{category + '&nbsp &nbsp'}}
+         </div>
+       </md-card-content>
        <md-card-actions layout="row" layout-align="start center">
          <md-card-icon-actions>
            <md-button id="Favorite" class="md-icon-button material-icons md-18" ng-class="{notFavorite: (recipe.favorite === false), isFavorite: (recipe.favorite === true)}" ng-click="toggleFavorite(recipe)" aria-label="Favorite">star</md-button>

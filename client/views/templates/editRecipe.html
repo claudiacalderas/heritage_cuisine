@@ -1,8 +1,8 @@
 <div ng-include="'views/partials/nav.html'"></div>
 
 <div layout="row">
-  <div layout-md="column" flex="10"></div>
-  <div layout="column" flex="50">
+  <div layout-md="column" flex="20"></div>
+  <div layout="column" flex="60">
     <form name="editRecipeForm">
 
       <!-- RECIPE NAME -->
@@ -17,35 +17,35 @@
       </md-input-container>
 
       <!-- INGREDIENTS LIST -->
-      <md-input-container layout="row">
+      <md-input-container layout="row" >
         <div>
           <span>INGREDIENTS </span>
           <md-button class="md-icon-button addNewBtn" aria-label="Add Ingredient" ng-click="addNewIngredient()">+</md-button>
         </div>
       </md-input-container>
       <div  data-ng-repeat="ingredient in ingredientsArray track by $index" layout="row">
-        <md-input-container layout="row">
+        <md-input-container layout="row" class="ingredient-input">
           <input type="text" ng-model="ingredient.name" aria-label="Ingredient">
           <md-button class="md-icon-button" ng-click="removeIngredient(ingredient)">-</md-button>
         </md-input-container>
       </div>
 
       <!-- PREPARATION STEPS -->
-      <md-input-container layout="row">
+      <md-input-container layout="row" >
         <div>
           <span>PREPARATION </span>
           <md-button class="md-icon-button addNewBtn" aria-label="Add Preparation Step" ng-click="addNewStep()">+</md-button>
         </div>
       </md-input-container>
       <div  data-ng-repeat="step in stepsArray track by $index" layout="row">
-        <md-input-container layout="row">
-          <textarea type="text" name="step" ng-model="step.name" aria-label="Step" md-maxlength="150"></textarea>
+        <md-input-container layout="row" class="prep-input">
+          <textarea type="text" name="step" ng-model="step.name" aria-label="Step" ng-maxlength="150" md-no-resize="true"></textarea>
           <md-button class="md-icon-button" ng-click="removeStep(step)">-</md-button>
         </md-input-container>
       </div>
 
       <!-- CATEGORIES -->
-
+      <br>
       <span>CATEGORIES </span>
       <p> </p>
       <md-chips ng-model="categoryOptions" readonly="ctrl.readonly" md-removable="ctrl.removable"></md-chips>
@@ -60,7 +60,10 @@
          <i ng-show="addRecipeForm.file.$error.required">*required</i><br>
          <i ng-show="addRecipeForm.file.$error.maxSize">File too large {{errorFile.size / 1000000|number:1}}MB: max 2M</i>
       </div>
-      <img ng-show="file.$valid" ngf-thumbnail="picFile" class="thumb">
+      <div class="imageDiv">
+        <img ng-show="file.$valid" ngf-thumbnail="picFile" class="thumb">
+      </div>
+      <br>
       <md-button ng-click="picFile = null" ng-show="picFile">Remove</md-button>
       <md-button ng-show="picFile" ng-click="uploadPic(picFile)">Upload</md-button>
 

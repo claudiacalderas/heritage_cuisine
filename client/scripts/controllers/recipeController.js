@@ -38,6 +38,17 @@ myApp.controller('recipeController', ['$scope', '$location','$mdDialog','$http',
     };
   };
 
+  // alert showing that user is already in group. Called from addUserToGroup
+  $scope.showAlert = function() {
+    $mdDialog.show(
+      $mdDialog.alert()
+        .clickOutsideToClose(true)
+        .title('This recipe has been shared with the group(s)')
+        .ariaLabel('Alert: Recipe has been shared with the group')
+        .ok('Ok')
+    );
+  };
+
   // shows modal window for group selecting (share recipe)
   $scope.shareRecipe = function(ev,recipe) {
       console.log('IN SHARE RECIPE');
@@ -63,6 +74,8 @@ myApp.controller('recipeController', ['$scope', '$location','$mdDialog','$http',
         console.log('FORMATTEDARRAY:', formattedArray);
         // Calls function that shares current recipe with the groups selected
         RecipeDataService.shareRecipeWithGroups(formattedArray, $scope.userObject.userName);
+        // Informs user that recipe has been shared
+        $scope.showAlert();
         // Cleans selection
         $scope.selectedValue = [];
       }, function() {
