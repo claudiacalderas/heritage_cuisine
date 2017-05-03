@@ -97,6 +97,7 @@ myApp.controller('recipeController', ['$scope', '$location','$mdDialog','$http',
             recipeDocument.image_url = recipe.image_url;
             recipeDocument.title = recipe.title;
             recipeDocument.steps = recipe.steps;
+            recipeDocument.favorite = recipe.favorite;
             recipeDocument.ingredients = recipe.ingredients;
             recipeDocument.categories = recipe.categories;
             arrayToPost.push(recipeDocument);

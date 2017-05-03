@@ -136,3 +136,26 @@ button:focus {
   padding-top: 30px;
   text-align:center;
 }
+
+.recipeDivContainer {
+  text-align:center;
+}
+
+.imgInRecipe {
+  width: 80%;
+  padding-bottom: 20px;
+  height: auto;
+}
+
+.listsInRecipe {
+  list-style: none;
+}
+
+.listItems {
+  color: rgba(0,0,0,0.54);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.010em;
+  margin: 0 0 0 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}

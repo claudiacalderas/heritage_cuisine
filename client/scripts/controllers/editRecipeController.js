@@ -23,7 +23,6 @@ myApp.controller('editRecipeController', ['$scope','$location','Upload','$timeou
     console.log('in editRecipe populate current recipe is:', UserService.userObject.currentRecipe);
 
     if (UserService.userObject.currentRecipe != undefined) {
-      console.log('im in');
       $scope.title = UserService.userObject.currentRecipe.title;
 
       // formats array of ingredients into view format
@@ -41,6 +40,7 @@ myApp.controller('editRecipeController', ['$scope','$location','Upload','$timeou
         $scope.stepsArray.push(step);
       }
       $scope.categoryOptions = UserService.userObject.currentRecipe.categories;
+      $scope.recipe.image_url = UserService.userObject.currentRecipe.image_url;
     }
   }
 
@@ -92,7 +92,13 @@ myApp.controller('editRecipeController', ['$scope','$location','Upload','$timeou
     }
 
     // assign image_url (from uploaded img insert into the db)
-    $scope.recipe.image_url = filename;
+    // if a new image has been selected:
+    if (filename) {
+      $scope.recipe.image_url = filename;
+    } else {
+      // keep the image on file
+      $scope.recipe.image_url = UserService.userObject.currentRecipe.image_url;;
+    }
 
     console.log('Saving recipe', $scope.recipe);
     RecipeDataService.updateRecipe($scope.recipe);
