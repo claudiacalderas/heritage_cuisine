@@ -16,9 +16,11 @@ myApp.controller('editRecipeController', ['$scope','$location','Upload','$timeou
     username: ''
   };
   $scope.categoryOptions = [];
+  // filename stores the picture filename assigned by the uploadPic function
   var filename;
 
-
+  // function that gets the currentRecipe object stored in the factory and
+  // fills out the edit form based on its information
   $scope.populate = function() {
     console.log('in editRecipe populate current recipe is:', UserService.userObject.currentRecipe);
 
@@ -44,8 +46,10 @@ myApp.controller('editRecipeController', ['$scope','$location','Upload','$timeou
     }
   }
 
+  // calling the function that fills out the edit form
   $scope.populate();
 
+  // adds a new ingredient input to the DOM
   $scope.addNewIngredient = function() {
       var newIngredientNo = $scope.ingredientsArray.length+1;
       console.log('Adding new ingredient');
@@ -53,12 +57,14 @@ myApp.controller('editRecipeController', ['$scope','$location','Upload','$timeou
       console.log('Ingredients Array is now:', $scope.ingredientsArray);
   };
 
+  // removes an ingredient input from the DOM
   $scope.removeIngredient = function(ingredient) {
       console.log('Removing ingredient');
       var ingredientIndex = $scope.ingredientsArray.indexOf(ingredient);
       $scope.ingredientsArray.splice(ingredientIndex,1);
   };
 
+  // adds a step input to the DOM
   $scope.addNewStep = function() {
       var newStepNo = $scope.stepsArray.length+1;
       console.log('Adding new step');
@@ -66,12 +72,15 @@ myApp.controller('editRecipeController', ['$scope','$location','Upload','$timeou
       console.log('Steps Array is now:', $scope.stepsArray);
   };
 
+  // removes a step input from the DOM
   $scope.removeStep = function(step) {
       console.log('Removing step');
       var stepIndex = $scope.stepsArray.indexOf(step);
       $scope.stepsArray.splice(stepIndex,1);
   };
 
+  // function that gathers information entered by the user and calls
+  // the factory function to post the recipe
   $scope.editRecipe = function() {
     // initializes arrays in recipe object
     $scope.recipe.ingredients = [];
@@ -107,7 +116,7 @@ myApp.controller('editRecipeController', ['$scope','$location','Upload','$timeou
 
   } // end of addRecipe function
 
-  // Upload file Section
+  // Upload picture file Section
   $scope.uploadPic = function(file) {
     file.upload = Upload.upload({
       url: '/uploads',

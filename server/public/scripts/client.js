@@ -12,14 +12,17 @@ myApp.config(['$routeProvider', '$locationProvider',
   $locationProvider.hashPrefix('');
 
   $routeProvider
+    // Login View
     .when('/home', {
       templateUrl: '/views/templates/home.html',
       controller: 'LoginController',
     })
+    // Register new user View
     .when('/register', {
       templateUrl: '/views/templates/register.html',
       controller: 'LoginController'
     })
+    // Main View of the app
     .when('/user', {
       templateUrl: '/views/templates/user.html',
       controller: 'UserController',
@@ -29,6 +32,7 @@ myApp.config(['$routeProvider', '$locationProvider',
         }]
       }
     })
+    // Add Recipe View
     .when('/addrecipe', {
       templateUrl: '/views/templates/addRecipe.html',
       controller: 'addRecipeController',
@@ -38,6 +42,7 @@ myApp.config(['$routeProvider', '$locationProvider',
         }]
       }
     })
+    // Edit Recipe View
     .when('/editrecipe', {
       templateUrl: '/views/templates/editRecipe.html',
       controller: 'editRecipeController',
@@ -47,6 +52,7 @@ myApp.config(['$routeProvider', '$locationProvider',
         }]
       }
     })
+    // Display Recipe View
     .when('/recipe', {
       templateUrl: '/views/templates/recipe.html',
       controller: 'recipeController',
@@ -56,6 +62,7 @@ myApp.config(['$routeProvider', '$locationProvider',
         }]
       }
     })
+    // Group List View
     .when('/grouplist', {
       templateUrl: '/views/templates/groupList.html',
       controller: 'groupListController',
@@ -65,27 +72,10 @@ myApp.config(['$routeProvider', '$locationProvider',
         }]
       }
     })
+    // Update Group View (add/remove users to group)
     .when('/updategroup', {
       templateUrl: '/views/templates/updateGroup.html',
       controller: 'updateGroupController',
-      resolve: {
-        getuser : ['UserService', function(UserService){
-          return UserService.getuser();
-        }]
-      }
-    })
-    .when('/info', {
-      templateUrl: '/views/templates/info.html',
-      controller: 'InfoController',
-      resolve: {
-        getuser : ['UserService', function(UserService){
-          return UserService.getuser();
-        }]
-      }
-    })
-    .when('/fileupload', {
-      templateUrl: '/views/templates/fileUpload.html',
-      controller: 'FileUploadController',
       resolve: {
         getuser : ['UserService', function(UserService){
           return UserService.getuser();
@@ -114,22 +104,26 @@ myApp.controller('addRecipeController', ['$scope', '$location','Upload','$timeou
     image_url: '',
     username: ''
   };
+  // default category options showed to the user, these can be deleted on the DOM
   $scope.categoryOptions = ['Dessert', 'Appetizer', 'Dinner'];
+  // filename stores the picture filename assigned by the uploadPic function
   var filename;
 
+  // adds a new ingredient input to the DOM
   $scope.addNewIngredient = function() {
       var newIngredientNo = $scope.ingredientsArray.length+1;
-      console.log('Adding new ingredient');
       $scope.ingredientsArray.push({'id':'I' + newIngredientNo});
       console.log('Ingredients Array is now:', $scope.ingredientsArray);
   };
 
+  // removes an ingredient input from the DOM
   $scope.removeIngredient = function(ingredient) {
       console.log('Removing ingredient');
       var ingredientIndex = $scope.ingredientsArray.indexOf(ingredient);
       $scope.ingredientsArray.splice(ingredientIndex,1);
   };
 
+  // adds a step input to the DOM
   $scope.addNewStep = function() {
       var newStepNo = $scope.stepsArray.length+1;
       console.log('Adding new step');
@@ -137,12 +131,15 @@ myApp.controller('addRecipeController', ['$scope', '$location','Upload','$timeou
       console.log('Steps Array is now:', $scope.stepsArray);
   };
 
+  // removes a step input from the DOM
   $scope.removeStep = function(step) {
       console.log('Removing step');
       var stepIndex = $scope.stepsArray.indexOf(step);
       $scope.stepsArray.splice(stepIndex,1);
   };
 
+  // function that gathers information entered by the user and calls
+  // the factory function to post the recipe
   $scope.addRecipe = function() {
     // initializes arrays in recipe object
     $scope.recipe.ingredients = [];
@@ -159,7 +156,6 @@ myApp.controller('addRecipeController', ['$scope', '$location','Upload','$timeou
     for (var j = 0; j < $scope.stepsArray.length; j++) {
       $scope.recipe.steps.push($scope.stepsArray[j].name);
     }
-
     // assign image_url (from uploaded img insert into the db)
     $scope.recipe.image_url = filename;
 
@@ -169,7 +165,7 @@ myApp.controller('addRecipeController', ['$scope', '$location','Upload','$timeou
     UserService.redirect('/user');
   } // end of addRecipe function
 
-  // Upload file Section
+  // Upload picture file Section
   $scope.uploadPic = function(file) {
     file.upload = Upload.upload({
       url: '/uploads',
@@ -220,9 +216,11 @@ myApp.controller('editRecipeController', ['$scope','$location','Upload','$timeou
     username: ''
   };
   $scope.categoryOptions = [];
+  // filename stores the picture filename assigned by the uploadPic function
   var filename;
 
-
+  // function that gets the currentRecipe object stored in the factory and
+  // fills out the edit form based on its information
   $scope.populate = function() {
     console.log('in editRecipe populate current recipe is:', UserService.userObject.currentRecipe);
 
@@ -248,8 +246,10 @@ myApp.controller('editRecipeController', ['$scope','$location','Upload','$timeou
     }
   }
 
+  // calling the function that fills out the edit form
   $scope.populate();
 
+  // adds a new ingredient input to the DOM
   $scope.addNewIngredient = function() {
       var newIngredientNo = $scope.ingredientsArray.length+1;
       console.log('Adding new ingredient');
@@ -257,12 +257,14 @@ myApp.controller('editRecipeController', ['$scope','$location','Upload','$timeou
       console.log('Ingredients Array is now:', $scope.ingredientsArray);
   };
 
+  // removes an ingredient input from the DOM
   $scope.removeIngredient = function(ingredient) {
       console.log('Removing ingredient');
       var ingredientIndex = $scope.ingredientsArray.indexOf(ingredient);
       $scope.ingredientsArray.splice(ingredientIndex,1);
   };
 
+  // adds a step input to the DOM
   $scope.addNewStep = function() {
       var newStepNo = $scope.stepsArray.length+1;
       console.log('Adding new step');
@@ -270,12 +272,15 @@ myApp.controller('editRecipeController', ['$scope','$location','Upload','$timeou
       console.log('Steps Array is now:', $scope.stepsArray);
   };
 
+  // removes a step input from the DOM
   $scope.removeStep = function(step) {
       console.log('Removing step');
       var stepIndex = $scope.stepsArray.indexOf(step);
       $scope.stepsArray.splice(stepIndex,1);
   };
 
+  // function that gathers information entered by the user and calls
+  // the factory function to post the recipe
   $scope.editRecipe = function() {
     // initializes arrays in recipe object
     $scope.recipe.ingredients = [];
@@ -311,7 +316,7 @@ myApp.controller('editRecipeController', ['$scope','$location','Upload','$timeou
 
   } // end of addRecipe function
 
-  // Upload file Section
+  // Upload picture file Section
   $scope.uploadPic = function(file) {
     file.upload = Upload.upload({
       url: '/uploads',
@@ -341,48 +346,6 @@ myApp.controller('editRecipeController', ['$scope','$location','Upload','$timeou
         file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
       });
     }
-
-}]);
-
-myApp.controller('FileUploadController', ['$scope', '$location','$mdDialog','$http','Upload','$timeout','UserService','GroupDataService','RecipeDataService',
-                                        function($scope, $location, $mdDialog, $http, Upload, $timeout, UserService, GroupDataService, RecipeDataService) {
-  $scope.userObject = UserService.userObject;
-  $scope.logout = UserService.logout;
-  $scope.recipe = UserService.userObject.currentRecipe;
-  $scope.groups = {};
-  $scope.uploads = [];
-
-  console.log('FileUploadController loaded');
-  console.log('current recipe is:', $scope.recipe);
-  console.log('current user is:', UserService.userObject.userName);
-
-
-  $scope.uploadPic = function(file) {
-  file.upload = Upload.upload({
-    url: '/uploads',
-    data: {name: UserService.userObject.userName, file: file},
-  });
-
-  file.upload.then(function (response) {
-    $timeout(function () {
-      file.result = response.data;
-    });
-    }, function (response) {
-      if (response.status > 0)
-        $scope.errorMsg = response.status + ': ' + response.data;
-    }, function (evt) {
-      // Math.min is to fix IE which reports 200% sometimes
-      file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
-    });
-  }
-
-
-  $http.get('/uploads').then(function(response){
-    console.log(response.data);
-    $scope.uploads = response.data;
-  });
-
-
 
 }]);
 
@@ -448,10 +411,6 @@ myApp.controller('groupListController', ['$scope', '$mdDialog', 'UserService', '
     });
   };
 
-}]);
-
-myApp.controller('InfoController', ['$scope', '$http', '$location', 'UserService', function($scope, $http, $location, UserService) {
-  $scope.logout = UserService.logout;
 }]);
 
 myApp.controller('LoginController', ['$scope', '$http', '$location', 'UserService', function($scope, $http, $location, UserService) {

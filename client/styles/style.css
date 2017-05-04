@@ -111,10 +111,6 @@ button:focus {
   padding-top: 10px;
 }
 
-.recipeSharing md-virtual-repeat-container {
-  /*border: solid 1px grey;*/
-}
-
 .recipeSharing .md-virtual-repeat-container .md-virtual-repeat-offsetter {
   padding-left: 16px;
 }
@@ -130,6 +126,10 @@ button:focus {
 
 .ingredient-input {
   width: 100%;
+}
+
+.pictureUploadContainer, .categoriesContainer {
+  padding-top: 20px;
 }
 
 .imageDiv {

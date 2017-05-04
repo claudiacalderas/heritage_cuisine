@@ -48,12 +48,15 @@
       <!-- CATEGORIES -->
       <br>
       <span>CATEGORIES </span>
-      <md-chips ng-model="categoryOptions" readonly="ctrl.readonly" md-removable="ctrl.removable"></md-chips>
+      <div class="categoriesContainer">
+        <md-chips ng-model="categoryOptions" readonly="ctrl.readonly" md-removable="ctrl.removable"></md-chips>
+      </div>
 
       <!-- PICTURE UPLOAD FORM-->
       <br>
       <br>
-      <div>
+      <span>RECIPE PICTURE </span>
+      <div class="pictureUploadContainer">
         <input type="file" ngf-select ng-model="picFile" name="file"
                accept="image/*" ngf-max-size="2MB"
                ngf-model-invalid="errorFile" aria-label="File Upload">

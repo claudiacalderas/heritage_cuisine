@@ -15,22 +15,26 @@ myApp.controller('addRecipeController', ['$scope', '$location','Upload','$timeou
     image_url: '',
     username: ''
   };
+  // default category options showed to the user, these can be deleted on the DOM
   $scope.categoryOptions = ['Dessert', 'Appetizer', 'Dinner'];
+  // filename stores the picture filename assigned by the uploadPic function
   var filename;
 
+  // adds a new ingredient input to the DOM
   $scope.addNewIngredient = function() {
       var newIngredientNo = $scope.ingredientsArray.length+1;
-      console.log('Adding new ingredient');
       $scope.ingredientsArray.push({'id':'I' + newIngredientNo});
       console.log('Ingredients Array is now:', $scope.ingredientsArray);
   };
 
+  // removes an ingredient input from the DOM
   $scope.removeIngredient = function(ingredient) {
       console.log('Removing ingredient');
       var ingredientIndex = $scope.ingredientsArray.indexOf(ingredient);
       $scope.ingredientsArray.splice(ingredientIndex,1);
   };
 
+  // adds a step input to the DOM
   $scope.addNewStep = function() {
       var newStepNo = $scope.stepsArray.length+1;
       console.log('Adding new step');
@@ -38,12 +42,15 @@ myApp.controller('addRecipeController', ['$scope', '$location','Upload','$timeou
       console.log('Steps Array is now:', $scope.stepsArray);
   };
 
+  // removes a step input from the DOM
   $scope.removeStep = function(step) {
       console.log('Removing step');
       var stepIndex = $scope.stepsArray.indexOf(step);
       $scope.stepsArray.splice(stepIndex,1);
   };
 
+  // function that gathers information entered by the user and calls
+  // the factory function to post the recipe
   $scope.addRecipe = function() {
     // initializes arrays in recipe object
     $scope.recipe.ingredients = [];
@@ -60,7 +67,6 @@ myApp.controller('addRecipeController', ['$scope', '$location','Upload','$timeou
     for (var j = 0; j < $scope.stepsArray.length; j++) {
       $scope.recipe.steps.push($scope.stepsArray[j].name);
     }
-
     // assign image_url (from uploaded img insert into the db)
     $scope.recipe.image_url = filename;
 
@@ -70,7 +76,7 @@ myApp.controller('addRecipeController', ['$scope', '$location','Upload','$timeou
     UserService.redirect('/user');
   } // end of addRecipe function
 
-  // Upload file Section
+  // Upload picture file Section
   $scope.uploadPic = function(file) {
     file.upload = Upload.upload({
       url: '/uploads',
