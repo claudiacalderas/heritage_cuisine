@@ -8,7 +8,7 @@ myApp.controller('groupListController', ['$scope', '$mdDialog', 'UserService', '
   console.log('user in grouplist scope: ', $scope.userObject.userName);
   GroupDataService.getGroups($scope.userObject.userName);
 
-  // changes to view that shows group detailed information
+  // redirects to view that shows group detailed information
   $scope.viewGroup = function(group) {
     UserService.userObject.currentGroup = group;
     UserService.redirect('/updategroup');
@@ -37,7 +37,6 @@ myApp.controller('groupListController', ['$scope', '$mdDialog', 'UserService', '
   $scope.leave = function(group) {
     console.log('leave group button clicked');
     console.log('group is', group);
-    console.log('username is',UserService.userObject.userName);
     var index = group.users.indexOf(UserService.userObject.userName);
     group.users.splice(index);
     console.log('new group is', group);

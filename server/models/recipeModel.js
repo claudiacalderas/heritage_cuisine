@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 
+// Recipe Schema
 var FamilyRecipeSchema = mongoose.Schema({
   title : String,
   categories : [],

@@ -16,7 +16,6 @@ var register = require('./routes/register');
 var recipe = require('./routes/recipe');
 var group = require('./routes/group');
 
-
 // Body parser middleware
 app.use(logger('dev'));
 app.use(bodyParser.json());

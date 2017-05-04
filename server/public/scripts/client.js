@@ -3,8 +3,7 @@ var myApp = angular.module('myApp', ['ngRoute','ngMaterial','ngFileUpload']);
 // Angular Material Theme Configuration
 myApp.config(['$mdThemingProvider', function($mdThemingProvider) {
    $mdThemingProvider.theme('altTheme').primaryPalette('grey').accentPalette('blue-grey');
-  // $mdThemingProvider.disableTheming();
- }]);
+}]);
 
 /// Routes ///
 myApp.config(['$routeProvider', '$locationProvider',
@@ -359,7 +358,7 @@ myApp.controller('groupListController', ['$scope', '$mdDialog', 'UserService', '
   console.log('user in grouplist scope: ', $scope.userObject.userName);
   GroupDataService.getGroups($scope.userObject.userName);
 
-  // changes to view that shows group detailed information
+  // redirects to view that shows group detailed information
   $scope.viewGroup = function(group) {
     UserService.userObject.currentGroup = group;
     UserService.redirect('/updategroup');
@@ -388,7 +387,6 @@ myApp.controller('groupListController', ['$scope', '$mdDialog', 'UserService', '
   $scope.leave = function(group) {
     console.log('leave group button clicked');
     console.log('group is', group);
-    console.log('username is',UserService.userObject.userName);
     var index = group.users.indexOf(UserService.userObject.userName);
     group.users.splice(index);
     console.log('new group is', group);
@@ -414,57 +412,59 @@ myApp.controller('groupListController', ['$scope', '$mdDialog', 'UserService', '
 }]);
 
 myApp.controller('LoginController', ['$scope', '$http', '$location', 'UserService', function($scope, $http, $location, UserService) {
-    $scope.user = {
-      username: '',
-      password: ''
-    };
-    $scope.message = '';
+  $scope.user = {
+    username: '',
+    password: ''
+  };
+  $scope.message = '';
 
-    $scope.login = function() {
-      if($scope.user.username === '' || $scope.user.password === '') {
-        $scope.message = "Enter your username and password!";
-      } else {
-        console.log('sending to server...', $scope.user);
-        $http.post('/', $scope.user).then(function(response) {
-          if(response.data.username) {
-            UserService.userObject.userName = response.data.username;
-            console.log('success: ', response.data);
-            // location works with SPA (ng-route)
-            $location.path('/user');
-          } else {
-            console.log('failure: ', response);
-            $scope.message = "Invalid combination of username and password.";
-          }
-        });
-      }
-    };
-
-    $scope.registerUser = function() {
-      if($scope.user.username === '' || $scope.user.password === '') {
-        $scope.message = "Choose a username and password!";
-      } else {
-        console.log('sending to server...', $scope.user);
-        $http.post('/register', $scope.user).then(function(response) {
-          console.log('success');
-          $location.path('/home');
-        },
-        function(response) {
-          console.log('error');
-          $scope.message = "Please try again."
-        });
-      }
+  // logs a user into the system
+  $scope.login = function() {
+    if($scope.user.username === '' || $scope.user.password === '') {
+      $scope.message = "Enter your username and password!";
+    } else {
+      console.log('sending to server...', $scope.user);
+      $http.post('/', $scope.user).then(function(response) {
+        if(response.data.username) {
+          UserService.userObject.userName = response.data.username;
+          console.log('success: ', response.data);
+          // location works with SPA (ng-route)
+          $location.path('/user');
+        } else {
+          console.log('failure: ', response);
+          $scope.message = "Invalid combination of username and password.";
+        }
+      });
     }
+  };
+
+  // registers a new user
+  $scope.registerUser = function() {
+    if($scope.user.username === '' || $scope.user.password === '') {
+      $scope.message = "Choose a username and password!";
+    } else {
+      console.log('sending to server...', $scope.user);
+      $http.post('/register', $scope.user).then(function(response) {
+        console.log('success');
+        $location.path('/home');
+      },
+      function(response) {
+        console.log('error');
+        $scope.message = "Please try again."
+      });
+    }
+  };
 }]);
 
 myApp.controller('navBarController', ['$scope', '$location','UserService', function($scope, $location, UserService) {
-    var originatorEv;
-    $scope.redirect = UserService.redirect;
+  var originatorEv;
+  $scope.redirect = UserService.redirect;
 
-
-    $scope.openMenu = function($mdMenu, ev) {
-      originatorEv = ev;
-      $mdMenu.open(ev);
-    };
+  // Displays menu options
+  $scope.openMenu = function($mdMenu, ev) {
+    originatorEv = ev;
+    $mdMenu.open(ev);
+  };
 
 }]);
 
@@ -480,11 +480,13 @@ myApp.controller('recipeController', ['$scope', '$location','$mdDialog','$http',
   console.log('recipeController loaded');
   console.log('current recipe is:', $scope.recipe);
   console.log('current user is:', UserService.userObject.userName);
+
+  // loads user's groups in case user shares recipe
   GroupDataService.getGroups(UserService.userObject.userName);
   $scope.groups = GroupDataService.groupsObject;
-  console.log('GROUPS LOADED (JUST IN CASE)',$scope.groups);
+  console.log('GROUPS LOADED:',$scope.groups);
 
-  // Changes view to edit Recipe view
+  // Redirects to Edit Recipe view
   $scope.editRecipe = function(recipe) {
     console.log('edit recipe clicked',recipe);
     UserService.userObject.currentRecipe = recipe;
@@ -554,7 +556,8 @@ myApp.controller('recipeController', ['$scope', '$location','$mdDialog','$http',
       });
     };
 
-    // creates an array in the format expected by the database with the recipe/user information
+    // Creates an array in the format expected by the database with the recipe/user information
+    // for Recipe Sharing
     function formatShareArray(groupsSelected,recipe) {
       var arrayToPost = [];
       console.log('groupsSelected', groupsSelected);
@@ -601,7 +604,7 @@ myApp.controller('updateGroupController', ['$scope', '$log', '$http', '$mdDialog
   console.log('current group is:', $scope.group);
   console.log('current user is:', UserService.userObject.userName);
 
-  // loads autocomplete element to search for users
+  // Loads autocomplete element to search for users
   $scope.makeAddUsersVisible = function() {
     // directly getting info from the controller to avoid problems getting data due
     // to asynchronous execution of functions
@@ -616,25 +619,26 @@ myApp.controller('updateGroupController', ['$scope', '$log', '$http', '$mdDialog
       $scope.searchTextChange = searchTextChange;
       $scope.visible = true;
     });
-  }
+  };
 
   // function used by autocomplete element to serch within users
   function userSearch (query) {
     var results = query ? $scope.repos.filter( createFilterFor(query) ) : $scope.repos, deferred;
     return results;
-  }
+  };
 
-  // logs user data entry
+  // Logs user data entry
   function searchTextChange(text) {
     $scope.addVisible = false;
     $log.info('Text changed to ' + text);
-  }
+  };
 
+  // If a user has been selected, saves the username and makes add button visible
   function selectedItemChange(item) {
     $log.info('Item changed to ' + JSON.stringify(item));
     $scope.userToAdd = item;
     $scope.addVisible = true;
-  }
+  };
 
   // load results of query in autocomplete element
   function loadAll() {
@@ -645,7 +649,7 @@ myApp.controller('updateGroupController', ['$scope', '$log', '$http', '$mdDialog
       repo.value = repo.name.toLowerCase();
       return repo;
     });
-  }
+  };
 
   // Create filter function for a query string
   function createFilterFor(query) {
@@ -653,19 +657,20 @@ myApp.controller('updateGroupController', ['$scope', '$log', '$http', '$mdDialog
     return function filterFn(item) {
       return (item.value.indexOf(lowercaseQuery) === 0);
     };
-  }
+  };
 
   // alert showing that user is already in group. Called from addUserToGroup
-  $scope.showAlert = function() {
+  $scope.showAlert = function(message) {
     $mdDialog.show(
       $mdDialog.alert()
         .clickOutsideToClose(true)
-        .title('This user is already in the group')
-        .ariaLabel('Alert User already in Group')
+        .title(message)
+        .ariaLabel(message)
         .ok('Ok')
     );
   };
 
+  // Updates the array that holds users in the group
   $scope.addUserToGroup = function() {
     console.log('addUserToGroup button clicked user is:', $scope.userToAdd.username);
     var inGroup = false;
@@ -678,21 +683,34 @@ myApp.controller('updateGroupController', ['$scope', '$log', '$http', '$mdDialog
       $scope.group.users.push($scope.userToAdd.username);
     } else {
       // show alert message - user already in group
-      $scope.showAlert();
+      $scope.showAlert('This user is already in the group');
       inGroup = false;
     }
-  }
+  };
 
+  // confirms that admin stays in group (in case user has deleted it)
+  function confirmsAdminInGroup() {
+    var adminInGroup = false;
+    for (var i = 0; i < $scope.group.users.length; i++) {
+      if ($scope.group.user_admin === $scope.group.users[i]) {
+        adminInGroup = true;
+      }
+    };
+    // Adds admin if it is not in the group and shows alert to user
+    if (!adminInGroup) {
+      $scope.group.users.unshift($scope.group.user_admin);
+      $scope.showAlert('The group administrator cannot be deleted from the group');
+    }
+  };
+
+  // Calls function in the factory that updates group's users information
   $scope.update = function() {
     console.log('updateGroup button clicked',$scope.group);
+    confirmsAdminInGroup();
     // calls factory function to update group in the database
     GroupDataService.updateGroup($scope.group,UserService.userObject.userName);
     UserService.redirect('/grouplist');
-  }
-
-  $scope.error = function() {
-    console.log("error");
-  }
+  };
 
 }]);
 
@@ -706,8 +724,12 @@ myApp.controller('UserController', ['$scope', '$http', '$location', '$mdDialog',
 
   console.log('STEP 2: retrieve username');
   console.log($scope.userObject);
+  
+  // Gets all recipes in the recipe book for logged user
   RecipeDataService.getRecipes($scope.userObject.userName);
 
+  // Calls factory functions to search recipe by name or get all recipes
+  // if the search input is empty
   $scope.search = function() {
     console.log('search button clicked',$scope.searchString);
     if ($scope.searchString != "") {
@@ -717,13 +739,14 @@ myApp.controller('UserController', ['$scope', '$http', '$location', '$mdDialog',
     }
   };
 
+  // Redirects to Recipe View
   $scope.viewRecipe = function(recipe) {
     console.log('view recipe clicked',recipe);
     UserService.userObject.currentRecipe = recipe;
     UserService.redirect('/recipe');
   };
 
-  // modal window that confirms recipe deletion
+  // Modal window that confirms recipe deletion
   $scope.showConfirm = function(ev,recipe) {
     var confirm = $mdDialog.confirm()
           .title('Would you like to delete this recipe?')
@@ -739,6 +762,7 @@ myApp.controller('UserController', ['$scope', '$http', '$location', '$mdDialog',
     });
   };
 
+  // Switches between favorite/notfavorite when user clicks on star icon
   $scope.toggleFavorite = function(recipe) {
     console.log('toggleFavorite clicked',recipe);
     // changes recipe's favorite field
@@ -753,10 +777,12 @@ myApp.factory('GroupDataService', ['$http', '$location', function($http, $locati
 
   console.log('Recipe Data Service Loaded');
 
+  // Stores all groups associated with the logged user
   var groupsObject = {
     allGroups: []
   };
 
+  // Gets all groups related to the specified user
   getGroups = function(user){
     var username = angular.copy(user);
     console.log('in getGroups with user', username);
@@ -767,6 +793,7 @@ myApp.factory('GroupDataService', ['$http', '$location', function($http, $locati
     });
   };
 
+  // Adds a new group assigning the specified user as the admin
   newGroup = function(group, user) {
     var name = angular.copy(group);
     var username = angular.copy(user);
@@ -782,6 +809,7 @@ myApp.factory('GroupDataService', ['$http', '$location', function($http, $locati
     });
   };
 
+  // Updates users in group
   updateGroup = function(group, user) {
     var groupToUpdate = angular.copy(group);
     var username = angular.copy(user);
@@ -792,6 +820,7 @@ myApp.factory('GroupDataService', ['$http', '$location', function($http, $locati
     });
   };
 
+  // Deletes a group
   deleteGroup = function(group) {
     console.log('Deleting group: ',group);
     var username = group.user_admin;
@@ -814,14 +843,15 @@ myApp.factory('RecipeDataService', ['$http', '$location', function($http, $locat
 
   console.log('Recipe Data Service Loaded');
 
+  // Stores all recipes associated with the logged user
   var recipesObject = {
     allRecipes: []
   };
 
+  // Gets all recipes in the database for a specific uset
   getRecipes = function(user){
     var username = angular.copy(user);
     console.log('in getRecipes with user', username);
-
     $http.get('/recipe/' + username).then(function(response) {
       console.log('Back from the server with:', response);
       recipesObject.allRecipes = response.data;
@@ -829,6 +859,7 @@ myApp.factory('RecipeDataService', ['$http', '$location', function($http, $locat
     });
   };
 
+  // Searches recipes based on a specific user and by recipe name
   searchRecipes = function(user,searchString){
     var username = angular.copy(user);
     console.log('in searchRecipes with user', username);
@@ -840,6 +871,7 @@ myApp.factory('RecipeDataService', ['$http', '$location', function($http, $locat
     });
   };
 
+  // Posts a new recipe to the database
   postRecipe = function(recipe) {
     var recipeToPost = angular.copy(recipe);
     var username = recipeToPost.username;
@@ -849,6 +881,7 @@ myApp.factory('RecipeDataService', ['$http', '$location', function($http, $locat
     });
   };
 
+  // Updates a specific recipe
   updateRecipe = function(recipe) {
     var recipeToUpdate = angular.copy(recipe);
     var username = recipeToUpdate.username;
@@ -858,6 +891,7 @@ myApp.factory('RecipeDataService', ['$http', '$location', function($http, $locat
     });
   };
 
+  // Deletes a specific recipe
   deleteRecipe = function(recipe) {
     console.log('Deleting recipe: ',recipe);
     var username = recipe.username;
@@ -866,6 +900,8 @@ myApp.factory('RecipeDataService', ['$http', '$location', function($http, $locat
     });
   };
 
+  // Shares a recipe with selected users. Receives an array with the documents
+  // that will be inserted in the recipes collection
   shareRecipeWithGroups = function(arrayToPost, user) {
     console.log('Sharing recipes: ', arrayToPost);
     $http.post('/recipe/share', arrayToPost).then(function(response) {
@@ -888,9 +924,11 @@ myApp.factory('RecipeDataService', ['$http', '$location', function($http, $locat
 myApp.factory('UserService', ['$http', '$location', function($http, $location){
   console.log('User Service Loaded');
 
+  // Stores logged user information (username, current recipe, current group)
   var userObject = {};
-  
-  var redirect = function(page){
+
+  // Redirects to view received as a parameter
+  function redirect(page) {
     console.log('inpage navigation', page);
     $location.url(page);
   }
@@ -898,26 +936,26 @@ myApp.factory('UserService', ['$http', '$location', function($http, $location){
   return {
     userObject : userObject,
     redirect : redirect,
-
+    // Gets logged user
     getuser : function(){
       $http.get('/user').then(function(response) {
         console.log('STEP 1: assign username');
         if(response.data.username) {
-            // user has a curret session on the server
-            userObject.userName = response.data.username;
-            console.log('User Data: ', userObject.userName);
+          // user has a curret session on the server
+          userObject.userName = response.data.username;
+          console.log('User Data: ', userObject.userName);
         } else {
-            // user has no session, bounce them back to the login page
-            $location.path("/home");
+          // user has no session, bounce them back to the login page
+          $location.path("/home");
         }
       });
     },
-
+    // Logs out the user
     logout : function() {
-        $http.get('/user/logout').then(function(response) {
-          console.log('logged out');
-          $location.path("/home");
-        });
+      $http.get('/user/logout').then(function(response) {
+        console.log('logged out');
+        $location.path("/home");
+      });
     }
   };
 }]);

@@ -3,8 +3,7 @@ var myApp = angular.module('myApp', ['ngRoute','ngMaterial','ngFileUpload']);
 // Angular Material Theme Configuration
 myApp.config(['$mdThemingProvider', function($mdThemingProvider) {
    $mdThemingProvider.theme('altTheme').primaryPalette('grey').accentPalette('blue-grey');
-  // $mdThemingProvider.disableTheming();
- }]);
+}]);
 
 /// Routes ///
 myApp.config(['$routeProvider', '$locationProvider',

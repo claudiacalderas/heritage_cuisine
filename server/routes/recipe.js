@@ -3,7 +3,6 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var Recipe = require('../models/recipeModel');
 
-
 // gets all recipes from the database
 router.get('/:user', function(req,res){
   console.log("/recipe get route hit");

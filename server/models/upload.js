@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 
+// Picture upload Schema
 var UploadSchema = mongoose.Schema({
   name: String,
   created: Date,

@@ -4,9 +4,8 @@ var fs = require('fs');
 var Upload = require('../models/upload');
 var multer = require('multer');
 var upload = multer({dest: 'uploads/'});
-/**
- * Create's the file in the database
- */
+
+// Create's the file in the database
 router.post('/', upload.single('file'), function (req, res, next) {
   console.log(req.body);
   console.log(req.file);
@@ -24,9 +23,7 @@ router.post('/', upload.single('file'), function (req, res, next) {
   });
 });
 
-/**
- * Gets the list of all files from the database
- */
+// Gets the list of all files from the database
 router.get('/', function (req, res, next) {
   Upload.find({},  function (err, uploads) {
     if (err) next(err);
@@ -36,9 +33,7 @@ router.get('/', function (req, res, next) {
   });
 });
 
-/**
- * Gets a file from the hard drive based on the unique ID and the filename
- */
+// Gets a file from the hard drive based on the unique ID and the filename
 router.get('/:uuid/:filename', function (req, res, next) {
   console.log(req.params);
   Upload.findOne({

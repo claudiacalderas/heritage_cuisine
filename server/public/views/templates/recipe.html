@@ -1,3 +1,4 @@
+<!-- NAVIGATION BAR INCLUDED -->
 <div ng-include="'views/partials/nav.html'"></div>
 
 <!-- MENU OPTION FOR THIS VIEW IS EDIT RECIPE -->
@@ -15,33 +16,33 @@
   <div layout-md="column" flex="20"></div>
   <div layout="column" flex="60">
 
-      <!-- RECIPE NAME -->
-      <h1>{{recipe.title}} </h1>
+    <!-- RECIPE NAME -->
+    <h1>{{recipe.title}} </h1>
 
-      <!-- RECIPE PHOTO -->
-      <div class="recipeDivContainer">
-        <img class="imgInRecipe" src={{recipe.image_url}} alt="">
-      </div>
+    <!-- RECIPE PHOTO -->
+    <div class="recipeDivContainer">
+      <img class="imgInRecipe" src={{recipe.image_url}} alt="">
+    </div>
 
-      <!-- INGREDIENTS LIST -->
-      <span>INGREDIENTS </span>
-      <ul class="listsInRecipe">
-        <li class="listItems listsInRecipe" ng-repeat="ingredient in recipe.ingredients track by $index">
-          {{ingredient}}
-        </li>
-      </ul>
+    <!-- INGREDIENTS LIST -->
+    <span>INGREDIENTS </span>
+    <ul class="listsInRecipe">
+      <li class="listItems listsInRecipe" ng-repeat="ingredient in recipe.ingredients track by $index">
+        {{ingredient}}
+      </li>
+    </ul>
 
-      <!-- PREPARATION STEPS -->
-      <span>PREPARATION </span>
-      <ol>
-        <li class="listItems" ng-repeat="step in recipe.steps track by $index">
-          <p>{{step}}</p>
-        </li>
-      </ol>
+    <!-- PREPARATION STEPS -->
+    <span>PREPARATION </span>
+    <ol>
+      <li class="listItems" ng-repeat="step in recipe.steps track by $index">
+        <p>{{step}}</p>
+      </li>
+    </ol>
 
-      <!-- CATEGORIES -->
-      <span>CATEGORIES </span>
-      <br>
-      <md-chips ng-model="recipe.categories" readonly="true" md-removable="false"></md-chips>
+    <!-- CATEGORIES -->
+    <span>CATEGORIES </span>
+    <br>
+    <md-chips ng-model="recipe.categories" readonly="true" md-removable="false"></md-chips>
   </div>
 </div>

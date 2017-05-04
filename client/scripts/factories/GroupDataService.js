@@ -2,10 +2,12 @@ myApp.factory('GroupDataService', ['$http', '$location', function($http, $locati
 
   console.log('Recipe Data Service Loaded');
 
+  // Stores all groups associated with the logged user
   var groupsObject = {
     allGroups: []
   };
 
+  // Gets all groups related to the specified user
   getGroups = function(user){
     var username = angular.copy(user);
     console.log('in getGroups with user', username);
@@ -16,6 +18,7 @@ myApp.factory('GroupDataService', ['$http', '$location', function($http, $locati
     });
   };
 
+  // Adds a new group assigning the specified user as the admin
   newGroup = function(group, user) {
     var name = angular.copy(group);
     var username = angular.copy(user);
@@ -31,6 +34,7 @@ myApp.factory('GroupDataService', ['$http', '$location', function($http, $locati
     });
   };
 
+  // Updates users in group
   updateGroup = function(group, user) {
     var groupToUpdate = angular.copy(group);
     var username = angular.copy(user);
@@ -41,6 +45,7 @@ myApp.factory('GroupDataService', ['$http', '$location', function($http, $locati
     });
   };
 
+  // Deletes a group
   deleteGroup = function(group) {
     console.log('Deleting group: ',group);
     var username = group.user_admin;
