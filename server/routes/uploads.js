@@ -1,9 +1,31 @@
 var express = require('express');
 var router = express.Router();
+var aws = require('aws-sdk')
 var fs = require('fs');
 var Upload = require('../models/upload');
 var multer = require('multer');
-var upload = multer({dest: 'uploads/'});
+var multerS3 = require('multer-s3');
+
+if(process.env.S3_BUCKET != undefined) {
+  // use Amazon Web Services to store files
+  var s3 = new aws.S3();
+  var upload = multer({
+    storage: multerS3({
+            s3: s3,
+            bucket: process.env.S3_BUCKET;,
+            metadata: function (req, file, cb) {
+              cb(null, {fieldName: file.fieldname});
+            },
+            key: function (req, file, cb) {
+              cb(null, Date.now().toString())
+            }
+          })
+  });
+} else {
+  // use the local storage server
+  var upload = multer({dest: 'uploads/'});
+};
+
 
 // Create's the file in the database
 router.post('/', upload.single('file'), function (req, res, next) {
