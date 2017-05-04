@@ -27,7 +27,7 @@ if(process.env.S3_BUCKET != undefined) {
 };
 
 
-// Create's the file in the database
+// Creates the file in the database
 router.post('/', upload.single('file'), function (req, res, next) {
   console.log(req.body);
   console.log(req.file);

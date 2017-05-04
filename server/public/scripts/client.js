@@ -177,7 +177,7 @@ myApp.controller('addRecipeController', ['$scope', '$location','Upload','$timeou
       // filename in localhost:
       // filename = response.data.file.path + "/" + response.data.file.originalname;
       // updated filename that works with aws
-      filename = "https://s3.amazonaws.com/" + response.data.file.bucket + "/" + response.data.created + "/" + response.data.file.originalname;
+      filename = response.data.file.location;
       console.log('URL is:',filename);
 
       $timeout(function () {
@@ -186,7 +186,7 @@ myApp.controller('addRecipeController', ['$scope', '$location','Upload','$timeou
         // filename in localhost:
         // filename = response.data.file.path + "/" + response.data.file.originalname;
         // updated filename that works with aws
-        filename = "https://s3.amazonaws.com/" + response.data.file.bucket + "/" + response.data.created + "/" + response.data.file.originalname;
+        filename = response.data.file.location;
         console.log('URL is:',filename);
 
       });
