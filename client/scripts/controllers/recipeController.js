@@ -10,11 +10,13 @@ myApp.controller('recipeController', ['$scope', '$location','$mdDialog','$http',
   console.log('recipeController loaded');
   console.log('current recipe is:', $scope.recipe);
   console.log('current user is:', UserService.userObject.userName);
+
+  // loads user's groups in case user shares recipe
   GroupDataService.getGroups(UserService.userObject.userName);
   $scope.groups = GroupDataService.groupsObject;
-  console.log('GROUPS LOADED (JUST IN CASE)',$scope.groups);
+  console.log('GROUPS LOADED:',$scope.groups);
 
-  // Changes view to edit Recipe view
+  // Redirects to Edit Recipe view
   $scope.editRecipe = function(recipe) {
     console.log('edit recipe clicked',recipe);
     UserService.userObject.currentRecipe = recipe;
@@ -36,6 +38,17 @@ myApp.controller('recipeController', ['$scope', '$location','$mdDialog','$http',
     dialogCtrl.cancel = function() {
       $mdDialog.cancel();
     };
+  };
+
+  // alert showing that user is already in group. Called from addUserToGroup
+  $scope.showAlert = function() {
+    $mdDialog.show(
+      $mdDialog.alert()
+        .clickOutsideToClose(true)
+        .title('This recipe has been shared with the group(s)')
+        .ariaLabel('Alert: Recipe has been shared with the group')
+        .ok('Ok')
+    );
   };
 
   // shows modal window for group selecting (share recipe)
@@ -63,6 +76,8 @@ myApp.controller('recipeController', ['$scope', '$location','$mdDialog','$http',
         console.log('FORMATTEDARRAY:', formattedArray);
         // Calls function that shares current recipe with the groups selected
         RecipeDataService.shareRecipeWithGroups(formattedArray, $scope.userObject.userName);
+        // Informs user that recipe has been shared
+        $scope.showAlert();
         // Cleans selection
         $scope.selectedValue = [];
       }, function() {
@@ -71,7 +86,8 @@ myApp.controller('recipeController', ['$scope', '$location','$mdDialog','$http',
       });
     };
 
-    // creates an array in the format expected by the database with the recipe/user information
+    // Creates an array in the format expected by the database with the recipe/user information
+    // for Recipe Sharing
     function formatShareArray(groupsSelected,recipe) {
       var arrayToPost = [];
       console.log('groupsSelected', groupsSelected);
@@ -84,6 +100,7 @@ myApp.controller('recipeController', ['$scope', '$location','$mdDialog','$http',
             recipeDocument.image_url = recipe.image_url;
             recipeDocument.title = recipe.title;
             recipeDocument.steps = recipe.steps;
+            recipeDocument.favorite = recipe.favorite;
             recipeDocument.ingredients = recipe.ingredients;
             recipeDocument.categories = recipe.categories;
             arrayToPost.push(recipeDocument);

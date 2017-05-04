@@ -8,8 +8,12 @@ myApp.controller('UserController', ['$scope', '$http', '$location', '$mdDialog',
 
   console.log('STEP 2: retrieve username');
   console.log($scope.userObject);
+  
+  // Gets all recipes in the recipe book for logged user
   RecipeDataService.getRecipes($scope.userObject.userName);
 
+  // Calls factory functions to search recipe by name or get all recipes
+  // if the search input is empty
   $scope.search = function() {
     console.log('search button clicked',$scope.searchString);
     if ($scope.searchString != "") {
@@ -19,13 +23,14 @@ myApp.controller('UserController', ['$scope', '$http', '$location', '$mdDialog',
     }
   };
 
+  // Redirects to Recipe View
   $scope.viewRecipe = function(recipe) {
     console.log('view recipe clicked',recipe);
     UserService.userObject.currentRecipe = recipe;
     UserService.redirect('/recipe');
   };
 
-  // modal window that confirms recipe deletion
+  // Modal window that confirms recipe deletion
   $scope.showConfirm = function(ev,recipe) {
     var confirm = $mdDialog.confirm()
           .title('Would you like to delete this recipe?')
@@ -41,6 +46,7 @@ myApp.controller('UserController', ['$scope', '$http', '$location', '$mdDialog',
     });
   };
 
+  // Switches between favorite/notfavorite when user clicks on star icon
   $scope.toggleFavorite = function(recipe) {
     console.log('toggleFavorite clicked',recipe);
     // changes recipe's favorite field

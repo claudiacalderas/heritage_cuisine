@@ -2,14 +2,15 @@ myApp.factory('RecipeDataService', ['$http', '$location', function($http, $locat
 
   console.log('Recipe Data Service Loaded');
 
+  // Stores all recipes associated with the logged user
   var recipesObject = {
     allRecipes: []
   };
 
+  // Gets all recipes in the database for a specific uset
   getRecipes = function(user){
     var username = angular.copy(user);
     console.log('in getRecipes with user', username);
-
     $http.get('/recipe/' + username).then(function(response) {
       console.log('Back from the server with:', response);
       recipesObject.allRecipes = response.data;
@@ -17,6 +18,7 @@ myApp.factory('RecipeDataService', ['$http', '$location', function($http, $locat
     });
   };
 
+  // Searches recipes based on a specific user and by recipe name
   searchRecipes = function(user,searchString){
     var username = angular.copy(user);
     console.log('in searchRecipes with user', username);
@@ -28,6 +30,7 @@ myApp.factory('RecipeDataService', ['$http', '$location', function($http, $locat
     });
   };
 
+  // Posts a new recipe to the database
   postRecipe = function(recipe) {
     var recipeToPost = angular.copy(recipe);
     var username = recipeToPost.username;
@@ -37,6 +40,7 @@ myApp.factory('RecipeDataService', ['$http', '$location', function($http, $locat
     });
   };
 
+  // Updates a specific recipe
   updateRecipe = function(recipe) {
     var recipeToUpdate = angular.copy(recipe);
     var username = recipeToUpdate.username;
@@ -46,6 +50,7 @@ myApp.factory('RecipeDataService', ['$http', '$location', function($http, $locat
     });
   };
 
+  // Deletes a specific recipe
   deleteRecipe = function(recipe) {
     console.log('Deleting recipe: ',recipe);
     var username = recipe.username;
@@ -54,6 +59,8 @@ myApp.factory('RecipeDataService', ['$http', '$location', function($http, $locat
     });
   };
 
+  // Shares a recipe with selected users. Receives an array with the documents
+  // that will be inserted in the recipes collection
   shareRecipeWithGroups = function(arrayToPost, user) {
     console.log('Sharing recipes: ', arrayToPost);
     $http.post('/recipe/share', arrayToPost).then(function(response) {

@@ -1,13 +1,29 @@
 var mongoose = require('mongoose');
-var mongoURI = 'mongodb://localhost:27017/general';
-var MongoDB = mongoose.connect(mongoURI).connection;
 
-MongoDB.on('error', function(err){
-  console.log('Mongo Connection Error: ' + err);
+// Mongo Connection //
+var mongoURI = '';
+// process.env.MONGODB_URI will only be defined if you
+// are running on Heroku
+if(process.env.MONGODB_URI != undefined) {
+  // use the string value of the environment variable
+  mongoURI = process.env.MONGODB_URI;
+} else {
+  // use the local database server
+  mongoURI = 'mongodb://localhost:27017/heritagecuisine';
+  // mongoURI = 'mongodb://admin:12345@ds131511.mlab.com:31511/heritagecuisine';
+}
+
+var mongoDB = mongoose.connect(mongoURI).connection;
+
+mongoDB.on('error', function(err){
+ if(err) {
+   console.log("MONGO ERROR: ", err);
+ }
+ res.sendStatus(500);
 });
 
-MongoDB.once('open', function(){
-  console.log('Connected to Mongo');
+mongoDB.once('open', function(){
+  console.log("Connected to Mongo, meow!");
 });
 
-module.exports = MongoDB;
+module.exports = mongoDB;

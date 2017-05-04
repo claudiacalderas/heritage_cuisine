@@ -1,3 +1,4 @@
+<!-- NAVIGATION BAR INCLUDED -->
 <div ng-include="'views/partials/nav.html'"></div>
 
 <!-- MENU OPTION FOR THIS VIEW IS ADD USERS TO GROUP -->
@@ -9,9 +10,10 @@
   </md-menu-bar>
 </div>
 
+<!-- AUTOCOMPLETE SEARCH INPUT (FOR USER SELECTION) -->
 <div layout="row">
-  <div layout-md="column" flex="10"></div>
-  <div layout="column" flex="80">
+  <div layout-md="column" flex="20"></div>
+  <div layout="column" flex="60">
     <div layout="row">
       <md-content class="searchAutocomplete" ng-show="visible" layout-padding layout="column">
         <form ng-submit="$event.preventDefault()">

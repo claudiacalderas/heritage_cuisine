@@ -1,5 +1,5 @@
-myApp.controller('editRecipeController', ['$scope', '$location','UserService', 'RecipeDataService',
-                                        function($scope, $location, UserService, RecipeDataService) {
+myApp.controller('editRecipeController', ['$scope','$location','Upload','$timeout','UserService','RecipeDataService',
+                                        function($scope,$location,Upload,$timeout,UserService,RecipeDataService) {
   $scope.userObject = UserService.userObject;
   $scope.logout = UserService.logout;
   $scope.redirect = UserService.redirect;
@@ -16,12 +16,15 @@ myApp.controller('editRecipeController', ['$scope', '$location','UserService', '
     username: ''
   };
   $scope.categoryOptions = [];
+  // filename stores the picture filename assigned by the uploadPic function
+  var filename;
 
+  // function that gets the currentRecipe object stored in the factory and
+  // fills out the edit form based on its information
   $scope.populate = function() {
     console.log('in editRecipe populate current recipe is:', UserService.userObject.currentRecipe);
 
     if (UserService.userObject.currentRecipe != undefined) {
-      console.log('im in');
       $scope.title = UserService.userObject.currentRecipe.title;
 
       // formats array of ingredients into view format
@@ -39,11 +42,14 @@ myApp.controller('editRecipeController', ['$scope', '$location','UserService', '
         $scope.stepsArray.push(step);
       }
       $scope.categoryOptions = UserService.userObject.currentRecipe.categories;
+      $scope.recipe.image_url = UserService.userObject.currentRecipe.image_url;
     }
   }
 
+  // calling the function that fills out the edit form
   $scope.populate();
 
+  // adds a new ingredient input to the DOM
   $scope.addNewIngredient = function() {
       var newIngredientNo = $scope.ingredientsArray.length+1;
       console.log('Adding new ingredient');
@@ -51,12 +57,14 @@ myApp.controller('editRecipeController', ['$scope', '$location','UserService', '
       console.log('Ingredients Array is now:', $scope.ingredientsArray);
   };
 
+  // removes an ingredient input from the DOM
   $scope.removeIngredient = function(ingredient) {
       console.log('Removing ingredient');
       var ingredientIndex = $scope.ingredientsArray.indexOf(ingredient);
       $scope.ingredientsArray.splice(ingredientIndex,1);
   };
 
+  // adds a step input to the DOM
   $scope.addNewStep = function() {
       var newStepNo = $scope.stepsArray.length+1;
       console.log('Adding new step');
@@ -64,17 +72,21 @@ myApp.controller('editRecipeController', ['$scope', '$location','UserService', '
       console.log('Steps Array is now:', $scope.stepsArray);
   };
 
+  // removes a step input from the DOM
   $scope.removeStep = function(step) {
       console.log('Removing step');
       var stepIndex = $scope.stepsArray.indexOf(step);
       $scope.stepsArray.splice(stepIndex,1);
   };
 
+  // function that gathers information entered by the user and calls
+  // the factory function to post the recipe
   $scope.editRecipe = function() {
     // initializes arrays in recipe object
     $scope.recipe.ingredients = [];
     $scope.recipe.steps = [];
     $scope.recipe.title = $scope.title;
+    $scope.recipe.favorite = UserService.userObject.currentRecipe.favorite;
     $scope.recipe.categories = $scope.categoryOptions;
     $scope.recipe.username = $scope.userObject.userName;
     $scope.recipe._id = UserService.userObject.currentRecipe._id;
@@ -88,8 +100,14 @@ myApp.controller('editRecipeController', ['$scope', '$location','UserService', '
       $scope.recipe.steps.push($scope.stepsArray[j].name);
     }
 
-    // temporary image_url until add photo is implemented
-    $scope.recipe.image_url = '';
+    // assign image_url (from uploaded img insert into the db)
+    // if a new image has been selected:
+    if (filename) {
+      $scope.recipe.image_url = filename;
+    } else {
+      // keep the image on file
+      $scope.recipe.image_url = UserService.userObject.currentRecipe.image_url;;
+    }
 
     console.log('Saving recipe', $scope.recipe);
     RecipeDataService.updateRecipe($scope.recipe);
@@ -98,5 +116,35 @@ myApp.controller('editRecipeController', ['$scope', '$location','UserService', '
 
   } // end of addRecipe function
 
+  // Upload picture file Section
+  $scope.uploadPic = function(file) {
+    file.upload = Upload.upload({
+      url: '/uploads',
+      data: {name: UserService.userObject.userName, file: file},
+    });
+
+    file.upload.then(function (response) {
+      console.log('0 Back from upload with data:',response.data);
+      // saves filename to use when saving recipe
+      filename = response.data.file.path + "/" + response.data.file.originalname;
+
+      $timeout(function () {
+        file.result = response.data;
+        console.log('1 Back from upload with data:',response.data);
+        filename = response.data.file.path + "/" + response.data.file.originalname;
+        console.log('URL is:',filename);
+
+      });
+      }, function (response) {
+        if (response.status > 0)
+          $scope.errorMsg = response.status + ': ' + response.data;
+          console.log('2 Back from upload with data:',response.data);
+          console.log('URL is:',filename);
+
+      }, function (evt) {
+        // Math.min is to fix IE which reports 200% sometimes
+        file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
+      });
+    }
 
 }]);

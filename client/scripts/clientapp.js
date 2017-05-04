@@ -1,10 +1,9 @@
-var myApp = angular.module('myApp', ['ngRoute','ngMaterial']);
+var myApp = angular.module('myApp', ['ngRoute','ngMaterial','ngFileUpload']);
 
 // Angular Material Theme Configuration
 myApp.config(['$mdThemingProvider', function($mdThemingProvider) {
    $mdThemingProvider.theme('altTheme').primaryPalette('grey').accentPalette('blue-grey');
-  // $mdThemingProvider.disableTheming();
- }]);
+}]);
 
 /// Routes ///
 myApp.config(['$routeProvider', '$locationProvider',
@@ -12,14 +11,17 @@ myApp.config(['$routeProvider', '$locationProvider',
   $locationProvider.hashPrefix('');
 
   $routeProvider
+    // Login View
     .when('/home', {
       templateUrl: '/views/templates/home.html',
       controller: 'LoginController',
     })
+    // Register new user View
     .when('/register', {
       templateUrl: '/views/templates/register.html',
       controller: 'LoginController'
     })
+    // Main View of the app
     .when('/user', {
       templateUrl: '/views/templates/user.html',
       controller: 'UserController',
@@ -29,6 +31,7 @@ myApp.config(['$routeProvider', '$locationProvider',
         }]
       }
     })
+    // Add Recipe View
     .when('/addrecipe', {
       templateUrl: '/views/templates/addRecipe.html',
       controller: 'addRecipeController',
@@ -38,6 +41,7 @@ myApp.config(['$routeProvider', '$locationProvider',
         }]
       }
     })
+    // Edit Recipe View
     .when('/editrecipe', {
       templateUrl: '/views/templates/editRecipe.html',
       controller: 'editRecipeController',
@@ -47,6 +51,7 @@ myApp.config(['$routeProvider', '$locationProvider',
         }]
       }
     })
+    // Display Recipe View
     .when('/recipe', {
       templateUrl: '/views/templates/recipe.html',
       controller: 'recipeController',
@@ -56,6 +61,7 @@ myApp.config(['$routeProvider', '$locationProvider',
         }]
       }
     })
+    // Group List View
     .when('/grouplist', {
       templateUrl: '/views/templates/groupList.html',
       controller: 'groupListController',
@@ -65,18 +71,10 @@ myApp.config(['$routeProvider', '$locationProvider',
         }]
       }
     })
+    // Update Group View (add/remove users to group)
     .when('/updategroup', {
       templateUrl: '/views/templates/updateGroup.html',
       controller: 'updateGroupController',
-      resolve: {
-        getuser : ['UserService', function(UserService){
-          return UserService.getuser();
-        }]
-      }
-    })
-    .when('/info', {
-      templateUrl: '/views/templates/info.html',
-      controller: 'InfoController',
       resolve: {
         getuser : ['UserService', function(UserService){
           return UserService.getuser();

@@ -1,21 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
+var Group = require('../models/groupModel');
+var AllUsers = require('../models/allUserModel');
 
-var GroupSchema = mongoose.Schema({
-  group_name : String,
-  user_admin : String,
-  users : [],
-});
-
-var AllUserSchema = mongoose.Schema({
-  username : String,
-  name : String,
-  email : String
-});
-
-var Group = mongoose.model('group', GroupSchema, 'groups');
-var AllUsers = mongoose.model('allUsers', AllUserSchema, 'users');
 
 // gets all groups from the database for a specific user
 router.get('/:user', function(req, res){

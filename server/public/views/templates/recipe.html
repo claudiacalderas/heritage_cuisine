@@ -1,3 +1,4 @@
+<!-- NAVIGATION BAR INCLUDED -->
 <div ng-include="'views/partials/nav.html'"></div>
 
 <!-- MENU OPTION FOR THIS VIEW IS EDIT RECIPE -->
@@ -12,34 +13,36 @@
 
 <!-- EDIT RECIPE SECTION -->
 <div layout="row">
-  <div layout-md="column" flex="10"></div>
-  <div layout="column" flex="80">
-      <!-- RECIPE NAME -->
-      <h1>{{recipe.title}} </h1>
+  <div layout-md="column" flex="20"></div>
+  <div layout="column" flex="60">
 
-      <!-- INGREDIENTS LIST -->
-      <span>INGREDIENTS </span>
-      <md-list>
-        <md-list-item class="md-2-line" ng-repeat="ingredient in recipe.ingredients track by $index">
-          <div class="md-list-item-text">
-            <p>{{ingredient}}</p>
-          </div>
-        </md-list-item>
-      </md-list>
+    <!-- RECIPE NAME -->
+    <h1>{{recipe.title}} </h1>
 
-      <!-- PREPARATION STEPS -->
-      <span>PREPARATION </span>
-      <md-list>
-        <md-list-item class="md-2-line" ng-repeat="step in recipe.steps track by $index">
-          <div class="md-list-item-text">
-            <p>{{step}}</p>
-          </div>
-        </md-list-item>
-      </md-list>
+    <!-- RECIPE PHOTO -->
+    <div class="recipeDivContainer">
+      <img class="imgInRecipe" src={{recipe.image_url}} alt="">
+    </div>
 
-      <!-- CATEGORIES -->
-      <span>CATEGORIES </span>
-      <p> </p>
-      <md-chips ng-model="recipe.categories" readonly="true" md-removable="false"></md-chips>
+    <!-- INGREDIENTS LIST -->
+    <span>INGREDIENTS </span>
+    <ul class="listsInRecipe">
+      <li class="listItems listsInRecipe" ng-repeat="ingredient in recipe.ingredients track by $index">
+        {{ingredient}}
+      </li>
+    </ul>
+
+    <!-- PREPARATION STEPS -->
+    <span>PREPARATION </span>
+    <ol>
+      <li class="listItems" ng-repeat="step in recipe.steps track by $index">
+        <p>{{step}}</p>
+      </li>
+    </ol>
+
+    <!-- CATEGORIES -->
+    <span>CATEGORIES </span>
+    <br>
+    <md-chips ng-model="recipe.categories" readonly="true" md-removable="false"></md-chips>
   </div>
 </div>
