@@ -9,8 +9,8 @@ if(process.env.MONGODB_URI != undefined) {
   mongoURI = process.env.MONGODB_URI;
 } else {
   // use the local database server
-  // mongoURI = 'mongodb://localhost:27017/heritagecuisine';
-  mongoURI = 'mongodb://admin:12345@ds131511.mlab.com:31511/heritagecuisine';
+  mongoURI = 'mongodb://localhost:27017/heritagecuisine';
+  // mongoURI = 'mongodb://admin:12345@ds131511.mlab.com:31511/heritagecuisine';
 }
 
 var mongoDB = mongoose.connect(mongoURI).connection;
