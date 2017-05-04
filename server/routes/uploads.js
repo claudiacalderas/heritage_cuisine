@@ -12,7 +12,7 @@ if(process.env.S3_BUCKET != undefined) {
   var upload = multer({
     storage: multerS3({
             s3: s3,
-            bucket: process.env.S3_BUCKET;,
+            bucket: process.env.S3_BUCKET,
             metadata: function (req, file, cb) {
               cb(null, {fieldName: file.fieldname});
             },
