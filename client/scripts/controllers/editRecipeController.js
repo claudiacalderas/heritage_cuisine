@@ -126,12 +126,19 @@ myApp.controller('editRecipeController', ['$scope','$location','Upload','$timeou
     file.upload.then(function (response) {
       console.log('0 Back from upload with data:',response.data);
       // saves filename to use when saving recipe
-      filename = response.data.file.path + "/" + response.data.file.originalname;
+      // filename in localhost:
+      // filename = response.data.file.path + "/" + response.data.file.originalname;
+      // updated filename that works with aws
+      filename = response.data.file.location;
+      console.log('URL is:',filename);
 
       $timeout(function () {
         file.result = response.data;
         console.log('1 Back from upload with data:',response.data);
-        filename = response.data.file.path + "/" + response.data.file.originalname;
+        // filename in localhost:
+        // filename = response.data.file.path + "/" + response.data.file.originalname;
+        // updated filename that works with aws
+        filename = response.data.file.location;
         console.log('URL is:',filename);
 
       });

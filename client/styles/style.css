@@ -43,9 +43,9 @@ button:focus {
 
 .imgNav {
   width: auto;
-  max-width: 75px;
+  /*max-width: 75px;*/
   height: auto;
-  max-height: 57px;
+  max-height: 50px;
 }
 
 .navBar {
