@@ -11,25 +11,25 @@ Heritage Cuisine allows families to preserve and expand their culinary tradition
 **1. Recipe Book**
 - 1.1 General Users sign in/sign up
 
-      ![login](login.png)
+![login](login.png)
 
 
 - 1.2 Ability to create, display, update and delete recipes by user
 
-      ![screenshot](screenshot.png)
+![screenshot](screenshot.png)
 
-      ![recipe](recipe.png)
+![recipe](recipe.png)
 
 
 **2. Social Platform to share recipes**
 - 2.1 Group creation and administration
 
-      ![groups](groups.png)
+![groups](groups.png)
 
 
 - 2.2 Recipe Sharing
 
-      ![sharing](sharing.png)
+![sharing](sharing.png)
 
 
 ## Technologies
