@@ -36,4 +36,4 @@ Heritage Cuisine allows families to preserve and expand their culinary tradition
 5. If running the app locally, make sure mongoURI is pointing to the localhost database : `var mongoURI = 'mongodb://localhost:27017/movieDB';` mongoURI is defined in /server/modules/db.js
 
 ## Screenshot
-![screenshot](main view.png)
+![screenshot](screenshot.png)
