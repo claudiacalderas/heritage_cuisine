@@ -10,11 +10,25 @@ Heritage Cuisine allows families to preserve and expand their culinary tradition
 
 **1. Recipe Book**
 - 1.1 General Users sign in/sign up
+
+![login](login.png)
+
 - 1.2 Ability to create, display, update and delete recipes by user
+
+![screenshot](screenshot.png)
+
+![recipe](recipe.png)
+
 
 **2. Social Platform to share recipes**
 - 2.1 Group creation and administration
+
+![groups](groups.png)
+
 - 2.2 Recipe Sharing
+
+![sharing](sharing.png)
+
 
 ## Technologies
 - MongoDB
@@ -30,10 +44,9 @@ Heritage Cuisine allows families to preserve and expand their culinary tradition
 - Amazon Web Services (for picture storage)
 
 ## Setup
-1. Clone the repo to your computer using `git clone https://github.com/claudiacalderas/movie-search.git`
+1. Clone the repo to your computer using `git clone https://github.com/claudiacalderas/heritage_cuisine.git`
 2. Run `npm install`
 3. Run `grunt`
 4. If running the app locally, ensure Mongo is running `mongod`
 
 ## Screenshot
-![screenshot](screenshot.png "Main View")
