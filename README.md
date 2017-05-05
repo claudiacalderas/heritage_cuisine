@@ -33,7 +33,6 @@ Heritage Cuisine allows families to preserve and expand their culinary tradition
 2. Run `npm install`
 3. Run `grunt`
 4. If running the app locally, ensure Mongo is running `mongod`
-5. If running the app locally, make sure mongoURI is pointing to the localhost database : `var mongoURI = 'mongodb://localhost:27017/movieDB';` mongoURI is defined in /server/modules/db.js
 
 ## Screenshot
-![screenshot](screenshot.png)
+![screenshot](screenshot.png "Main View")
