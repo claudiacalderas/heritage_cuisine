@@ -1,4 +1,5 @@
 # Heritage Cuisine - Recipe storing and sharing App (MEAN Stack)
+## Prime Digital Academy Full Stack Engineering Program - Solo Project
 
 ## Application Overview
 Heritage Cuisine is a full-stack web application to store and share recipes. It provides an easy way to organize and save recipes and have them accessible from your mobile device. It also allows sharing recipes within groups defined by the user.
