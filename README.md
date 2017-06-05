@@ -50,3 +50,7 @@ Heritage Cuisine allows families to preserve and expand their culinary tradition
 2. Run `npm install`
 3. Run `grunt`
 4. If running the app locally, ensure Mongo is running `mongod`
+
+## Setup
+Base MongoDB / nodeJS project and Passport Authentication code by:
+  Scott Bromander and Chris Black 
