@@ -6,7 +6,7 @@
       <img class="imgMain" src="views/images/olive.png" alt="olive">
     </div>
     <h2>Connect with friends and start sharing recipes using Heritage Cuisine.</h>
-    <h3 ng-if="message != ''">{{message}}</h3>
+    <h3 id="loginMessage" ng-if="message != ''">{{message}}</h3>
     <form name="loginView" ng-submit="login()">
       <md-input-container layout="column">
         <div>
